@@ -533,7 +533,7 @@ def main():
     session = requests.Session()
     
     # Hardcode the fptoken authentication cookie
-    fptoken = "gAAAAABpBdnv3uiz6MOot7jZXG2iJYih12RN_159tvaSQfnMDthOTQVWLf0FN8wwQ2mQp2JmMgRLFP91xfNz1o9B8--_mzsgRztMW_n3sxYdgvyNLUSzaY4%3D%3A1762016358"
+    fptoken = "gAAAAABpC86x3rXi9FshfX8jagSfXJn6ncfVbVD9sCbBLAssFVKdKpP8w_aLLdnrsmBhVEHPKU11ThRtegKs2S2IihL1wkAUnhr9lKKQUI9M9yNqqIejdvc%3D%3A1762410296"
     session.cookies.set('fptoken', fptoken, domain='.fantasypros.com', path='/')
     print("Using hardcoded fptoken for authentication\n")
     
