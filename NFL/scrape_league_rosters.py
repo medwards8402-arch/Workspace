@@ -10,197 +10,8 @@ import csv
 from pathlib import Path
 import re
 import json
-import browser_cookie3
-from http.cookiejar import MozillaCookieJar
-
-
-def load_cookies_from_file():
-    """Load cookies from a file (JSON, Netscape, or tab-separated format)."""
-    script_dir = Path(__file__).parent
-    
-    # Try the custom tab-separated format first (from Edge export)
-    for cookie_filename in ['cookies.txt', 'cookies']:
-        cookie_file = script_dir / cookie_filename
-        if cookie_file.exists():
-            print(f"Found cookie file: {cookie_file}")
-            try:
-                cookies = {}
-                lines_processed = 0
-                fp_lines = 0
-                
-                # Try different encodings
-                for encoding in ['utf-8', 'utf-16', 'utf-16-le', 'latin-1']:
-                    try:
-                        with open(cookie_file, 'r', encoding=encoding) as f:
-                            content = f.read()
-                            if content:
-                                print(f"Successfully read file with {encoding} encoding")
-                                for line in content.split('\n'):
-                                    line = line.strip()
-                                    if not line or line.startswith('#'):
-                                        continue
-                                    
-                                    lines_processed += 1
-                                    # Parse tab-separated format: name\tvalue\tdomain\tpath\texpires\tsize\t...
-                                    parts = line.split('\t')
-                                    if len(parts) >= 3:
-                                        name = parts[0]
-                                        value = parts[1]
-                                        domain = parts[2]
-                                        
-                                        # Only include cookies for fantasypros.com
-                                        if 'fantasypros.com' in domain:
-                                            fp_lines += 1
-                                            cookies[name] = value
-                                break
-                    except (UnicodeDecodeError, UnicodeError):
-                        continue
-                
-                print(f"Processed {lines_processed} cookie lines, found {fp_lines} FantasyPros cookies")
-                if cookies:
-                    print(f"Loaded {len(cookies)} FantasyPros cookies from file")
-                    
-                    # Check for critical authentication cookies
-                    critical_cookies = ['fptoken']
-                    missing = [c for c in critical_cookies if c not in cookies]
-                    if missing:
-                        print(f"\nWARNING: Missing critical authentication cookie: fptoken")
-                        print("This is required for FantasyPros authentication!")
-                        print("\nTo get fptoken:")
-                        print("1. Open Edge, go to https://www.fantasypros.com/ (make sure you're logged in)")
-                        print("2. Press F12 → Application tab → Cookies → https://www.fantasypros.com")
-                        print("3. Find 'fptoken' cookie and copy its Value")
-                        print("4. Add it to cookies.txt in this format:")
-                        print("   fptoken<TAB><value><TAB>.fantasypros.com<TAB>/<TAB>2026-12-31T00:00:00.000Z<TAB>100")
-                        print("")
-                    
-                    return cookies
-                else:
-                    print("No FantasyPros cookies found in file")
-            except Exception as e:
-                print(f"Error reading cookie file: {e}")
-    
-    # Try JSON format
-    json_file = script_dir / 'fantasypros_cookies.json'
-    if json_file.exists():
-        print(f"Found cookie file: {json_file}")
-        try:
-            with open(json_file, 'r') as f:
-                cookies = json.load(f)
-            print(f"Loaded {len(cookies)} cookies from JSON file")
-            return cookies
-        except Exception as e:
-            print(f"Error reading JSON cookie file: {e}")
-    
-    # Try Netscape format (exported from Cookie-Editor)
-    txt_file = script_dir / 'fantasypros_cookies.txt'
-    if txt_file.exists():
-        print(f"Found cookie file: {txt_file}")
-        try:
-            cookie_jar = MozillaCookieJar(txt_file)
-            cookie_jar.load(ignore_discard=True, ignore_expires=True)
-            cookies = {cookie.name: cookie.value for cookie in cookie_jar}
-            print(f"Loaded {len(cookies)} cookies from Netscape file")
-            return cookies
-        except Exception as e:
-            print(f"Error reading Netscape cookie file: {e}")
-    
-    return None
-
-
-def get_browser_cookies():
-    """Get cookies from browser for FantasyPros."""
-    print("Attempting to load cookies from browser...")
-    print("Note: On Windows, this may require running as Administrator\n")
-    
-    # Try different browsers in order
-    browsers = [
-        ('Edge', browser_cookie3.edge),
-        ('Chrome', browser_cookie3.chrome),
-        ('Firefox', browser_cookie3.firefox),
-    ]
-    
-    for browser_name, browser_func in browsers:
-        try:
-            print(f"Trying {browser_name}...")
-            cookies = browser_func(domain_name='fantasypros.com')
-            # Check if we actually got cookies
-            cookie_list = list(cookies)
-            if cookie_list:
-                print(f"Successfully loaded {len(cookie_list)} cookies from {browser_name}")
-                return cookies
-            else:
-                print(f"No FantasyPros cookies found in {browser_name}")
-        except PermissionError as e:
-            print(f"Permission denied for {browser_name}. Try running PowerShell as Administrator.")
-        except Exception as e:
-            print(f"Could not load from {browser_name}: {e}")
-            continue
-    
-    return None
-
-
-def get_manual_cookies():
-    """Prompt user to manually enter cookie string."""
-    print("\n" + "="*50)
-    print("MANUAL COOKIE ENTRY")
-    print("="*50)
-    print("\nTo get your cookies manually:")
-    print("1. In Edge, go to https://www.fantasypros.com/")
-    print("2. Press F12 to open Developer Tools")
-    print("3. Go to the 'Console' tab")
-    print("4. Paste this command and press Enter:")
-    print("   document.cookie")
-    print("5. Copy the entire output (everything between the quotes)")
-    print("6. Paste it below\n")
-    
-    cookie_string = input("Paste your cookie string here (or press Enter to skip): ").strip()
-    
-    if cookie_string:
-        # Parse cookie string into a dictionary
-        cookies = {}
-        for item in cookie_string.split('; '):
-            if '=' in item:
-                key, value = item.split('=', 1)
-                cookies[key] = value
-        return cookies
-    return None
-
-
-def get_synced_leagues(session):
-    """Get list of synced leagues from FantasyPros."""
-    url = "https://www.fantasypros.com/nfl/myplaybook/"
-    
-    try:
-        response = session.get(url)
-        response.raise_for_status()
-        
-        soup = BeautifulSoup(response.content, 'html.parser')
-        
-        # Look for league data in the page
-        leagues = []
-        
-        # FantasyPros typically stores league data in JavaScript
-        pattern = r'var\s+leagues\s*=\s*(\[.*?\]);'
-        match = re.search(pattern, response.text, re.DOTALL)
-        
-        if match:
-            try:
-                leagues_data = json.loads(match.group(1))
-                for league in leagues_data:
-                    leagues.append({
-                        'id': league.get('id'),
-                        'name': league.get('name'),
-                        'platform': league.get('platform')
-                    })
-            except:
-                pass
-        
-        return leagues
-        
-    except Exception as e:
-        print(f"Error getting leagues: {e}")
-        return []
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import time
 
 
 def parse_roster_json(data):
@@ -283,40 +94,68 @@ def parse_team_roster_html(html_content, team_name):
     return rosters
 
 
-def get_synced_leagues_old(session):
-    """Get list of synced leagues from FantasyPros (old version)."""
-    url = "https://www.fantasypros.com/nfl/myplaybook/"
+def scrape_single_team_roster(cookies_dict, my_team_url, team_id, team_name):
+    """Scrape a single team's roster with retry logic (used for parallel processing)."""
+    max_retries = 2
+    retry_delay = 3  # seconds
+    timeout = 60  # seconds - give server plenty of time to respond
     
-    try:
-        response = session.get(url)
-        response.raise_for_status()
-        
-        soup = BeautifulSoup(response.content, 'html.parser')
-        
-        # Look for league data in the page
-        leagues = []
-        
-        # FantasyPros typically stores league data in JavaScript
-        pattern = r'var\s+leagues\s*=\s*(\[.*?\]);'
-        match = re.search(pattern, response.text, re.DOTALL)
-        
-        if match:
-            try:
-                leagues_data = json.loads(match.group(1))
-                for league in leagues_data:
-                    leagues.append({
-                        'id': league.get('id'),
-                        'name': league.get('name'),
-                        'platform': league.get('platform')
-                    })
-            except:
-                pass
-        
-        return leagues
-        
-    except Exception as e:
-        print(f"Error getting leagues: {e}")
-        return []
+    for attempt in range(max_retries):
+        try:
+            # Create a new session for this thread
+            thread_session = requests.Session()
+            for key, value in cookies_dict.items():
+                thread_session.cookies.set(key, value, domain='.fantasypros.com', path='/')
+            
+            # Add a small delay to avoid overwhelming the server
+            if attempt > 0:
+                time.sleep(1)
+            
+            team_url = f"{my_team_url}?team={team_id}"
+            team_response = thread_session.get(team_url, timeout=timeout)
+            
+            if team_response.status_code == 200:
+                team_roster = parse_team_roster_html(team_response.text, team_name)
+                if attempt > 0:
+                    print(f"  ✓ {team_name}: {len(team_roster)} players (retry {attempt})")
+                else:
+                    print(f"  ✓ {team_name}: {len(team_roster)} players")
+                return team_roster
+            elif team_response.status_code == 429:  # Rate limited
+                if attempt < max_retries - 1:
+                    wait_time = retry_delay * (2 ** attempt)  # Exponential backoff
+                    print(f"  ⟳ {team_name}: Rate limited, retrying in {wait_time}s...")
+                    time.sleep(wait_time)
+                    continue
+                else:
+                    print(f"  ✗ {team_name}: Rate limited after {max_retries} attempts")
+                    return []
+            else:
+                print(f"  ✗ {team_name}: HTTP {team_response.status_code}")
+                return []
+                
+        except requests.exceptions.Timeout:
+            if attempt < max_retries - 1:
+                wait_time = retry_delay * (2 ** attempt)
+                print(f"  ⟳ {team_name}: Timeout, retrying in {wait_time}s...")
+                time.sleep(wait_time)
+                continue
+            else:
+                print(f"  ✗ {team_name}: Timeout after {max_retries} attempts")
+                return []
+                
+        except Exception as e:
+            if attempt < max_retries - 1:
+                wait_time = retry_delay * (2 ** attempt)
+                error_msg = str(e)[:40]
+                print(f"  ⟳ {team_name}: {error_msg}... retrying in {wait_time}s")
+                time.sleep(wait_time)
+                continue
+            else:
+                print(f"  ✗ {team_name}: {str(e)[:50]}")
+                return []
+    
+    return []
 
 
 def scrape_league_rosters_fantasypros(league_key, session):
@@ -340,22 +179,41 @@ def scrape_league_rosters_fantasypros(league_key, session):
                     league_teams = settings_data.get('leagueTeams', {})
                     
                     print(f"Found {len(league_teams)} teams in league")
+                    print(f"Fetching all team rosters in parallel ({len(league_teams)} concurrent requests)...\n")
                     
-                    # Now scrape each team's roster
+                    start_time = time.time()
+                    
+                    # Extract cookies to dict for thread-safe sessions
+                    cookies_dict = {cookie.name: cookie.value for cookie in session.cookies}
+                    
+                    # Now scrape each team's roster IN PARALLEL (max workers = number of teams)
                     all_rosters = []
-                    for team_id, team_info in league_teams.items():
-                        team_name = team_info.get('text', 'Unknown Team')
-                        print(f"\nScraping roster for: {team_name} (Team ID: {team_id})")
+                    failed_teams = []
+                    with ThreadPoolExecutor(max_workers=len(league_teams)) as executor:
+                        # Submit all team scraping tasks
+                        future_to_team = {
+                            executor.submit(scrape_single_team_roster, cookies_dict, my_team_url, team_id, team_info.get('text', 'Unknown Team')): (team_id, team_info.get('text', 'Unknown Team'))
+                            for team_id, team_info in league_teams.items()
+                        }
                         
-                        team_url = f"{my_team_url}?team={team_id}"
-                        team_response = session.get(team_url)
-                        
-                        if team_response.status_code == 200:
-                            team_roster = parse_team_roster_html(team_response.text, team_name)
-                            all_rosters.extend(team_roster)
-                            print(f"  Found {len(team_roster)} players")
-                        else:
-                            print(f"  Failed to fetch team page: {team_response.status_code}")
+                        # Collect results as they complete
+                        for future in as_completed(future_to_team):
+                            team_id, team_name = future_to_team[future]
+                            team_roster = future.result()
+                            if team_roster:
+                                all_rosters.extend(team_roster)
+                            else:
+                                failed_teams.append(team_name)
+                    
+                    elapsed = time.time() - start_time
+                    successful_teams = len(league_teams) - len(failed_teams)
+                    print(f"\n✓ Fetched {len(all_rosters)} total players from {successful_teams}/{len(league_teams)} teams in {elapsed:.1f}s")
+                    
+                    if failed_teams:
+                        print(f"\n⚠ Failed to fetch rosters for {len(failed_teams)} team(s):")
+                        for team in failed_teams:
+                            print(f"  - {team}")
+                        print("\nTip: These teams may have loaded successfully if you run the script again.")
                     
                     if all_rosters:
                         return all_rosters
@@ -366,143 +224,8 @@ def scrape_league_rosters_fantasypros(league_key, session):
     except Exception as e:
         print(f"Error checking my-team page: {e}")
     
-    # First try the API endpoint with proper headers
-    api_url = f"https://api.fantasypros.com/v2/leagues/rosters.php?key={league_key}"
-    headers = {
-        'Accept': 'application/json',
-        'Referer': f'https://www.fantasypros.com/nfl/myleagues/?key={league_key}',
-        'X-Requested-With': 'XMLHttpRequest',
-    }
-    
-    print(f"\nTrying API endpoint: {api_url}")
-    try:
-        response = session.get(api_url, headers=headers)
-        print(f"API Status: {response.status_code}")
-        
-        if response.status_code == 200:
-            print("Success with API!")
-            # Save the JSON response
-            debug_file = Path(__file__).parent / 'fantasypros_roster_api_response.json'
-            with open(debug_file, 'w', encoding='utf-8') as f:
-                f.write(response.text)
-            print(f"Saved API response to: {debug_file}")
-            
-            try:
-                data = response.json()
-                return parse_roster_json(data)
-            except Exception as e:
-                print(f"Error parsing JSON: {e}")
-    except Exception as e:
-        print(f"API request failed: {e}")
-    
-    # Fall back to trying multiple web page URLs
-    urls_to_try = [
-        f"https://www.fantasypros.com/nfl/myleagues/rosters.php?key={league_key}",
-        f"https://www.fantasypros.com/nfl/myleagues/league-rosters.php?key={league_key}",
-        f"https://www.fantasypros.com/nfl/myplaybook/rosters.php?key={league_key}",
-        f"https://www.fantasypros.com/nfl/myleagues/rosters/?key={league_key}",
-        f"https://www.fantasypros.com/nfl/myleagues/?key={league_key}",
-    ]
-    
-    url = None
-    response = None
-    
-    for test_url in urls_to_try:
-        try:
-            print(f"Trying URL: {test_url}")
-            test_response = session.get(test_url)
-            if test_response.status_code == 200:
-                url = test_url
-                response = test_response
-                print(f"Success! Using: {url}")
-                break
-            else:
-                print(f"Status {test_response.status_code}")
-        except Exception as e:
-            print(f"Failed: {e}")
-            continue
-    
-    if not url or not response:
-        print("Could not find a valid roster URL")
-        return []
-    
-    rosters = []
-    
-    try:
-        print(f"Roster page status: {response.status_code}")
-        
-        # Save the HTML for debugging
-        debug_file = Path(__file__).parent / 'fantasypros_league_page.html'
-        with open(debug_file, 'w', encoding='utf-8') as f:
-            f.write(response.text)
-        print(f"Saved page HTML to: {debug_file}")
-        
-        soup = BeautifulSoup(response.content, 'html.parser')
-        
-        # Look for roster data - FantasyPros often uses tables or divs
-        # Check for JSON data first
-        pattern = r'var\s+rosterData\s*=\s*(\{.*?\});'
-        match = re.search(pattern, response.text, re.DOTALL)
-        
-        if match:
-            try:
-                roster_data = json.loads(match.group(1))
-                print("Found roster data in JSON")
-                
-                # Parse the roster data structure
-                if 'teams' in roster_data:
-                    for team in roster_data['teams']:
-                        team_name = team.get('name', 'Unknown Team')
-                        
-                        if 'roster' in team or 'players' in team:
-                            players = team.get('roster', team.get('players', []))
-                            
-                            for player in players:
-                                rosters.append({
-                                    'team_name': team_name,
-                                    'player_name': player.get('name', ''),
-                                    'position': player.get('position', '')
-                                })
-                
-            except json.JSONDecodeError as e:
-                print(f"Error parsing JSON: {e}")
-        
-        # If no JSON data, try parsing HTML tables
-        if not rosters:
-            print("Trying to parse HTML tables...")
-            
-            # Look for team containers
-            team_containers = soup.find_all(['div', 'table'], class_=re.compile(r'team|roster', re.I))
-            
-            for container in team_containers:
-                # Try to find team name
-                team_name_elem = container.find(['h2', 'h3', 'span'], class_=re.compile(r'team.*name', re.I))
-                team_name = team_name_elem.get_text(strip=True) if team_name_elem else "Unknown Team"
-                
-                # Find player rows
-                player_rows = container.find_all('tr')
-                
-                for row in player_rows:
-                    player_link = row.find('a', class_=re.compile(r'player', re.I))
-                    
-                    if player_link:
-                        player_name = player_link.get_text(strip=True)
-                        
-                        # Try to find position
-                        pos_elem = row.find(['td', 'span'], class_=re.compile(r'pos', re.I))
-                        position = pos_elem.get_text(strip=True) if pos_elem else ""
-                        
-                        rosters.append({
-                            'team_name': team_name,
-                            'player_name': player_name,
-                            'position': position
-                        })
-        
-        return rosters
-        
-    except Exception as e:
-        print(f"Error scraping rosters: {e}")
-        return []
+    # If the main my-team page didn't work, return empty
+    return []
 
 
 def save_to_csv(rosters, filename='league_rosters.csv'):
