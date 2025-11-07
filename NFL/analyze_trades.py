@@ -10,9 +10,9 @@ Trade criteria:
 
 import csv
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Set, FrozenSet
 from itertools import combinations
-import copy
+from functools import lru_cache
 
 from common.fantasy_utils import (
     POSITION_WEIGHTS,
@@ -275,6 +275,11 @@ def find_trades_for_team(team_name: str, rosters: Dict[str, List[Dict]], ranking
     """
     Find all beneficial trades for a specific team.
     Returns list of trade scenarios with power improvements.
+    
+    Optimized version with:
+    - Pre-computed starter sets to avoid repeated select_starters calls
+    - Early termination for obviously bad trades
+    - Reduced nested loop iterations
     """
     team_roster = rosters[team_name]
     team_current_power = calculate_team_power(team_roster, rankings, waiver_players)
@@ -282,11 +287,17 @@ def find_trades_for_team(team_name: str, rosters: Dict[str, List[Dict]], ranking
     all_trades = []
     seen_trades = set()  # Track unique trades to avoid duplicates
     
-    # Cache for power calculations to avoid recalculating same rosters
-    power_cache = {}
+    # Pre-compute current starters for team (avoid recalculating)
+    team_starters, _ = select_starters(team_roster, rankings, waiver_players)
+    team_starter_names = {s['name'] for s in team_starters}
     
     # Convert rosters to dicts for O(1) player lookups
     team_roster_dict = {p['name']: p for p in team_roster}
+    
+    # Pre-calculate tradeable players and their starter status
+    team_tradeable = get_tradeable_players(team_roster, rankings, waiver_players)
+    team_tradeable_dict = {p['name']: p for p in team_tradeable}
+    team_tradeable_names = [p['name'] for p in team_tradeable]
     
     # Try trades with each other team
     for other_team_name, other_team_roster in rosters.items():
@@ -295,196 +306,217 @@ def find_trades_for_team(team_name: str, rosters: Dict[str, List[Dict]], ranking
         
         other_team_current_power = calculate_team_power(other_team_roster, rankings, waiver_players)
         
+        # Pre-compute starters for other team
+        other_starters, _ = select_starters(other_team_roster, rankings, waiver_players)
+        other_starter_names = {s['name'] for s in other_starters}
+        
         # Get tradeable players (excludes backup K/DST)
-        team_tradeable = get_tradeable_players(team_roster, rankings, waiver_players)
         other_tradeable = get_tradeable_players(other_team_roster, rankings, waiver_players)
         
         # Convert to dicts for faster lookups
         other_roster_dict = {p['name']: p for p in other_team_roster}
-        team_tradeable_dict = {p['name']: p for p in team_tradeable}
         other_tradeable_dict = {p['name']: p for p in other_tradeable}
+        other_tradeable_names = [p['name'] for p in other_tradeable]
         
-        # Try all combinations of 1, 2, or 3 player trades
-        for team_count in range(1, 4):  # 1, 2, or 3 players
-            for other_count in range(1, 4):  # 1, 2, or 3 players
-                if team_count + other_count > 5:  # Total must be 5 or less
-                    continue
+        # Limit combinations to reduce search space
+        # Try 1-for-1, 2-for-1, 1-for-2, 2-for-2, 3-for-1, 1-for-3 only
+        trade_sizes = [(1, 1), (2, 1), (1, 2), (2, 2), (3, 1), (1, 3)]
+        
+        for team_count, other_count in trade_sizes:
+            # Get all combinations of players to trade
+            for team_gives in combinations(team_tradeable_names, team_count):
+                team_gives_set = set(team_gives)
                 
-                # Get all combinations of players to trade
-                team_player_names = [p['name'] for p in team_tradeable]
-                other_player_names = [p['name'] for p in other_tradeable]
+                # Pre-compute positions and values for team_gives (avoid recomputing in inner loop)
+                team_give_positions = [team_tradeable_dict[name]['position'] for name in team_gives]
+                team_give_value = sum(team_tradeable_dict[name]['score'] for name in team_gives)
                 
-                for team_gives in combinations(team_player_names, team_count):
-                    team_gives_set = set(team_gives)
+                # Early skip: if all given players are bench players, likely not worth trading
+                team_gives_starter_count = sum(1 for p in team_gives if p in team_starter_names)
+                if team_gives_starter_count == 0 and team_count > 1:
+                    continue  # Don't trade away multiple bench players
+                
+                for other_gives in combinations(other_tradeable_names, other_count):
+                    # Get positions being traded
+                    other_give_positions = [other_tradeable_dict[name]['position'] for name in other_gives]
                     
-                    # Pre-compute positions and values for team_gives (avoid recomputing in inner loop)
-                    team_give_positions = [team_tradeable_dict[name]['position'] for name in team_gives]
-                    team_give_value = sum(team_tradeable_dict[name]['score'] for name in team_gives)
+                    # Calculate total value being traded by each side (for fairness check)
+                    other_give_value = sum(other_tradeable_dict[name]['score'] for name in other_gives)
                     
-                    for other_gives in combinations(other_player_names, other_count):
-                        # Get positions being traded
-                        other_give_positions = [other_tradeable_dict[name]['position'] for name in other_gives]
-                        
-                        # Calculate total value being traded by each side (for fairness check)
-                        other_give_value = sum(other_tradeable_dict[name]['score'] for name in other_gives)
-                        
-                        # Don't allow trades where skill position value is too imbalanced
-                        # The side giving away more skill value should receive within 85% of that value
-                        if team_give_value > 0 and other_give_value > 0:
-                            if team_give_value > other_give_value * 1.18:  # 1/0.85 = 1.18
+                    # Don't allow trades where skill position value is too imbalanced
+                    # The side giving away more skill value should receive within 85% of that value
+                    if team_give_value > 0 and other_give_value > 0:
+                        if team_give_value > other_give_value * 1.18:  # 1/0.85 = 1.18
+                            continue
+                        if other_give_value > team_give_value * 1.18:
+                            continue
+                    
+                    # Prevent bad 2-for-1 or 3-for-1 trades
+                    # For 2-for-1: Allow if it's reasonable consolidation
+                    # For 3-for-1 or 1-for-3: Must be very lopsided value
+                    team_count_actual = len(team_gives)
+                    other_count_actual = len(other_gives)
+                    
+                    if team_count_actual > other_count_actual:
+                        # Team giving more players - allow 2-for-1 with fair value
+                        if team_count_actual == 2 and other_count_actual == 1:
+                            # 2-for-1: require at least 80% total value back
+                            if other_give_value < team_give_value * 0.80:
                                 continue
-                            if other_give_value > team_give_value * 1.18:
-                                continue
-                        
-                        # Prevent bad 2-for-1 or 3-for-1 trades
-                        # For 2-for-1: Allow if it's reasonable consolidation
-                        # For 3-for-1 or 1-for-3: Must be very lopsided value
-                        team_count_actual = len(team_gives)
-                        other_count_actual = len(other_gives)
-                        
-                        if team_count_actual > other_count_actual:
-                            # Team giving more players - allow 2-for-1 with fair value
-                            if team_count_actual == 2 and other_count_actual == 1:
-                                # 2-for-1: require at least 80% total value back
-                                if other_give_value < team_give_value * 0.80:
-                                    continue
-                            else:
-                                # 3-for-1 or worse: require 90% value back
-                                if other_give_value < team_give_value * 0.90:
-                                    continue
-                        elif other_count_actual > team_count_actual:
-                            # Team receiving more players - allow 1-for-2 with fair value
-                            if other_count_actual == 2 and team_count_actual == 1:
-                                # 1-for-2: require giving at least 80% of received value
-                                if team_give_value < other_give_value * 0.80:
-                                    continue
-                            else:
-                                # 1-for-3 or worse: require giving 85% of received value
-                                if team_give_value < other_give_value * 0.85:
-                                    continue
-                        
-                        # Check if positions match reasonably
-                        if not positions_match(team_give_positions, other_give_positions):
-                            continue
-                        
-                        # Check rank disparity for 1-for-1 trades (prevent top-10 for mid-tier)
-                        if not check_rank_disparity_for_1_for_1(list(team_gives), list(other_gives), 
-                                                                  team_tradeable, other_tradeable):
-                            continue
-                        
-                        # Filter out players that won't contribute to starting lineup BEFORE simulation
-                        # This prevents duplicate trades with different non-starter combinations
-                        # Check team's potential received players - build roster efficiently
-                        team_new_roster_temp = [p for p in team_roster if p['name'] not in team_gives]
-                        for player_name in other_gives:
-                            player = other_roster_dict.get(player_name)
-                            if player:
-                                team_new_roster_temp.append(player)
-                        
-                        # Filter to only players that would actually start
-                        other_gives_filtered = tuple(sorted([p for p in other_gives 
-                                                  if player_would_start(p, team_new_roster_temp, rankings, waiver_players)]))
-                        
-                        # Check other team's potential received players - build roster efficiently
-                        other_new_roster_temp = [p for p in other_team_roster if p['name'] not in other_gives]
-                        for player_name in team_gives:
-                            player = team_roster_dict.get(player_name)
-                            if player:
-                                other_new_roster_temp.append(player)
-                        
-                        team_gives_filtered = tuple(sorted([p for p in team_gives 
-                                                   if player_would_start(p, other_new_roster_temp, rankings, waiver_players)]))
-                        
-                        # Skip trade if either side is receiving only non-starters
-                        if not other_gives_filtered or not team_gives_filtered:
-                            continue
-                        
-                        # For multi-player trades, check if best players of same position are too similar in rank
-                        # (Prevents "Star WR + 2 bench players for similar Star WR" type trades)
-                        if len(team_gives_filtered) > 1 or len(other_gives_filtered) > 1:
-                            # Get best player from each side with their positions (optimized with dict lookups)
-                            team_best_rank = min(rankings.get(p, 999) for p in team_gives_filtered)
-                            other_best_rank = min(rankings.get(p, 999) for p in other_gives_filtered)
-                            
-                            team_best_player = min(team_gives_filtered, key=lambda p: rankings.get(p, 999))
-                            other_best_player = min(other_gives_filtered, key=lambda p: rankings.get(p, 999))
-                            
-                            team_best_pos = team_tradeable_dict[team_best_player]['position']
-                            other_best_pos = other_tradeable_dict[other_best_player]['position']
-                            
-                            # If best players are same position and within 5 ranks of each other, skip
-                            # This prevents trading "similar star + bench" for "similar star"
-                            if team_best_pos == other_best_pos and abs(team_best_rank - other_best_rank) <= 5:
-                                continue
-                        
-                        # Check for duplicate trades (after filtering, multiple combinations may become identical)
-                        trade_key = (other_team_name, team_gives_filtered, other_gives_filtered)
-                        if trade_key in seen_trades:
-                            continue
-                        seen_trades.add(trade_key)
-                        
-                        # Simulate the trade with filtered player lists
-                        team_new_power, other_new_power = simulate_trade(
-                            team_roster, other_team_roster,
-                            list(team_gives_filtered), list(other_gives_filtered),
-                            rankings, waiver_players
-                        )
-                        
-                        # Check if both teams improve
-                        team_improvement = team_new_power - team_current_power
-                        other_improvement = other_new_power - other_team_current_power
-                        
-                        # Minimum improvement threshold: at least 0.25% of current power
-                        # (Prevents trades with negligible benefit like +1.2 points on 1500+ score)
-                        min_improvement = team_current_power * 0.0025
-                        min_other_improvement = other_team_current_power * 0.0025
-                        
-                        if team_improvement < min_improvement or other_improvement < min_other_improvement:
-                            continue
-                        
-                        # Check roster balance penalties
-                        # If a team is very imbalanced (elite WRs, terrible RBs), penalize them
-                        team_balance = check_roster_balance_penalty(team_roster, rankings)
-                        other_balance = check_roster_balance_penalty(other_team_roster, rankings)
-                        
-                        # Apply balance penalty only for very imbalanced rosters (< 0.75)
-                        # This prevents extreme roster construction from driving bad trades
-                        if team_balance < 0.75:
-                            required_team_improvement = min_improvement * 1.5
                         else:
-                            required_team_improvement = min_improvement
-                        
-                        if other_balance < 0.75:
-                            required_other_improvement = min_other_improvement * 1.5
+                            # 3-for-1 or worse: require 90% value back
+                            if other_give_value < team_give_value * 0.90:
+                                continue
+                    elif other_count_actual > team_count_actual:
+                        # Team receiving more players - allow 1-for-2 with fair value
+                        if other_count_actual == 2 and team_count_actual == 1:
+                            # 1-for-2: require giving at least 80% of received value
+                            if team_give_value < other_give_value * 0.80:
+                                continue
                         else:
-                            required_other_improvement = min_other_improvement
+                            # 1-for-3 or worse: require giving 85% of received value
+                            if team_give_value < other_give_value * 0.85:
+                                continue
+                    
+                    # Check if positions match reasonably
+                    if not positions_match(team_give_positions, other_give_positions):
+                        continue
+                    
+                    # Check rank disparity for 1-for-1 trades (prevent top-10 for mid-tier)
+                    if not check_rank_disparity_for_1_for_1(list(team_gives), list(other_gives), 
+                                                              team_tradeable, other_tradeable):
+                        continue
+                    
+                    # Early skip for players that won't start - use pre-computed starter sets
+                    # Only consider players that would upgrade the receiving team's starters
+                    other_gives_would_start = any(
+                        rankings.get(p, 999) < rankings.get(starter, 999)
+                        for p in other_gives
+                        for starter in team_starter_names
+                        if team_tradeable_dict.get(starter, {}).get('position') == other_tradeable_dict[p]['position']
+                    )
+                    
+                    team_gives_would_start = any(
+                        rankings.get(p, 999) < rankings.get(starter, 999)
+                        for p in team_gives
+                        for starter in other_starter_names
+                        if other_tradeable_dict.get(starter, {}).get('position') == team_tradeable_dict[p]['position']
+                    )
+                    
+                    # Skip if neither side gets a potential starter upgrade
+                    if not other_gives_would_start and not team_gives_would_start:
+                        continue
+                    
+                    # Filter to only players that would actually start (optimized check)
+                    team_new_roster_temp = [p for p in team_roster if p['name'] not in team_gives]
+                    for player_name in other_gives:
+                        player = other_roster_dict.get(player_name)
+                        if player:
+                            team_new_roster_temp.append(player)
+                    
+                    other_gives_filtered = tuple(sorted([p for p in other_gives 
+                                              if player_would_start(p, team_new_roster_temp, rankings, waiver_players)]))
+                    
+                    # Check other team's potential received players - build roster efficiently
+                    other_new_roster_temp = [p for p in other_team_roster if p['name'] not in other_gives]
+                    for player_name in team_gives:
+                        player = team_roster_dict.get(player_name)
+                        if player:
+                            other_new_roster_temp.append(player)
+                    
+                    team_gives_filtered = tuple(sorted([p for p in team_gives 
+                                               if player_would_start(p, other_new_roster_temp, rankings, waiver_players)]))
+                    
+                    # Skip trade if either side is receiving only non-starters
+                    if not other_gives_filtered or not team_gives_filtered:
+                        continue
+                    
+                    # For multi-player trades, check if best players of same position are too similar in rank
+                    # (Prevents "Star WR + 2 bench players for similar Star WR" type trades)
+                    if len(team_gives_filtered) > 1 or len(other_gives_filtered) > 1:
+                        # Get best player from each side with their positions (optimized with dict lookups)
+                        team_best_rank = min(rankings.get(p, 999) for p in team_gives_filtered)
+                        other_best_rank = min(rankings.get(p, 999) for p in other_gives_filtered)
                         
-                        # Both must improve enough, and other team must gain at least 60%
-                        if (team_improvement >= required_team_improvement and 
-                            other_improvement >= required_other_improvement and
-                            other_improvement >= (team_improvement * 0.6)):
-                            
-                            # For 2-for-1 trades, light validation
-                            # (Main protection is rank disparity and minimum improvement checks)
-                            if len(team_gives_filtered) == 2 and len(other_gives_filtered) == 1:
-                                if not check_2_for_1_starter_utilization(team_roster, list(team_gives_filtered), rankings, waiver_players):
-                                    continue
-                            elif len(other_gives_filtered) == 2 and len(team_gives_filtered) == 1:
-                                if not check_2_for_1_starter_utilization(other_team_roster, list(other_gives_filtered), rankings, waiver_players):
-                                    continue
-                            
-                            all_trades.append({
-                                'team': team_name,
-                                'team_gives': ', '.join(team_gives_filtered),
-                                'team_receives': ', '.join(other_gives_filtered),
-                                'trade_partner': other_team_name,
-                                'team_old_power': round(team_current_power, 2),
-                                'team_new_power': round(team_new_power, 2),
-                                'team_improvement': round(team_improvement, 2),
-                                'partner_old_power': round(other_team_current_power, 2),
-                                'partner_new_power': round(other_new_power, 2),
-                                'partner_improvement': round(other_improvement, 2)
-                            })
+                        team_best_player = min(team_gives_filtered, key=lambda p: rankings.get(p, 999))
+                        other_best_player = min(other_gives_filtered, key=lambda p: rankings.get(p, 999))
+                        
+                        team_best_pos = team_tradeable_dict[team_best_player]['position']
+                        other_best_pos = other_tradeable_dict[other_best_player]['position']
+                        
+                        # If best players are same position and within 5 ranks of each other, skip
+                        # This prevents trading "similar star + bench" for "similar star"
+                        if team_best_pos == other_best_pos and abs(team_best_rank - other_best_rank) <= 5:
+                            continue
+                    
+                    # Check for duplicate trades (after filtering, multiple combinations may become identical)
+                    trade_key = (other_team_name, team_gives_filtered, other_gives_filtered)
+                    if trade_key in seen_trades:
+                        continue
+                    seen_trades.add(trade_key)
+                    
+                    # Simulate the trade with filtered player lists
+                    team_new_power, other_new_power = simulate_trade(
+                        team_roster, other_team_roster,
+                        list(team_gives_filtered), list(other_gives_filtered),
+                        rankings, waiver_players
+                    )
+                    
+                    # Check if both teams improve
+                    team_improvement = team_new_power - team_current_power
+                    other_improvement = other_new_power - other_team_current_power
+                    
+                    # Minimum improvement threshold: at least 0.25% of current power
+                    # (Prevents trades with negligible benefit like +1.2 points on 1500+ score)
+                    min_improvement = team_current_power * 0.0025
+                    min_other_improvement = other_team_current_power * 0.0025
+                    
+                    if team_improvement < min_improvement or other_improvement < min_other_improvement:
+                        continue
+                    
+                    # Check roster balance penalties
+                    # If a team is very imbalanced (elite WRs, terrible RBs), penalize them
+                    team_balance = check_roster_balance_penalty(team_roster, rankings)
+                    other_balance = check_roster_balance_penalty(other_team_roster, rankings)
+                    
+                    # Apply balance penalty only for very imbalanced rosters (< 0.75)
+                    # This prevents extreme roster construction from driving bad trades
+                    if team_balance < 0.75:
+                        required_team_improvement = min_improvement * 1.5
+                    else:
+                        required_team_improvement = min_improvement
+                    
+                    if other_balance < 0.75:
+                        required_other_improvement = min_other_improvement * 1.5
+                    else:
+                        required_other_improvement = min_other_improvement
+                    
+                    # Both must improve enough, and other team must gain at least 60%
+                    if (team_improvement >= required_team_improvement and 
+                        other_improvement >= required_other_improvement and
+                        other_improvement >= (team_improvement * 0.6)):
+                        
+                        # For 2-for-1 trades, light validation
+                        # (Main protection is rank disparity and minimum improvement checks)
+                        if len(team_gives_filtered) == 2 and len(other_gives_filtered) == 1:
+                            if not check_2_for_1_starter_utilization(team_roster, list(team_gives_filtered), rankings, waiver_players):
+                                continue
+                        elif len(other_gives_filtered) == 2 and len(team_gives_filtered) == 1:
+                            if not check_2_for_1_starter_utilization(other_team_roster, list(other_gives_filtered), rankings, waiver_players):
+                                continue
+                        
+                        all_trades.append({
+                            'team': team_name,
+                            'team_gives': ', '.join(team_gives_filtered),
+                            'team_receives': ', '.join(other_gives_filtered),
+                            'trade_partner': other_team_name,
+                            'team_old_power': round(team_current_power, 2),
+                            'team_new_power': round(team_new_power, 2),
+                            'team_improvement': round(team_improvement, 2),
+                            'partner_old_power': round(other_team_current_power, 2),
+                            'partner_new_power': round(other_new_power, 2),
+                            'partner_improvement': round(other_improvement, 2)
+                        })
     
     # Sort by team's improvement (highest first)
     all_trades.sort(key=lambda t: t['team_improvement'], reverse=True)
