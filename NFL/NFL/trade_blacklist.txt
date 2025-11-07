@@ -1,0 +1,6 @@
+# Trade Blacklist - Team Names
+# Add team names here (one per line) to exclude them as trade partners
+# Lines starting with # are comments
+
+Belichicken and Waffles
+Foosball is the devil
