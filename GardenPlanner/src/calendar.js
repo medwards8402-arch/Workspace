@@ -1,5 +1,12 @@
 import { PLANTS } from './data'
 
+/**
+ * Generate calendar tasks for planting and harvesting based on selected plants
+ * @param {Set<string>} usedCodes - Set of plant codes currently used in beds
+ * @param {Array} plants - Array of plant objects with timing metadata
+ * @param {Date} lastFrostDate - The last frost date for the zone
+ * @returns {Array} Sorted array of task objects with date, type, icon, plant, and label
+ */
 export function makeCalendarTasks(usedCodes, plants, lastFrostDate) {
   if (!lastFrostDate) return []
   const plantMap = new Map(plants.map(p => [p.code, p]))
@@ -22,6 +29,11 @@ export function makeCalendarTasks(usedCodes, plants, lastFrostDate) {
   return out.sort((a,b)=> a.date-b.date)
 }
 
+/**
+ * Group tasks by month for display in the calendar view
+ * @param {Array} tasks - Array of task objects from makeCalendarTasks
+ * @returns {Map} Map of tasks grouped by YYYY-MM key with monthName and tasks array
+ */
 export function groupTasksByMonth(tasks) {
   const map = new Map()
   tasks.forEach(t => {

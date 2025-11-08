@@ -3,8 +3,8 @@ import { BED_COLS, BED_COUNT, BED_ROWS, PLANTS, USDA_ZONES } from './data'
 import { groupTasksByMonth, makeCalendarTasks } from './calendar'
 import { PlantPalette } from './components/PlantPalette'
 import { GardenBed } from './components/GardenBed'
-
-const STORAGE_KEY = 'gardenPlannerState'
+import { devLog } from './utils'
+import { STORAGE } from './constants'
 
 function usePersistentState() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -19,12 +19,15 @@ function usePersistentState() {
   // load
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY)
+      const raw = localStorage.getItem(STORAGE.KEY)
       if (!raw) {
+        devLog('No saved state found, starting fresh')
         setIsLoaded(true)
         return
       }
       const data = JSON.parse(raw)
+      devLog('Loading state from localStorage', { beds: data.beds?.length, zone: data.zone })
+      
       // validate codes
       const allCodes = new Set(PLANTS.map(p => p.code))
       let invalid = false
@@ -38,17 +41,18 @@ function usePersistentState() {
         }
       }
       if (invalid) {
-        console.warn('Invalid plant codes in storage. Clearing...')
-        localStorage.removeItem(STORAGE_KEY)
+        console.warn('[GardenPlanner] Invalid plant codes in storage. Clearing...')
+        localStorage.removeItem(STORAGE.KEY)
         setIsLoaded(true)
         return
       }
       if (Array.isArray(data?.beds)) setBeds(data.beds)
       if (typeof data?.zone === 'string') setZone(data.zone)
+      devLog('State loaded successfully')
       // Don't load activeTab from storage; use URL hash instead
     } catch (e) {
-      console.warn('Failed to load state', e)
-      localStorage.removeItem(STORAGE_KEY)
+      console.warn('[GardenPlanner] Failed to load state', e)
+      localStorage.removeItem(STORAGE.KEY)
     }
     setIsLoaded(true)
   }, [])
@@ -56,7 +60,9 @@ function usePersistentState() {
   // save (don't save activeTab anymore, only beds and zone) - only save after initial load
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ beds, zone }))
+      const plantCount = beds.flat().filter(Boolean).length
+      devLog('Saving state to localStorage', { beds: beds.length, zone, plantCount })
+      localStorage.setItem(STORAGE.KEY, JSON.stringify({ beds, zone }))
     }
   }, [beds, zone, isLoaded])
 

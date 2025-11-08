@@ -1,0 +1,8 @@
+Please suggest and implement things that will help maintain this code as you (AI) work with me to make changes.  For example: refector, add tests you can inspect, and logging you can inspect.
+
+Future work this code will need to be robust against includes:
+* Form information for plants so I can journal how things happen over the year.
+* A garden planner tab where the number and size of garden beds change.  The ability to prepopulate a garden given a number of selected plants.
+* The ability to save and load gardens from file
+* The ability to generate PDF reports of the garden for off-screen viewing.
+* The ability to view and interact with the website on a smart phone size screen.
