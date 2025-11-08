@@ -38,7 +38,7 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
   )
 }
 
-export function GardenBed({ bedIndex, bed, onChange, plants, selectedCode, bedRows, bedCols, deselectTrigger }) {
+export function GardenBed({ bedIndex, bed, onChange, plants, selectedCode, bedRows, bedCols, deselectTrigger, activeBed, setActiveBed }) {
   const [selectedIndices, setSelectedIndices] = useState(new Set())
   const [isDragging, setIsDragging] = useState(false)
   const gridRef = useRef(null)
@@ -52,6 +52,13 @@ export function GardenBed({ bedIndex, bed, onChange, plants, selectedCode, bedRo
     }
   }, [deselectTrigger])
 
+  // Deselect if another bed becomes active
+  useEffect(() => {
+    if (activeBed !== null && activeBed !== bedIndex) {
+      setSelectedIndices(new Set());
+    }
+  }, [activeBed, bedIndex])
+
   const handleDropAt = (i, code) => {
     const next = bed.slice()
     next[i] = code
@@ -60,15 +67,16 @@ export function GardenBed({ bedIndex, bed, onChange, plants, selectedCode, bedRo
   }
 
   const handleClickAt = (i) => {
+    setActiveBed(bedIndex);
     if (selectedCode) {
       // Place plant if one is selected
-      const next = bed.slice()
-      next[i] = selectedCode
-      onChange(next)
-      setSelectedIndices(new Set())
+      const next = bed.slice();
+      next[i] = selectedCode;
+      onChange(next);
+      setSelectedIndices(new Set());
     } else {
       // Select this cell
-      setSelectedIndices(new Set([i]))
+      setSelectedIndices(new Set([i]));
     }
   }
 
@@ -166,30 +174,57 @@ export function GardenBed({ bedIndex, bed, onChange, plants, selectedCode, bedRo
   const hasSelectedPlants = Array.from(selectedIndices).some(i => bed[i] !== null)
 
   return (
-    <div className="card" onClick={handleCardClick}>
+    <div className="card" style={{ width: 320, minWidth: 320, maxWidth: 320 }} onClick={handleCardClick}>
       <div className="card-header d-flex justify-content-between align-items-center" onClick={handleCardClick}>
         <span>Bed {bedIndex + 1}</span>
-        {selectedIndices.size > 0 && hasSelectedPlants && (
-          <button className="btn btn-sm btn-danger" onClick={(e) => { e.stopPropagation(); handleDelete(); }}>
+        <span style={{width: 100, display: 'inline-block', textAlign: 'right'}}>
+          <button
+            className="btn btn-sm btn-danger"
+            style={{minWidth: 90, opacity: selectedIndices.size > 0 && hasSelectedPlants ? 1 : 0.3, pointerEvents: selectedIndices.size > 0 && hasSelectedPlants ? 'auto' : 'none', transition: 'opacity 0.2s'}}
+            onClick={(e) => {
+              if (selectedIndices.size > 0 && hasSelectedPlants) {
+                e.stopPropagation();
+                handleDelete();
+              }
+            }}
+          >
             Delete ({selectedIndices.size})
           </button>
-        )}
+        </span>
       </div>
-      <div className="card-body d-flex justify-content-center" onClick={handleBedClick} style={{padding: 12, minWidth: 'fit-content'}}>
-        <div ref={gridRef} className="d-grid gap-2" style={{gridTemplateColumns: `repeat(${bedCols}, 68px)`}} onClick={handleBedClick}>
+      <div className="card-body d-flex justify-content-center" onClick={handleBedClick} style={{ padding: 12 }}>
+        <div
+          ref={gridRef}
+          className="d-grid gap-2"
+          style={{
+            gridTemplateColumns: `repeat(${bedCols}, 68px)`,
+            width: bedCols * 68 + (bedCols - 1) * 8,
+            minWidth: bedCols * 68 + (bedCols - 1) * 8,
+            maxWidth: bedCols * 68 + (bedCols - 1) * 8,
+          }}
+          onClick={handleBedClick}
+        >
           {bed.map((code, i) => {
             const plant = plants.find(p => p.code === code)
             return (
-              <Cell key={i} plant={plant} selected={selectedIndices.has(i)}
-                onDrop={(e) => { e.preventDefault(); const c = e.dataTransfer.getData('text/plain'); if (c) handleDropAt(i,c) }}
+              <Cell
+                key={i}
+                plant={plant}
+                selected={selectedIndices.has(i)}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const c = e.dataTransfer.getData('text/plain');
+                  if (c) handleDropAt(i, c);
+                }}
                 onClick={() => handleClickAt(i)}
                 onDoubleClick={() => handleDoubleClickAt(i)}
                 onMouseDown={() => handleMouseDownAt(i)}
-                onMouseEnter={() => handleMouseEnterAt(i)} />
-            )
+                onMouseEnter={() => handleMouseEnterAt(i)}
+              />
+            );
           })}
         </div>
       </div>
     </div>
-  )
+  );
 }

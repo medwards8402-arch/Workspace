@@ -94,25 +94,27 @@ function ZoneSelector({ zone, setZone }) {
   )
 }
 
-function Beds({ beds, setBeds, plants, selectedCode, deselectTrigger }) {
+function Beds({ beds, setBeds, plants, selectedCode, deselectTrigger, activeBed, setActiveBed }) {
   return (
-    <div className="row g-3">
+    <div className="d-flex flex-wrap gap-3 justify-content-center">
       {beds.map((bed, idx) => (
-        <div className="col-md-4" key={idx}>
-          <GardenBed 
-            bedIndex={idx} 
-            bed={bed} 
-            onChange={(b) => setBeds(prev => prev.map((x,i)=> i===idx? b : x))} 
-            plants={plants} 
+        <div key={idx}>
+          <GardenBed
+            bedIndex={idx}
+            bed={bed}
+            onChange={(b) => setBeds(prev => prev.map((x, i) => (i === idx ? b : x)))}
+            plants={plants}
             selectedCode={selectedCode}
             bedRows={BED_ROWS}
             bedCols={BED_COLS}
             deselectTrigger={deselectTrigger}
+            activeBed={activeBed}
+            setActiveBed={setActiveBed}
           />
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 function Calendar({ beds, plants, zone }) {
@@ -161,20 +163,22 @@ function Calendar({ beds, plants, zone }) {
 }
 
 export default function App() {
-  const { beds, setBeds, zone, setZone, activeTab, setActiveTab } = usePersistentState()
-  const [selectedCode, setSelectedCode] = useState(null)
-  const [deselectTrigger, setDeselectTrigger] = useState(0)
+  const { beds, setBeds, zone, setZone, activeTab, setActiveTab } = usePersistentState();
+  const [selectedCode, setSelectedCode] = useState(null);
+  const [deselectTrigger, setDeselectTrigger] = useState(0);
+  const [activeBed, setActiveBed] = useState(null);
 
-  const plants = PLANTS
+  const plants = PLANTS;
 
   // Click-away deselection - clear palette selection and bed selections
   const handleContainerClick = (e) => {
-    setSelectedCode(null)
-    setDeselectTrigger(prev => prev + 1) // Increment to trigger deselection in beds
-  }
+    setSelectedCode(null);
+    setDeselectTrigger(prev => prev + 1); // Increment to trigger deselection in beds
+    setActiveBed(null);
+  };
 
   return (
-    <div style={{minHeight: '100vh'}} onClick={handleContainerClick}>
+    <div style={{ minHeight: '100vh' }} onClick={handleContainerClick}>
       <div className="container py-3">
         <header className="d-flex align-items-center justify-content-between mb-3">
           <h1 className="h4 m-0">Garden Planner</h1>
@@ -182,25 +186,33 @@ export default function App() {
         </header>
 
         <ul className="nav nav-pills mb-3">
-          <li className="nav-item"><button className={`nav-link ${activeTab==='plan'?'active':''}`} onClick={(e)=>{e.stopPropagation(); setActiveTab('plan')}}>Garden Plan</button></li>
-          <li className="nav-item"><button className={`nav-link ${activeTab==='calendar'?'active':''}`} onClick={(e)=>{e.stopPropagation(); setActiveTab('calendar')}}>Planting Calendar</button></li>
+          <li className="nav-item"><button className={`nav-link ${activeTab === 'plan' ? 'active' : ''}`} onClick={(e) => { e.stopPropagation(); setActiveTab('plan'); }}>Garden Plan</button></li>
+          <li className="nav-item"><button className={`nav-link ${activeTab === 'calendar' ? 'active' : ''}`} onClick={(e) => { e.stopPropagation(); setActiveTab('calendar'); }}>Planting Calendar</button></li>
         </ul>
 
-        {activeTab==='plan' && (
+        {activeTab === 'plan' && (
           <div className="row g-3">
             <div className="col-md-2">
               <PlantPalette plants={plants} selectedCode={selectedCode} onSelect={setSelectedCode} />
             </div>
             <div className="col-md-10">
-              <Beds beds={beds} plants={plants} setBeds={setBeds} selectedCode={selectedCode} deselectTrigger={deselectTrigger} />
+              <Beds
+                beds={beds}
+                plants={plants}
+                setBeds={setBeds}
+                selectedCode={selectedCode}
+                deselectTrigger={deselectTrigger}
+                activeBed={activeBed}
+                setActiveBed={setActiveBed}
+              />
             </div>
           </div>
         )}
 
-        {activeTab==='calendar' && (
+        {activeTab === 'calendar' && (
           <Calendar beds={beds} plants={plants} zone={zone} />
         )}
       </div>
     </div>
-  )
+  );
 }
