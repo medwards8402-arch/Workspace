@@ -1,4 +1,97 @@
-:root{ --bs-body-bg: #0a0f18; }
-body { background: #0a0f18; }
-.card, .list-group-item { background: #0b0f1a; }
-.card-header { background: #0f1622; }
+/* Garden daytime theme - softer, muted natural tones */
+:root { 
+  --bs-body-bg: #e8ebe5;
+  --bs-body-color: #3a4a3a;
+  --bs-primary: #6b8e6b;
+  --bs-secondary: #8b7d6b;
+  --bs-success: #7a9e5e;
+  --bs-warning: #d89558;
+  --bs-danger: #b85d50;
+  --bs-info: #7a9fc2;
+  --cell-bg: #f5f6f2;
+  --card-bg: #fafbf8;
+  --card-header-bg: #e8ede5;
+  --border-color: #d0d8cc;
+}
+
+body { 
+  background: linear-gradient(180deg, #e8ebe5 0%, #dfe3dc 100%);
+  color: var(--bs-body-color);
+  min-height: 100vh;
+}
+
+.card { 
+  background: var(--card-bg); 
+  border-color: var(--border-color);
+  box-shadow: 0 2px 4px rgba(90, 120, 90, 0.06);
+}
+
+.card-header { 
+  background: var(--card-header-bg); 
+  border-bottom-color: var(--border-color);
+  color: #3a4a3a;
+  font-weight: 600;
+}
+
+.list-group-item { 
+  background: var(--card-bg); 
+  border-color: var(--border-color);
+  color: var(--bs-body-color);
+}
+
+.list-group-item:hover {
+  background: #f0f3ec;
+}
+
+.list-group-item.active {
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  color: #ffffff !important;
+}
+
+.list-group-item.active .text-secondary {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.nav-link {
+  color: #6b8e6b;
+}
+
+.nav-link:hover {
+  color: #5a7a5a;
+}
+
+.nav-link.active {
+  background-color: var(--bs-primary) !important;
+}
+
+.form-control, .form-select {
+  border-color: var(--border-color);
+  background-color: #fafbf8;
+  color: var(--bs-body-color);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.25rem rgba(107, 142, 107, 0.12);
+}
+
+.input-group-text {
+  background-color: var(--card-header-bg);
+  border-color: var(--border-color);
+  color: #3a4a3a;
+}
+
+.btn-danger {
+  background-color: var(--bs-danger);
+  border-color: var(--bs-danger);
+}
+
+.btn-danger:hover {
+  background-color: #a04d42;
+  border-color: #a04d42;
+}
+
+.text-secondary {
+  color: #7a8a7a !important;
+}
