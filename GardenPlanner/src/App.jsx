@@ -134,22 +134,25 @@ function Calendar({ beds, plants, zone }) {
   if (tasks.length === 0) return <div className="alert alert-secondary">No plants added yet.</div>
 
   return (
-    <div className="vstack gap-3">
+    <div className="row g-3">
       {[...byMonth.entries()].map(([key, { monthName, tasks }]) => (
-        <div className="card" key={key}>
-          <div className="card-header fw-bold">{monthName}</div>
-          <div className="list-group list-group-flush">
-            {tasks.map((t, i) => (
-              <div className={`list-group-item d-flex align-items-center gap-2 border-start border-3 ${t.type==='indoor'?'border-success':t.type==='sow'?'border-primary':'border-warning'}`} key={i}>
-                <div style={{fontSize: 20, width: 28, textAlign: 'center'}}>{t.icon}</div>
-                <div className="rounded-circle" style={{width: 18, height: 18, background: t.plant.color}} />
-                <div className="ms-2">
-                  <div className="fw-bold small text-uppercase text-secondary">{t.date.toLocaleDateString(undefined,{month:'short', day:'numeric'})}</div>
-                  <div>{t.label}</div>
-                </div>
-                <div className="ms-auto text-secondary">{t.plant.name}</div>
+        <div className="col-md-6 col-lg-4" key={key}>
+          <div className="card h-100">
+            <div className="card-header fw-bold py-2">{monthName}</div>
+            <div className="card-body p-2">
+              <div className="vstack gap-1">
+                {tasks.map((t, i) => (
+                  <div className={`d-flex align-items-center gap-2 p-1 rounded border-start border-3 ${t.type==='indoor'?'border-success':t.type==='sow'?'border-primary':'border-warning'}`} key={i} style={{fontSize: '0.875rem'}}>
+                    <span style={{fontSize: 16}}>{t.icon}</span>
+                    <div className="rounded-circle flex-shrink-0" style={{width: 12, height: 12, background: t.plant.color}} />
+                    <div className="flex-grow-1 d-flex justify-content-between align-items-center gap-2">
+                      <span className="text-truncate">{t.label}</span>
+                      <span className="text-secondary small text-nowrap">{t.date.toLocaleDateString(undefined,{month:'short', day:'numeric'})}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       ))}

@@ -10,15 +10,14 @@ export function makeCalendarTasks(usedCodes, plants, lastFrostDate) {
     if (plant.startIndoorsWeeks > 0) {
       const d = new Date(lastFrostDate)
       d.setDate(d.getDate() - plant.startIndoorsWeeks * 7)
-      out.push({ date: d, type: 'indoor', icon: '🌱', plant, label: `Start ${plant.name} indoors (${plant.startIndoorsWeeks}w before frost)` })
+      out.push({ date: d, type: 'indoor', icon: '🌱', plant, label: `Start ${plant.name} indoors` })
     }
     const sow = new Date(lastFrostDate)
     sow.setDate(sow.getDate() + plant.plantAfterFrostDays)
-    const desc = plant.plantAfterFrostDays < 0 ? `${Math.abs(plant.plantAfterFrostDays)}d before frost` : plant.plantAfterFrostDays === 0 ? 'at last frost' : `${plant.plantAfterFrostDays}d after frost`
-    out.push({ date: sow, type: 'sow', icon: plant.startIndoorsWeeks>0 ? '🌿' : '🌱', plant, label: plant.startIndoorsWeeks>0 ? `Transplant ${plant.name} (${desc})` : `Sow ${plant.name} (${desc})` })
+    out.push({ date: sow, type: 'sow', icon: plant.startIndoorsWeeks>0 ? '🌿' : '🌱', plant, label: plant.startIndoorsWeeks>0 ? `Transplant ${plant.name}` : `Sow ${plant.name}` })
     const harvest = new Date(sow)
     harvest.setDate(harvest.getDate() + plant.harvestWeeks * 7)
-    out.push({ date: harvest, type: 'harvest', icon: '🎉', plant, label: `Harvest ${plant.name} (~${plant.harvestWeeks}w after planting)` })
+    out.push({ date: harvest, type: 'harvest', icon: '🎉', plant, label: `Harvest ${plant.name}` })
   })
   return out.sort((a,b)=> a.date-b.date)
 }
