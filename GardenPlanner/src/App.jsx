@@ -5,6 +5,7 @@ import { Beds } from './components/Beds'
 import { NewGarden } from './components/NewGarden'
 import { PlantInfo } from './components/PlantInfo'
 import { Calendar } from './components/Calendar'
+import { Information } from './components/Information'
 import { ZoneSelector } from './components/ZoneSelector'
 import { useGardenOperations } from './hooks/useGardenOperations'
 import { useHistory } from './hooks/useHistory'
@@ -157,6 +158,15 @@ export default function App() {
               Planting Calendar
             </button>
           </li>
+          <li className="nav-item">
+            <button 
+              className={`nav-link ${activeTab === 'info' ? 'active' : ''}`} 
+              onClick={(e) => { e.stopPropagation(); setActiveTab('info'); }} 
+              title="Usage instructions and information"
+            >
+              Information
+            </button>
+          </li>
         </ul>
 
         {activeTab === 'new-garden' && (
@@ -181,6 +191,10 @@ export default function App() {
 
         {activeTab === 'calendar' && (
           <Calendar />
+        )}
+
+        {activeTab === 'info' && (
+          <Information />
         )}
       </div>
     </div>
