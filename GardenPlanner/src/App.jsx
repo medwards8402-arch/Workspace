@@ -243,7 +243,9 @@ export default function App() {
               <PlantPalette plants={PLANTS} />
             </div>
             <div className="col-md-7">
-              <Beds beds={garden.beds} />
+              <div className="beds-scroll">
+                <Beds beds={garden.beds} />
+              </div>
             </div>
             <div className="col-md-3">
               <div style={{ position: 'sticky', top: '20px' }}>

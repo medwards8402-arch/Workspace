@@ -13,9 +13,9 @@ export function NewGarden({ onAfterGenerate }) {
 
   // Dynamic beds state: array of { name, rows, cols, lightLevel }
   const [beds, setBeds] = useState([
-    { name: 'Bed 1', rows: 8, cols: 4, lightLevel: 'high' },
-    { name: 'Bed 2', rows: 8, cols: 4, lightLevel: 'medium' },
-    { name: 'Bed 3', rows: 8, cols: 4, lightLevel: 'low' }
+    { name: 'Bed 1', rows: 4, cols: 8, lightLevel: 'high' },
+    { name: 'Bed 2', rows: 4, cols: 8, lightLevel: 'medium' },
+    { name: 'Bed 3', rows: 4, cols: 8, lightLevel: 'low' }
   ])
 
   // Plant selection state
@@ -35,8 +35,8 @@ export function NewGarden({ onAfterGenerate }) {
     if (beds.length < MAX_BEDS) {
       setBeds([...beds, {
         name: `Bed ${beds.length + 1}`,
-        rows: 8,
-        cols: 4,
+        rows: 4,
+        cols: 8,
         lightLevel: 'high'
       }])
     }

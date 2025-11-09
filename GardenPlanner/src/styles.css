@@ -128,3 +128,12 @@ body {
   flex-direction: column;
   gap: 0.25rem;
 }
+
+/* Beds area: prevent overlap by containing wide beds and enabling horizontal scroll */
+.beds-scroll {
+  max-width: 100%;
+  overflow-x: hidden; /* avoid horizontal scrollbar */
+  overflow-y: hidden;
+}
+
+/* no horizontal scrollbar styling needed when hidden */

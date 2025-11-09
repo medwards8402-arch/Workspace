@@ -1,9 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { useGardenOperations } from '../hooks/useGardenOperations'
 import { useSelection } from '../hooks/useSelection'
 import { PLANTS } from '../data'
 
-function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter, selected }) {
+function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter, selected, cellSize }) {
+  const scale = useMemo(() => cellSize / 68, [cellSize])
+  const fs = (v) => Math.max(7, Math.round(v * scale))
+  const gapPx = (v) => Math.max(1, Math.round(v * scale))
   const handleClick = (e) => {
     e.stopPropagation() // Prevent click from bubbling to bed container
     onClick()
@@ -33,8 +36,8 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
     if (spacing === 1) {
       return (
         <>
-          <div style={{fontSize: 26, lineHeight: 1}}>{plant.icon}</div>
-          <div className="small text-center" style={{lineHeight: 1.1, fontSize: '10px'}}>{plant.name}</div>
+          <div style={{fontSize: fs(26), lineHeight: 1}}>{plant.icon}</div>
+          <div className="small text-center" style={{lineHeight: 1.1, fontSize: fs(10)}}>{plant.name}</div>
         </>
       )
     }
@@ -43,10 +46,10 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
     if (spacing === 2) {
       return (
         <>
-          <div style={{display: 'flex', gap: '2px', fontSize: 18}}>
+          <div style={{display: 'flex', gap: gapPx(2), fontSize: fs(18)}}>
             {plant.icon}{plant.icon}
           </div>
-          <div className="small text-center" style={{lineHeight: 1, fontSize: '9px'}}>{plant.name}</div>
+          <div className="small text-center" style={{lineHeight: 1, fontSize: fs(9)}}>{plant.name}</div>
         </>
       )
     }
@@ -55,10 +58,10 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
     if (spacing === 4) {
       return (
         <>
-          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', fontSize: 16}}>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: gapPx(1), fontSize: fs(16)}}>
             {Array(4).fill(plant.icon).map((icon, i) => <span key={i}>{icon}</span>)}
           </div>
-          <div className="small text-center" style={{lineHeight: 1, fontSize: '8px'}}>{plant.name}</div>
+          <div className="small text-center" style={{lineHeight: 1, fontSize: fs(8)}}>{plant.name}</div>
         </>
       )
     }
@@ -67,10 +70,10 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
     if (spacing === 8) {
       return (
         <>
-          <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1px', fontSize: 11}}>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: gapPx(1), fontSize: fs(11)}}>
             {Array(8).fill(plant.icon).map((icon, i) => <span key={i}>{icon}</span>)}
           </div>
-          <div className="small text-center" style={{lineHeight: 1, fontSize: '7px'}}>{plant.name}</div>
+          <div className="small text-center" style={{lineHeight: 1, fontSize: fs(7)}}>{plant.name}</div>
         </>
       )
     }
@@ -79,10 +82,10 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
     if (spacing === 9) {
       return (
         <>
-          <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1px', fontSize: 12}}>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: gapPx(1), fontSize: fs(12)}}>
             {Array(9).fill(plant.icon).map((icon, i) => <span key={i}>{icon}</span>)}
           </div>
-          <div className="small text-center" style={{lineHeight: 1, fontSize: '7px'}}>{plant.name}</div>
+          <div className="small text-center" style={{lineHeight: 1, fontSize: fs(7)}}>{plant.name}</div>
         </>
       )
     }
@@ -91,10 +94,10 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
     if (spacing === 16) {
       return (
         <>
-          <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1px', fontSize: 10}}>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: gapPx(1), fontSize: fs(10)}}>
             {Array(16).fill(plant.icon).map((icon, i) => <span key={i}>{icon}</span>)}
           </div>
-          <div className="small text-center" style={{lineHeight: 1, fontSize: '7px'}}>{plant.name}</div>
+          <div className="small text-center" style={{lineHeight: 1, fontSize: fs(7)}}>{plant.name}</div>
         </>
       )
     }
@@ -102,15 +105,15 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
     // Default fallback
     return (
       <>
-        <div style={{fontSize: 26, lineHeight: 1}}>{plant.icon}</div>
-        <div className="small text-center" style={{lineHeight: 1.1, fontSize: '10px'}}>{plant.name}</div>
+        <div style={{fontSize: fs(26), lineHeight: 1}}>{plant.icon}</div>
+        <div className="small text-center" style={{lineHeight: 1.1, fontSize: fs(10)}}>{plant.name}</div>
       </>
     )
   }
 
   return (
     <div className={`border rounded-3 d-flex flex-column align-items-center justify-content-center position-relative`} 
-         style={{width: 68, height: 68, background: 'var(--cell-bg)', borderStyle: 'dashed', cursor: 'pointer', userSelect: 'none'}}
+         style={{width: cellSize, height: cellSize, background: 'var(--cell-bg)', borderStyle: 'dashed', cursor: 'pointer', userSelect: 'none'}}
          onDragOver={e => { e.preventDefault(); e.dataTransfer.dropEffect='copy' }}
          onDrop={onDrop}
          onClick={handleClick}
@@ -123,7 +126,7 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
   )
 }
 
-export function GardenBed({ bedIndex }) {
+export function GardenBed({ bedIndex, cellSize = 68 }) {
   const { garden, updateCell, updateCells, clearCells } = useGardenOperations()
   const { selectedPlant, selection, setSelection, setActiveBed, activeBed } = useSelection()
   const [isDragging, setIsDragging] = useState(false)
@@ -230,7 +233,6 @@ export function GardenBed({ bedIndex }) {
   const hasSelectedPlants = Array.from(selectedIndices).some(i => bed.getCell(i) !== null)
 
   // Calculate card width based on bed dimensions
-  const cellSize = 68
   const gap = 8
   const gridWidth = bedCols * cellSize + (bedCols - 1) * gap
   const gridHeight = bedRows * cellSize + (bedRows - 1) * gap
@@ -287,6 +289,7 @@ export function GardenBed({ bedIndex }) {
                   key={i}
                   plant={plant}
                   selected={selectedIndices.has(i)}
+                  cellSize={cellSize}
                   onDrop={(e) => {
                     e.preventDefault();
                     const c = e.dataTransfer.getData('text/plain');
