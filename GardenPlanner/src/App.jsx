@@ -200,6 +200,13 @@ export default function App() {
 
         {activeTab === 'plan' && (
           <div className="row g-3">
+            <div className="col-12">
+              <div className="alert alert-info py-2 mb-0">
+                <small>
+                  💡 <strong>Tip:</strong> Click to select a cell or <strong>double-click</strong> a planted cell to select the entire plant group
+                </small>
+              </div>
+            </div>
             <div className="col-md-2">
               <PlantPalette plants={PLANTS} />
             </div>

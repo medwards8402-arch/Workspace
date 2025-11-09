@@ -242,8 +242,7 @@ export function NewGarden({ onAfterGenerate }) {
         <button
           className="btn btn-primary btn-lg w-100"
           onClick={handleGenerateClick}
-          disabled={selectedPlants.size === 0}
-          title={selectedPlants.size === 0 ? "Select at least one plant to generate garden" : `Generate garden with ${selectedPlants.size} plant varieties`}
+          title={selectedPlants.size === 0 ? "Generate empty garden beds" : `Generate garden with ${selectedPlants.size} plant varieties`}
         >
           Generate Garden
         </button>
@@ -272,7 +271,15 @@ export function NewGarden({ onAfterGenerate }) {
                   <strong>Warning:</strong> This will overwrite your current garden layout.
                 </div>
                 <p>
-                  Generate a new garden with <strong>{selectedPlants.size} plant varieties</strong> distributed across <strong>{beds.length} {beds.length === 1 ? 'bed' : 'beds'}</strong>?
+                  {selectedPlants.size === 0 ? (
+                    <>
+                      Generate a new garden with <strong>empty beds</strong> ({beds.length} {beds.length === 1 ? 'bed' : 'beds'})?
+                    </>
+                  ) : (
+                    <>
+                      Generate a new garden with <strong>{selectedPlants.size} plant varieties</strong> distributed across <strong>{beds.length} {beds.length === 1 ? 'bed' : 'beds'}</strong>?
+                    </>
+                  )}
                 </p>
                 <p className="mb-0">
                   This action cannot be undone (yet).

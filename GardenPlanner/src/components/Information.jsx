@@ -113,9 +113,13 @@ export function Information() {
               <div className="col-md-6">
                 <h6>📜 License & Usage</h6>
                 <p className="small">
-                  <strong>Garden Planner</strong> is provided free of charge for personal and educational use. 
+                  <strong>Garden Planner</strong> is provided free of charge for personal and educational use only. 
                   You may use this tool to plan your home gardens, share your garden plans with friends, 
                   or use it in educational settings.
+                </p>
+                <p className="small">
+                  <strong>Restrictions:</strong> Commercial use, redistribution, and copying of source code are prohibited 
+                  without explicit written permission from the author.
                 </p>
                 <p className="small mb-0">
                   <strong>Author:</strong> Matthew Edwards<br />
@@ -133,7 +137,6 @@ export function Information() {
                 <ul className="small mb-0">
                   <li><strong>Succession Planting:</strong> For continuous harvests, plant cool-season crops (lettuce, spinach) in early spring and again in fall.</li>
                   <li><strong>Companion Planting:</strong> Group compatible plants together. For example, tomatoes grow well with basil, and carrots with onions.</li>
-                  <li><strong>Crop Rotation:</strong> Each year, plant different crop families in different beds to maintain soil health and reduce pests.</li>
                   <li><strong>Light Requirements:</strong> Pay attention to light levels. Most fruiting plants (tomatoes, peppers, squash) need high light, while leafy greens can tolerate partial shade.</li>
                   <li><strong>Start Small:</strong> If you're new to gardening, start with 1-2 beds and expand as you gain experience.</li>
                   <li><strong>Save Often:</strong> Export your garden plan regularly to avoid losing your layout. Plans are saved with a .pln extension.</li>
