@@ -1,4 +1,0 @@
-In the garden planner, I'd like the ability to add beds of different dimensions.  Instead of selecting an overall number of beds and their rows/columns:
-* Treat beds like tables and have the ability to add beds and remove beds.
-* Allow each bed to have different configurable dimensions and weather.
-* Allow the name to be editted.

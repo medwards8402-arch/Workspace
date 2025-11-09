@@ -228,7 +228,7 @@ export default function App() {
         )}
 
         {activeTab === 'plan' && (
-          <div className="row g-2">
+          <div className="row g-2 plan-layout d-flex">
             <div className="col-12">
               <TipsStack>
                 <Tip id="garden-plan-selection">
@@ -239,15 +239,15 @@ export default function App() {
                 </Tip>
               </TipsStack>
             </div>
-            <div className="col-md-2">
+            <div className="col-md-2 plan-palette">
               <PlantPalette plants={PLANTS} />
             </div>
-            <div className="col-md-7">
+            <div className="col-md-7 plan-beds">
               <div className="beds-scroll">
                 <Beds beds={garden.beds} />
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 plan-info">
               <div style={{ position: 'sticky', top: '20px' }}>
                 <PlantInfo />
               </div>

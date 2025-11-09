@@ -46,6 +46,16 @@ body {
   text-overflow: ellipsis;
 }
 
+/* Responsive adjustments for plan layout: ensure beds don't overlap palette */
+@media (max-width: 1300px) {
+  .plan-layout { flex-direction: column; }
+  .plan-layout .plan-palette, .plan-layout .plan-beds, .plan-layout .plan-info { width: 100% !important; max-width: 100% !important; }
+  .plan-layout .plan-info { position: static !important; top: auto !important; }
+  .plan-layout .plan-beds { order: 2; }
+  .plan-layout .plan-palette { order: 1; }
+  .plan-layout .plan-info { order: 3; }
+}
+
 .card { 
   background: var(--card-bg); 
   border-color: var(--border-color);
