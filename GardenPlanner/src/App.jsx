@@ -6,6 +6,7 @@ import { NewGarden } from './components/NewGarden'
 import { PlantInfo } from './components/PlantInfo'
 import { Calendar } from './components/Calendar'
 import { Information } from './components/Information'
+import { Settings } from './components/Settings'
 import { ZoneSelector } from './components/ZoneSelector'
 import { Tip } from './components/Tip'
 import { useGardenOperations } from './hooks/useGardenOperations'
@@ -184,13 +185,22 @@ export default function App() {
               Planting Calendar
             </button>
           </li>
-          <li className="nav-item">
+          <li className="nav-item ms-auto">
             <button 
               className={`nav-link ${activeTab === 'info' ? 'active' : ''}`} 
               onClick={(e) => { e.stopPropagation(); setActiveTab('info'); }} 
               title="Usage instructions and information"
             >
-              Information
+              <small>About</small>
+            </button>
+          </li>
+          <li className="nav-item">
+            <button 
+              className={`nav-link ${activeTab === 'settings' ? 'active' : ''}`} 
+              onClick={(e) => { e.stopPropagation(); setActiveTab('settings'); }} 
+              title="Application settings and preferences"
+            >
+              <small>Settings</small>
             </button>
           </li>
         </ul>
@@ -204,6 +214,11 @@ export default function App() {
             <div className="col-12">
               <Tip id="garden-plan-selection">
                 Click to select a cell or <strong>double-click</strong> a planted cell to select the entire plant group
+              </Tip>
+            </div>
+            <div className="col-12">
+              <Tip id="save-often">
+                <strong>Save your work:</strong> Use the Save button in the header to export your garden plan to a .pln file. Your plan is not automatically saved!
               </Tip>
             </div>
             <div className="col-md-2">
@@ -226,6 +241,10 @@ export default function App() {
 
         {activeTab === 'info' && (
           <Information />
+        )}
+
+        {activeTab === 'settings' && (
+          <Settings />
         )}
       </div>
     </div>
