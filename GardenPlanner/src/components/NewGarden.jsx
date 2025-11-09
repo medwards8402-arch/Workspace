@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { PLANTS } from '../data'
 import { useGardenOperations } from '../hooks/useGardenOperations'
+import { Tip } from './Tip'
 
 /**
  * NewGarden component for initial garden setup
@@ -91,15 +92,12 @@ export function NewGarden({ onAfterGenerate }) {
   return (
     <div className="row g-3">
       <div className="col-12">
-        <div className="alert alert-info">
-          <h6 className="alert-heading mb-2">🌱 Auto-Planting Guide</h6>
-          <p className="mb-0">
-            Select your plants and configure your beds below. When you generate, the planner will automatically arrange plants in 
-            companion groups based on their spacing requirements and sun exposure needs. Plants will be placed in contiguous blocks, 
-            with sun-loving varieties prioritized for full-sun beds and shade-tolerant greens placed in shadier spots. 
-            Spacing follows square foot gardening techniques for optimal plant density.
-          </p>
-        </div>
+        <Tip id="auto-planting-guide">
+          Select your plants and configure your beds below. When you generate, the planner will automatically arrange plants in 
+          companion groups based on their spacing requirements and sun exposure needs. Plants will be placed in contiguous blocks, 
+          with sun-loving varieties prioritized for full-sun beds and shade-tolerant greens placed in shadier spots. 
+          Spacing follows square foot gardening techniques for optimal plant density.
+        </Tip>
       </div>
       <div className="col-md-6">
         <div className="card">

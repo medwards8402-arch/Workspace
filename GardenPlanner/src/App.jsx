@@ -7,6 +7,7 @@ import { PlantInfo } from './components/PlantInfo'
 import { Calendar } from './components/Calendar'
 import { Information } from './components/Information'
 import { ZoneSelector } from './components/ZoneSelector'
+import { Tip } from './components/Tip'
 import { useGardenOperations } from './hooks/useGardenOperations'
 import { useHistory } from './hooks/useHistory'
 import { useFileOperations } from './hooks/useFileOperations'
@@ -201,11 +202,9 @@ export default function App() {
         {activeTab === 'plan' && (
           <div className="row g-3">
             <div className="col-12">
-              <div className="alert alert-info py-2 mb-0">
-                <small>
-                  💡 <strong>Tip:</strong> Click to select a cell or <strong>double-click</strong> a planted cell to select the entire plant group
-                </small>
-              </div>
+              <Tip id="garden-plan-selection">
+                Click to select a cell or <strong>double-click</strong> a planted cell to select the entire plant group
+              </Tip>
             </div>
             <div className="col-md-2">
               <PlantPalette plants={PLANTS} />
