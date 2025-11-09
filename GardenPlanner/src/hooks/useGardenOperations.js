@@ -14,6 +14,10 @@ export function useGardenOperations() {
     dispatch({ type: GARDEN_ACTIONS.SET_ZONE, payload: zone })
   }, [dispatch])
 
+  const setName = useCallback((name) => {
+    dispatch({ type: GARDEN_ACTIONS.SET_NAME, payload: name })
+  }, [dispatch])
+
   const updateCell = useCallback((bedIndex, cellIndex, plantCode) => {
     dispatch({ 
       type: GARDEN_ACTIONS.UPDATE_CELL, 
@@ -85,6 +89,7 @@ export function useGardenOperations() {
   return {
     garden: state.garden,
     setZone,
+    setName,
     updateCell,
     updateCells,
     clearCells,

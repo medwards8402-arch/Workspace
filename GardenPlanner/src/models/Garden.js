@@ -8,7 +8,15 @@ export class Garden {
     this.beds = config.beds || []
     this.zone = config.zone || '5a'
     this.notes = config.notes || {}
+    this.name = config.name || 'My Garden'
     // Remove global bedRows/bedCols; rely on per-bed config
+  }
+
+  /**
+   * Update garden name
+   */
+  setName(name) {
+    return new Garden({ ...this, name })
   }
 
   /**
@@ -120,6 +128,7 @@ export class Garden {
    */
   toJSON() {
     return {
+      name: this.name,
       beds: this.beds.map(bed => bed.toJSON()),
       zone: this.zone,
       notes: this.notes,
@@ -159,6 +168,7 @@ export class Garden {
       beds,
       zone: json.zone || '5a',
       notes: json.notes || {},
+      name: json.name || 'My Garden',
       bedRows: json.bedRows || 8,
       bedCols: json.bedCols || 4
     })

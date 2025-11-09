@@ -9,7 +9,12 @@ import { PLANTS } from '../data'
 export function useFileOperations() {
   const { state, dispatch } = useGarden()
 
-  const exportToFile = useCallback((filename) => {
+  const exportToFile = useCallback((customName) => {
+    // Generate filename from garden name or use default
+    const safeName = (customName || state.garden.name || 'garden-plan')
+      .replace(/[^a-z0-9_-]/gi, '-')
+      .toLowerCase()
+    const filename = `${safeName}.pln`
     return StorageService.exportToFile(state.garden, filename)
   }, [state.garden])
 
@@ -17,7 +22,7 @@ export function useFileOperations() {
     return new Promise((resolve, reject) => {
       const input = document.createElement('input')
       input.type = 'file'
-      input.accept = '.json'
+      input.accept = '.pln,.json'
       
       input.onchange = async (e) => {
         const file = e.target.files?.[0]

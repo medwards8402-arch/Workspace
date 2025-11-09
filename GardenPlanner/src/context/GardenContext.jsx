@@ -15,6 +15,7 @@ export const GARDEN_ACTIONS = {
   LOAD_GARDEN: 'LOAD_GARDEN',
   RESET_GARDEN: 'RESET_GARDEN',
   SET_ZONE: 'SET_ZONE',
+  SET_NAME: 'SET_NAME',
   
   // Bed actions
   UPDATE_BED: 'UPDATE_BED',
@@ -105,6 +106,11 @@ function gardenReducer(state, action) {
 
     case GARDEN_ACTIONS.SET_ZONE: {
       const newGarden = new Garden({ ...state.garden, zone: action.payload })
+      return pushToHistory(state, newGarden)
+    }
+
+    case GARDEN_ACTIONS.SET_NAME: {
+      const newGarden = state.garden.setName(action.payload)
       return pushToHistory(state, newGarden)
     }
 

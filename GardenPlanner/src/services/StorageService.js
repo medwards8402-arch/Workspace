@@ -72,7 +72,7 @@ export class StorageService {
   /**
    * Export garden to JSON file
    */
-  static exportToFile(garden, filename = 'garden-plan.json') {
+  static exportToFile(garden, filename = 'garden-plan.pln') {
     try {
       const data = garden.toJSON()
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })

@@ -12,7 +12,7 @@ import { useFileOperations } from './hooks/useFileOperations'
 import { useSelection } from './hooks/useSelection'
 
 export default function App() {
-  const { garden, setZone } = useGardenOperations()
+  const { garden, setZone, setName } = useGardenOperations()
   const { undo, redo, canUndo, canRedo } = useHistory()
   const { exportToFile, importFromFile } = useFileOperations()
   const { clearSelection, setSelectedPlant, setActiveBed } = useSelection()
@@ -47,10 +47,7 @@ export default function App() {
   }, [undo, redo])
 
   const handleSaveToFile = () => {
-    const filename = `garden-plan-${new Date().toISOString().split('T')[0]}.json`
-    if (exportToFile(filename)) {
-      alert('Garden saved to file!')
-    } else {
+    if (!exportToFile()) {
       alert('Failed to save garden')
     }
   }
@@ -58,7 +55,6 @@ export default function App() {
   const handleLoadFromFile = async () => {
     try {
       await importFromFile()
-      alert('Garden loaded successfully!')
     } catch (error) {
       console.error('Failed to load garden:', error)
       alert(`Failed to load garden: ${error.message}`)
@@ -72,11 +68,28 @@ export default function App() {
     setActiveBed(null)
   }
 
+  const handleNameChange = () => {
+    const newName = prompt('Enter a name for your garden:', garden.name)
+    if (newName !== null && newName.trim()) {
+      setName(newName.trim())
+    }
+  }
+
   return (
     <div style={{ minHeight: '100vh' }} onClick={handleContainerClick}>
       <div className="container py-3">
         <header className="d-flex align-items-center justify-content-between mb-3">
-          <h1 className="h4 m-0">Garden Planner</h1>
+          <div className="d-flex align-items-center gap-2">
+            <h1 className="h4 m-0">Garden Planner</h1>
+            <button 
+              className="btn btn-sm btn-link text-decoration-none"
+              onClick={(e) => { e.stopPropagation(); handleNameChange(); }}
+              title="Click to rename your garden"
+              style={{ fontSize: '1rem', padding: '0.25rem 0.5rem' }}
+            >
+              📝 {garden.name}
+            </button>
+          </div>
           <div className="d-flex align-items-center gap-3">
             <div className="btn-group" role="group">
               <button
