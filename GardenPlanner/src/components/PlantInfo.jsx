@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from 'react'
+import { useGardenOperations } from '../hooks/useGardenOperations'
+import { useSelection } from '../hooks/useSelection'
+import { PLANTS } from '../data'
 
 /**
  * PlantInfo component shows details for selected plant(s)
  * Displays read-only plant data and editable notes
  * Handles both single and group selections
  */
-export function PlantInfo({ selectedIndices, bed, bedIndex, plants, notes, onNotesChange }) {
+export function PlantInfo() {
+  const { garden, updateNotes } = useGardenOperations()
+  const { selection } = useSelection()
   const [noteText, setNoteText] = useState('')
   const [hasMultipleValues, setHasMultipleValues] = useState(false)
 
+  const { bedIndex, cellIndices: selectedIndices } = selection
+  const bed = bedIndex !== null ? garden.getBed(bedIndex) : null
+
   // Update note text when selection changes
   useEffect(() => {
-    if (selectedIndices.size === 0) {
+    if (selectedIndices.size === 0 || bedIndex === null) {
       setNoteText('')
       setHasMultipleValues(false)
       return
@@ -19,8 +27,7 @@ export function PlantInfo({ selectedIndices, bed, bedIndex, plants, notes, onNot
 
     // Get all unique notes for selected cells
     const cellNotes = Array.from(selectedIndices).map(idx => {
-      const key = `${bedIndex}.${idx}`
-      return notes[key] || ''
+      return garden.getNote(bedIndex, idx)
     })
 
     const uniqueNotes = [...new Set(cellNotes)]
@@ -32,10 +39,10 @@ export function PlantInfo({ selectedIndices, bed, bedIndex, plants, notes, onNot
       setHasMultipleValues(false)
       setNoteText(uniqueNotes[0] || '')
     }
-  }, [selectedIndices, notes, bedIndex])
+  }, [selectedIndices, bedIndex, garden])
 
   // Always render the card to prevent layout shifts
-  if (selectedIndices.size === 0) {
+  if (selectedIndices.size === 0 || bedIndex === null) {
     return (
       <div className="card" style={{ width: '300px' }}>
         <div className="card-header">
@@ -50,7 +57,7 @@ export function PlantInfo({ selectedIndices, bed, bedIndex, plants, notes, onNot
 
   // Get plant info for selected cells
   const selectedCells = Array.from(selectedIndices)
-  const plantCodes = selectedCells.map(idx => bed[idx]).filter(Boolean)
+  const plantCodes = selectedCells.map(idx => bed.getCell(idx)).filter(Boolean)
   const uniquePlantCodes = [...new Set(plantCodes)]
   
   // If only empty cells selected
@@ -93,7 +100,7 @@ export function PlantInfo({ selectedIndices, bed, bedIndex, plants, notes, onNot
 
   // Single plant type selected (could be multiple cells)
   const plantCode = uniquePlantCodes[0]
-  const plant = plants.find(p => p.code === plantCode)
+  const plant = PLANTS.find(p => p.code === plantCode)
 
   if (!plant) {
     return (
@@ -116,7 +123,7 @@ export function PlantInfo({ selectedIndices, bed, bedIndex, plants, notes, onNot
       updates[key] = newNote
     })
     
-    onNotesChange(updates)
+    updateNotes(updates)
   }
 
   return (

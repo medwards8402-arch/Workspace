@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { flushSync } from 'react-dom'
+import { useGardenOperations } from '../hooks/useGardenOperations'
+import { useSelection } from '../hooks/useSelection'
+import { PLANTS } from '../data'
 
 function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter, selected }) {
   const handleClick = (e) => {
@@ -121,169 +123,111 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
   )
 }
 
-export function GardenBed({ bedIndex, bed, onChange, plants, selectedCode, bedRows, bedCols, deselectTrigger, activeBed, setActiveBed, notes, onNotesChange, onSelectionChange, lightLevel }) {
-  const [selectedIndices, setSelectedIndices] = useState(new Set())
+export function GardenBed({ bedIndex }) {
+  const { garden, updateCell, updateCells, clearCells } = useGardenOperations()
+  const { selectedPlant, selection, setSelection, setActiveBed, activeBed } = useSelection()
   const [isDragging, setIsDragging] = useState(false)
   const gridRef = useRef(null)
 
-  useEffect(() => { setSelectedIndices(new Set()) }, [bed])
+  const bed = garden.getBed(bedIndex)
+  const bedRows = bed.rows
+  const bedCols = bed.cols
+  const lightLevel = bed.lightLevel
 
-  // Notify parent when selection changes
-  useEffect(() => {
-    if (onSelectionChange) {
-      onSelectionChange(bedIndex, selectedIndices)
-    }
-  }, [selectedIndices, bedIndex, onSelectionChange])
-
-  // Deselect when triggered from parent (e.g., clicking outside)
-  useEffect(() => {
-    if (deselectTrigger > 0) {
-      setSelectedIndices(new Set())
-    }
-  }, [deselectTrigger])
-
-  // Deselect if another bed becomes active - but do it BEFORE the new bed sets its selection
-  useEffect(() => {
-    // Only clear if activeBed is set to a DIFFERENT bed (not this one, not null)
-    if (activeBed !== null && activeBed !== bedIndex && selectedIndices.size > 0) {
-      flushSync(() => {
-        setSelectedIndices(new Set());
-      });
-    }
-  }, [activeBed, bedIndex, selectedIndices])
-
-  const handleDropAt = (i, code) => {
-    const next = bed.slice()
-    next[i] = code
-    onChange(next)
-    setSelectedIndices(new Set())
-  }
+  // Local selection state for this bed
+  const isThisBedActive = activeBed === bedIndex
+  const isThisBedSelected = selection.bedIndex === bedIndex
+  const selectedIndices = isThisBedSelected ? selection.cellIndices : new Set()
 
   const handleClickAt = (i) => {
-    // Set active bed first - this will trigger other beds to deselect synchronously
-    flushSync(() => {
-      setActiveBed(bedIndex);
-    });
+    // Activate this bed and set selection atomically
+    setActiveBed(bedIndex)
+    setSelection(bedIndex, new Set([i]))
     
-    // If a plant is selected from the palette
-    if (selectedCode) {
-      // If clicking on a cell that already has the same plant, select it instead of replacing
-      if (bed[i] === selectedCode) {
-        setSelectedIndices(new Set([i]));
-      } else {
-        // Place plant if it's a different plant or empty cell
-        const next = bed.slice();
-        next[i] = selectedCode;
-        onChange(next);
-        setSelectedIndices(new Set());
+    // If a plant is selected from palette
+    if (selectedPlant) {
+      const currentCell = bed.getCell(i)
+      // If clicking on cell with same plant, just select (don't replace)
+      if (currentCell !== selectedPlant) {
+        // Place plant
+        updateCell(bedIndex, i, selectedPlant)
       }
-    } else {
-      // No plant selected from palette - just select this cell
-      setSelectedIndices(new Set([i]));
     }
   }
 
   const handleDoubleClickAt = (i) => {
-    // Set active bed first - this will trigger other beds to deselect synchronously
-    flushSync(() => {
-      setActiveBed(bedIndex);
-    });
+    setActiveBed(bedIndex)
     
-    const plantCode = bed[i]
+    const plantCode = bed.getCell(i)
     if (!plantCode) {
-      setSelectedIndices(new Set());
+      setSelection(bedIndex, new Set())
       return
     }
-    // BFS to find all orthogonally connected same-plant cells
-    const visited = new Set()
-    const queue = [i]
-    visited.add(i)
-    while (queue.length > 0) {
-      const curr = queue.shift()
-      const row = Math.floor(curr / bedCols)
-      const col = curr % bedCols
-      // Check 4 directions
-      const neighbors = [
-        [row - 1, col], [row + 1, col], [row, col - 1], [row, col + 1]
-      ]
-      for (const [r, c] of neighbors) {
-        if (r < 0 || r >= bedRows || c < 0 || c >= bedCols) continue
-        const idx = r * bedCols + c
-        if (visited.has(idx)) continue
-        if (bed[idx] === plantCode) {
-          visited.add(idx)
-          queue.push(idx)
-        }
-      }
-    }
-    setSelectedIndices(visited);
+    
+    // Get connected cells using BFS (from bed model)
+    const connected = bed.getConnectedCells(i)
+    setSelection(bedIndex, connected)
   }
 
   const handleMouseDownAt = (i) => {
-    if (selectedCode) {
+    if (selectedPlant) {
       setIsDragging(true)
-      const next = bed.slice()
-      next[i] = selectedCode
-      onChange(next)
+      updateCell(bedIndex, i, selectedPlant)
     }
   }
 
   const handleMouseEnterAt = (i) => {
-    if (isDragging && selectedCode) {
-      const next = bed.slice()
-      next[i] = selectedCode
-      onChange(next)
+    if (isDragging && selectedPlant) {
+      updateCell(bedIndex, i, selectedPlant)
     }
   }
 
+  const handleDropAt = (i, code) => {
+    updateCell(bedIndex, i, code)
+    setSelection(bedIndex, new Set())
+  }
+
+  const handleDelete = () => {
+    if (selectedIndices.size === 0) return
+    clearCells(bedIndex, Array.from(selectedIndices))
+    setSelection(bedIndex, new Set())
+  }
+
+  // Mouse up handler for drag
   useEffect(() => {
-    const handleMouseUp = () => {
-      setIsDragging(false)
-    }
+    const handleMouseUp = () => setIsDragging(false)
     window.addEventListener('mouseup', handleMouseUp)
     return () => window.removeEventListener('mouseup', handleMouseUp)
   }, [])
 
-  const handleDelete = () => {
-    if (selectedIndices.size === 0) return
-    const next = bed.slice()
-    selectedIndices.forEach(i => { next[i] = null })
-    onChange(next)
-    setSelectedIndices(new Set())
-  }
-
   // Delete key listener
   useEffect(() => {
     const handler = (e) => {
-      if (e.key === 'Delete' && selectedIndices.size > 0) {
+      if (e.key === 'Delete' && isThisBedSelected && selectedIndices.size > 0) {
         handleDelete()
       }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [selectedIndices, bed])
+  }, [isThisBedSelected, selectedIndices])
 
-  // Click-away deselection - handle clicks on card or card-body backgrounds
+  // Click-away deselection
   const handleCardClick = (e) => {
-    // Stop propagation to prevent container-level deselection
     e.stopPropagation()
-    // Deselect if clicking directly on card or card-body (not on children)
     if (e.target === e.currentTarget) {
-      setSelectedIndices(new Set())
+      setSelection(bedIndex, new Set())
     }
   }
 
   const handleBedClick = (e) => {
-    // Stop propagation to prevent container-level deselection
     e.stopPropagation()
-    // Deselect if clicking on the card-body background
     if (e.currentTarget === e.target) {
-      setSelectedIndices(new Set())
+      setSelection(bedIndex, new Set())
     }
   }
 
-  // Check if any selected indices contain plants
-  const hasSelectedPlants = Array.from(selectedIndices).some(i => bed[i] !== null)
+  // Check if any selected cells have plants
+  const hasSelectedPlants = Array.from(selectedIndices).some(i => bed.getCell(i) !== null)
 
   return (
     <div className="d-flex gap-3" onClick={handleCardClick}>
@@ -324,8 +268,8 @@ export function GardenBed({ bedIndex, bed, onChange, plants, selectedCode, bedRo
             }}
             onClick={handleBedClick}
           >
-            {bed.map((code, i) => {
-              const plant = plants.find(p => p.code === code)
+            {bed.cells.map((code, i) => {
+              const plant = PLANTS.find(p => p.code === code)
               return (
                 <Cell
                   key={i}

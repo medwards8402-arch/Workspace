@@ -1,12 +1,23 @@
 import React, { useState } from 'react'
 import { PLANTS } from '../data'
+import { useGardenOperations } from '../hooks/useGardenOperations'
 
 /**
  * NewGarden component for initial garden setup
  * Allows configuration of bed count/size and plant selection
  * Generates populated garden using auto-population algorithm
  */
-export function NewGarden({ bedCount, setBedCount, bedRows, setBedRows, bedCols, setBedCols, bedLightLevels, setBedLightLevels, onGenerate }) {
+export function NewGarden({ onAfterGenerate }) {
+  const { generateGarden } = useGardenOperations()
+  
+  // Garden configuration state
+  const [bedCount, setBedCount] = useState(3)
+  // Default rows should be 8 per requirements
+  const [bedRows, setBedRows] = useState(8)
+  const [bedCols, setBedCols] = useState(4)
+  const [bedLightLevels, setBedLightLevels] = useState(['high', 'medium', 'low'])
+  
+  // Plant selection state
   const [selectedPlants, setSelectedPlants] = useState(new Set())
   const [showConfirm, setShowConfirm] = useState(false)
   
@@ -62,9 +73,20 @@ export function NewGarden({ bedCount, setBedCount, bedRows, setBedRows, bedCols,
 
   const handleConfirmGenerate = (e) => {
     e.stopPropagation()
-    onGenerate(Array.from(selectedPlants))
+    // Use new architecture's generateGarden
+    generateGarden({
+      bedCount,
+      bedRows,
+      bedCols,
+      bedLightLevels,
+      plantCodes: Array.from(selectedPlants)
+    })
     setShowConfirm(false)
     setSelectedPlants(new Set()) // Clear selection after generation
+    // Switch to garden plan tab if callback provided
+    if (typeof onAfterGenerate === 'function') {
+      onAfterGenerate()
+    }
   }
 
   const handleCancelGenerate = (e) => {

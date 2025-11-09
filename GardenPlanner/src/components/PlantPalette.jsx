@@ -1,19 +1,22 @@
 import React, { useMemo } from 'react'
+import { useSelection } from '../hooks/useSelection'
 
-export function PlantPalette({ plants, selectedCode, onSelect }) {
+export function PlantPalette({ plants }) {
+  const { selectedPlant, setSelectedPlant } = useSelection()
+  
   const sortedPlants = useMemo(() => {
     return plants.slice().sort((a,b) => a.name.localeCompare(b.name))
   }, [plants])
   
   const handlePlantClick = (e, code) => {
     e.stopPropagation() // Prevent bubbling to container
-    onSelect(code)
+    setSelectedPlant(code)
   }
 
   const handleCardClick = (e) => {
     // Deselect if clicking on card background (not on a plant button)
     if (e.target === e.currentTarget || e.target.classList.contains('card-header')) {
-      onSelect(null)
+      setSelectedPlant(null)
     }
   }
   
@@ -22,7 +25,7 @@ export function PlantPalette({ plants, selectedCode, onSelect }) {
       <div className="card-header" onClick={handleCardClick}>Plant Palette</div>
       <div className="list-group list-group-flush overflow-auto" style={{flex: 1, minHeight: 0}}>
         {sortedPlants.map(p => (
-          <button key={p.code} className={`list-group-item list-group-item-action d-flex align-items-center gap-2 ${selectedCode===p.code?'active':''}`}
+          <button key={p.code} className={`list-group-item list-group-item-action d-flex align-items-center gap-2 ${selectedPlant===p.code?'active':''}`}
             onClick={(e) => handlePlantClick(e, p.code)} draggable
             onDragStart={e => { e.dataTransfer.setData('text/plain', p.code) }}
             title={`${p.name} - ${p.sqftSpacing}/sqft, ${p.lightLevel} light${p.cellsRequired ? `, needs ${p.cellsRequired} cells` : ''}`}>
