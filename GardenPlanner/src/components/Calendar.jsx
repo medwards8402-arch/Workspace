@@ -3,6 +3,7 @@ import { useGardenOperations } from '../hooks/useGardenOperations'
 import { USDA_ZONES, PLANTS } from '../data'
 import { makeCalendarTasks, groupTasksByMonth } from '../calendar'
 import { Tip } from './Tip'
+import { TipsStack } from './TipsStack'
 
 export function Calendar() {
   const { garden } = useGardenOperations()
@@ -40,14 +41,14 @@ export function Calendar() {
   return (
     <div className="row g-3">
       <div className="col-12">
-        <Tip id="calendar-zone-based">
-          All planting dates are calculated based on your USDA zone. Change your zone in the header dropdown to see how dates adjust for your area.
-        </Tip>
-      </div>
-      <div className="col-12">
-        <Tip id="pdf-print-guide">
-          Click the 🖨️ PDF button in the header to create a printable planting guide with your garden layout, calendar, and care instructions to take outside!
-        </Tip>
+        <TipsStack>
+          <Tip id="calendar-zone-based">
+            All planting dates are calculated based on your USDA zone. Change your zone in the header dropdown to see how dates adjust for your area.
+          </Tip>
+          <Tip id="pdf-print-guide">
+            Click the 🖨️ PDF button in the header to create a printable planting guide with your garden layout, calendar, and care instructions to take outside!
+          </Tip>
+        </TipsStack>
       </div>
       {[...byMonth.entries()].map(([key, { monthName, tasks }]) => (
         <div className="col-md-6 col-lg-4" key={key}>

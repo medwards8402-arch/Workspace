@@ -95,3 +95,10 @@ body {
 .text-secondary {
   color: #7a8a7a !important;
 }
+
+/* Consistent tight spacing for stacked tips across pages */
+.tips-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}

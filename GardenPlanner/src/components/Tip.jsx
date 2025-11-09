@@ -14,7 +14,7 @@ export function Tip({ id, children }) {
   }
 
   return (
-    <div className="alert alert-info py-2 mb-3 d-flex align-items-center justify-content-between">
+    <div className="alert alert-info py-1 mb-0 d-flex align-items-center justify-content-between">
       <small className="mb-0 flex-grow-1">
         💡 <strong>Tip:</strong> {children}
       </small>
