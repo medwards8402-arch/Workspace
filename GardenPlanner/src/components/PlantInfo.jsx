@@ -274,6 +274,17 @@ export function PlantInfo() {
             {plant.lightLevel}
           </span>
         </div>
+
+        {plant.tips && plant.tips.length > 0 && (
+          <div className="mb-2">
+            <strong>Tips:</strong>
+            <ul className="small mb-0">
+              {plant.tips.slice(0,3).map((t, i) => (
+                <li key={i}>{t}</li>
+              ))}
+            </ul>
+          </div>
+        )}
         
         <hr />
         
