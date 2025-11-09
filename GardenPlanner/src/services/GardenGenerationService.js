@@ -317,6 +317,88 @@ export class GardenGenerationService {
       }
     }
 
+    // Step 5: Adjust sprawling plants to consume exactly the space they require
+    // For plants with specific spacing requirements (e.g., pumpkins = 4 sqft each)
+    for (let b = 0; b < bedCount; b++) {
+      const bed = beds[b]
+      const bedCols = bed.cols
+      const bedRows = bed.rows
+      const cells = resultCells[b]
+      
+      // Count how many cells each plant currently occupies
+      const plantCounts = {}
+      cells.forEach(code => {
+        if (code !== null) {
+          plantCounts[code] = (plantCounts[code] || 0) + 1
+        }
+      })
+      
+      // For each plant in this bed, check if it needs adjustment
+      for (const [plantCode, currentCells] of Object.entries(plantCounts)) {
+        const plant = plants.find(p => p.code === plantCode)
+        if (!plant || !plant.sqftSpacing) continue
+        
+        // Calculate required cells (each plant needs 1/sqftSpacing cells)
+        const requiredCellsPerPlant = Math.round(1 / plant.sqftSpacing)
+        
+        // Only adjust if plant requires multiple cells (sprawling plants)
+        if (requiredCellsPerPlant <= 1) continue
+        
+        // Calculate how many "plants" we should have based on current cells
+        const targetPlantCount = Math.round(currentCells / requiredCellsPerPlant)
+        const targetCells = targetPlantCount * requiredCellsPerPlant
+        
+        // If we need to adjust (remove excess cells)
+        if (currentCells > targetCells && targetCells > 0) {
+          // Find all cells with this plant code
+          const plantCellIndices = []
+          cells.forEach((code, idx) => {
+            if (code === plantCode) plantCellIndices.push(idx)
+          })
+          
+          // Calculate best shape for this plant (prefer squares for sprawling plants)
+          const shapeRows = Math.sqrt(requiredCellsPerPlant)
+          const shapeCols = requiredCellsPerPlant / shapeRows
+          const isSquare = Math.abs(shapeRows - Math.round(shapeRows)) < 0.01 && 
+                          Math.abs(shapeCols - Math.round(shapeCols)) < 0.01
+          
+          // Remove excess cells (from the edges/non-contiguous areas)
+          const cellsToRemove = currentCells - targetCells
+          let removed = 0
+          
+          // Remove from end of list (typically edge cells added by fill step)
+          for (let i = plantCellIndices.length - 1; i >= 0 && removed < cellsToRemove; i--) {
+            const idx = plantCellIndices[i]
+            const row = Math.floor(idx / bedCols)
+            const col = idx % bedCols
+            
+            // Check if this cell has fewer than 2 neighbors with same plant (likely an edge)
+            let neighborCount = 0
+            if (row > 0 && cells[(row - 1) * bedCols + col] === plantCode) neighborCount++
+            if (row < bedRows - 1 && cells[(row + 1) * bedCols + col] === plantCode) neighborCount++
+            if (col > 0 && cells[row * bedCols + (col - 1)] === plantCode) neighborCount++
+            if (col < bedCols - 1 && cells[row * bedCols + (col + 1)] === plantCode) neighborCount++
+            
+            // Remove cells with fewer neighbors (edges) first
+            if (neighborCount <= 2) {
+              cells[idx] = null
+              removed++
+            }
+          }
+          
+          // If we still need to remove more, remove any remaining cells
+          for (let i = plantCellIndices.length - 1; i >= 0 && removed < cellsToRemove; i--) {
+            if (cells[plantCellIndices[i]] === plantCode) {
+              cells[plantCellIndices[i]] = null
+              removed++
+            }
+          }
+          
+          console.log(`[GardenGen] Adjusted ${plantCode} in ${bed.name}: ${currentCells} → ${targetCells} cells (${targetPlantCount} plants × ${requiredCellsPerPlant} cells each)`)
+        }
+      }
+    }
+
     // Convert back to Bed instances, preserving bed names and allowedTypes
     return beds.map((b, i) => new Bed(b.rows, b.cols, b.lightLevel, resultCells[i], b.name, b.allowedTypes))
   }
