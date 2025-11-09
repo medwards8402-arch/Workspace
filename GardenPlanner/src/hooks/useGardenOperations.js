@@ -68,9 +68,9 @@ export function useGardenOperations() {
   }, [dispatch])
 
   const generateGarden = useCallback((config) => {
-    // New flexible bed config: config.beds is array of { name, rows, cols, lightLevel }
+    // New flexible bed config: config.beds is array of { name, rows, cols, lightLevel, allowedTypes }
     const { beds: bedConfigs, plantCodes } = config
-    const beds = bedConfigs.map(bed => new Bed(bed.rows, bed.cols, bed.lightLevel, null, bed.name))
+    const beds = bedConfigs.map(bed => new Bed(bed.rows, bed.cols, bed.lightLevel, null, bed.name, bed.allowedTypes))
 
     let filledBeds = beds
     if (plantCodes && plantCodes.length > 0) {

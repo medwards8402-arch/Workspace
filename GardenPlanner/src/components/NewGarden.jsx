@@ -11,11 +11,12 @@ import { Tip } from './Tip'
 export function NewGarden({ onAfterGenerate }) {
   const { generateGarden } = useGardenOperations()
 
-  // Dynamic beds state: array of { name, rows, cols, lightLevel }
+  // Dynamic beds state: array of { name, rows, cols, lightLevel, allowedTypes }
   const [beds, setBeds] = useState([
-    { name: 'Bed 1', rows: 4, cols: 8, lightLevel: 'high' },
-    { name: 'Bed 2', rows: 4, cols: 8, lightLevel: 'medium' },
-    { name: 'Bed 3', rows: 4, cols: 8, lightLevel: 'low' }
+    { name: 'Bed 1', rows: 4, cols: 8, lightLevel: 'high', allowedTypes: ['vegetable', 'fruit'] },
+    { name: 'Bed 2', rows: 4, cols: 8, lightLevel: 'medium', allowedTypes: ['vegetable', 'fruit'] },
+    { name: 'Bed 3', rows: 4, cols: 8, lightLevel: 'low', allowedTypes: ['vegetable', 'fruit'] },
+    { name: 'Herb Bed', rows: 2, cols: 4, lightLevel: 'high', allowedTypes: ['herb'] }
   ])
 
   // Plant selection state
@@ -37,7 +38,8 @@ export function NewGarden({ onAfterGenerate }) {
         name: `Bed ${beds.length + 1}`,
         rows: 4,
         cols: 8,
-        lightLevel: 'high'
+        lightLevel: 'high',
+        allowedTypes: ['vegetable', 'fruit', 'herb']
       }])
     }
   }
@@ -50,6 +52,17 @@ export function NewGarden({ onAfterGenerate }) {
 
   const handleBedChange = (index, field, value) => {
     setBeds(beds.map((bed, i) => i === index ? { ...bed, [field]: value } : bed))
+  }
+
+  const handleTypeToggle = (bedIndex, type) => {
+    setBeds(beds.map((bed, i) => {
+      if (i !== bedIndex) return bed
+      const currentTypes = bed.allowedTypes || []
+      const newTypes = currentTypes.includes(type)
+        ? currentTypes.filter(t => t !== type)
+        : [...currentTypes, type]
+      return { ...bed, allowedTypes: newTypes.length > 0 ? newTypes : ['vegetable'] } // Prevent empty
+    }))
   }
 
   const handlePlantToggle = (code) => {
@@ -111,6 +124,7 @@ export function NewGarden({ onAfterGenerate }) {
                   <th>Rows (ft)</th>
                   <th>Cols (ft)</th>
                   <th>Light</th>
+                  <th>Crop Types</th>
                   <th>Remove</th>
                 </tr>
               </thead>
@@ -170,6 +184,24 @@ export function NewGarden({ onAfterGenerate }) {
                         <option value="medium">⛅ Medium</option>
                         <option value="high">☀️ High</option>
                       </select>
+                    </td>
+                    <td>
+                      <div className="d-flex flex-column gap-1" style={{fontSize: '0.85rem'}}>
+                        {['vegetable', 'fruit', 'herb'].map(type => (
+                          <div key={type} className="form-check">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              id={`bed-${i}-type-${type}`}
+                              checked={(bed.allowedTypes || []).includes(type)}
+                              onChange={() => handleTypeToggle(i, type)}
+                            />
+                            <label className="form-check-label" htmlFor={`bed-${i}-type-${type}`}>
+                              {type}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
                     </td>
                     <td>
                       <button

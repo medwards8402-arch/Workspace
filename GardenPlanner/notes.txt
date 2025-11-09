@@ -1,0 +1,4 @@
+Fix tooltip issue with sqft in select crops (new page)
+Visualize big plants better
+Make the planting logic more maintainable.
+Enforce the planting of big plants in a way that correctly plants them.

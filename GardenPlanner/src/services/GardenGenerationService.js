@@ -6,8 +6,9 @@ import { Bed } from '../models/Bed'
 export class GardenGenerationService {
   /**
    * Generate optimized garden layout
-   * Each plant appears as a single contiguous group across the entire garden.
-   * Prefers rectangular shapes (2x2, 4x4, 4x2).
+   * Each plant appears exactly once as a single contiguous group across entire garden.
+   * Respects bed allowedTypes to filter eligible plants per bed.
+   * Prefers rectangular shapes (2x2, 4x4, 4x2) and optimizes for light preferences.
    */
   static generate(plants, beds, prioritizeLight = true) {
     const bedCount = beds.length
@@ -21,78 +22,93 @@ export class GardenGenerationService {
       return beds
     }
 
-    // Step 1: Sort beds by light level (low, medium, high)
-    const bedLightOrder = { low: 0, medium: 1, high: 2 }
-    const sortedBeds = beds.map((bed, i) => ({ bed, bedIndex: i }))
-      .sort((a, b) => bedLightOrder[a.bed.lightLevel || 'high'] - bedLightOrder[b.bed.lightLevel || 'high'])
-
-    // Step 2: Calculate cell allocation per plant to fill ALL beds
-    // Goal: More uniform plant quantities, allowing diverse planting across beds
-    const allocations = plants.map(p => {
+    // Step 1: Calculate global plant allocations (how many cells each plant should get total)
+    // IMPORTANT: Consider only the beds where each plant can actually be placed
+    const plantAllocations = plants.map(p => {
       const cellsPerPlant = Math.max(1, Math.round(1 / (p.sqftSpacing || 1)))
-      return { code: p.code, plant: p, cellsPerPlant }
+      const plantType = p.type || 'vegetable'
+      
+      // Calculate available space in beds that allow this plant type
+      const eligibleBedSpace = beds.reduce((sum, bed) => {
+        const allowedTypes = bed.allowedTypes || ['vegetable', 'fruit', 'herb']
+        if (allowedTypes.includes(plantType)) {
+          return sum + (bed.rows * bed.cols)
+        }
+        return sum
+      }, 0)
+      
+      return { code: p.code, plant: p, cellsPerPlant, eligibleBedSpace }
     })
 
-    // Use sqrt of cellsPerPlant to reduce disparity while still respecting spacing
-    // Also enforce stricter caps for more uniform distribution
-    const avgCellsPerPlant = totalCells / plants.length
-    const maxCellsPerPlant = Math.floor(avgCellsPerPlant * 1.8) // Max 1.8x average
-    const minCellsPerPlant = Math.max(4, Math.floor(avgCellsPerPlant * 0.5)) // Min 0.5x average
-    
-    const totalWeight = allocations.reduce((sum, a) => sum + Math.sqrt(a.cellsPerPlant), 0)
-    let plantAllocations = allocations.map(a => {
-      const weight = Math.sqrt(a.cellsPerPlant)
-      const allocation = Math.round((weight / totalWeight) * totalCells)
-      return {
-        ...a,
-        cellCount: Math.max(minCellsPerPlant, Math.min(allocation, maxCellsPerPlant))
-      }
-    })
+    // Group plants by their eligible bed space to allocate proportionally within each group
+    const plantsByEligibleSpace = plantAllocations.reduce((acc, p) => {
+      const key = p.eligibleBedSpace
+      if (!acc[key]) acc[key] = []
+      acc[key].push(p)
+      return acc
+    }, {})
 
-    // Scale allocations to EXACTLY match totalCells (ensure all beds are filled)
-    let allocated = plantAllocations.reduce((s, a) => s + a.cellCount, 0)
+    // Distribute cells proportionally within each group's available space
+    let scaledAllocations = []
     
-    if (allocated !== totalCells) {
-      // Proportionally adjust to fill exactly totalCells
-      const factor = totalCells / allocated
-      plantAllocations = plantAllocations.map(a => ({ 
-        ...a, 
-        cellCount: Math.max(minCellsPerPlant, Math.min(Math.round(a.cellCount * factor), maxCellsPerPlant)) 
-      }))
+    for (const [eligibleSpace, groupPlants] of Object.entries(plantsByEligibleSpace)) {
+      const spaceAvailable = parseInt(eligibleSpace)
+  const plantCount = groupPlants.length
+  const totalWeight = groupPlants.reduce((sum, p) => sum + Math.sqrt(p.cellsPerPlant), 0)
       
-      // Fine-tune to hit exact total (handle rounding errors)
-      allocated = plantAllocations.reduce((s, a) => s + a.cellCount, 0)
-      const diff = totalCells - allocated
+  // Calculate adaptive minimum: ensure all plants can fit
+  // Use 2 as absolute minimum (needed for placement), but allow smaller allocations if many plants
+  const adaptiveMin = Math.max(2, Math.min(4, Math.floor(spaceAvailable / (plantCount * 1.2))))
       
-      if (diff > 0) {
-        // Add to smaller allocations first (to balance sizes)
-        plantAllocations.sort((a, b) => a.cellCount - b.cellCount)
-        for (let i = 0; i < diff && i < plantAllocations.length; i++) {
-          if (plantAllocations[i].cellCount < maxCellsPerPlant) {
-            plantAllocations[i].cellCount++
-          }
+      const groupAllocations = groupPlants.map(({ code, plant, cellsPerPlant }) => {
+        const weight = Math.sqrt(cellsPerPlant)
+  // Allocate based on this group's available space
+        const allocation = Math.round((weight / totalWeight) * spaceAvailable)
+        return {
+          code,
+          plant,
+          cellCount: Math.max(adaptiveMin, Math.min(spaceAvailable, allocation))
         }
-      } else if (diff < 0) {
-        // Remove from larger allocations
-        plantAllocations.sort((a, b) => b.cellCount - a.cellCount)
-        for (let i = 0; i < Math.abs(diff) && i < plantAllocations.length; i++) {
-          plantAllocations[i].cellCount = Math.max(minCellsPerPlant, plantAllocations[i].cellCount - 1)
-        }
+      })
+      
+      // If total allocation exceeds available space for this group, scale down
+      let totalAllocated = groupAllocations.reduce((sum, a) => sum + a.cellCount, 0)
+      if (totalAllocated > spaceAvailable) {
+        const scaleFactor = spaceAvailable / totalAllocated
+        groupAllocations.forEach(a => {
+          a.cellCount = Math.max(2, Math.round(a.cellCount * scaleFactor))
+        })
       }
+      
+      scaledAllocations.push(...groupAllocations)
     }
 
-    // Sort plants by light level and size for better placement
-    plantAllocations.sort((a, b) => {
-      const aLight = bedLightOrder[a.plant.lightLevel || 'high']
-      const bLight = bedLightOrder[b.plant.lightLevel || 'high']
-      if (aLight !== bLight) return aLight - bLight
-      return b.cellCount - a.cellCount
-    })
+    // Sort by size (larger plants first for better packing)
+    scaledAllocations.sort((a, b) => b.cellCount - a.cellCount)
 
-    // Build result cell arrays
+    // Debug: Log plant allocations by type
+    const allocationsByType = scaledAllocations.reduce((acc, a) => {
+      const type = a.plant.type || 'vegetable'
+      if (!acc[type]) acc[type] = { plants: [], totalCells: 0 }
+      acc[type].plants.push(`${a.code}(${a.cellCount})`)
+      acc[type].totalCells += a.cellCount
+      return acc
+    }, {})
+    console.log('Plant allocations by type:', allocationsByType)
+    
+    // Debug: Log bed configurations with available space
+    console.log('Bed configurations:', beds.map((b, i) => ({
+      index: i,
+      name: b.name,
+      size: `${b.rows}x${b.cols}`,
+      cells: b.rows * b.cols,
+      types: b.allowedTypes || ['vegetable', 'fruit', 'herb']
+    })))
+
+    // Step 2: Initialize result arrays
     const resultCells = beds.map(bed => Array.from({ length: bed.rows * bed.cols }, () => null))
 
-    // Helper: Find best rectangular shape for target cell count, preferring 2x2, 4x4, 4x2
+    // Helper: Find best rectangular shape for placing plants in a specific bed
     const findBestShape = (targetCells, bedRows, bedCols, bedIndex) => {
       const preferredShapes = [
         { r: 2, c: 2 }, // 2x2 = 4 cells
@@ -151,18 +167,31 @@ export class GardenGenerationService {
       return null
     }
 
+    // Helper: Create bed priority list with light and space considerations
+    const sortedBeds = beds.map((bed, bedIndex) => ({ bed, bedIndex }))
+
     // Step 3: Place each plant exactly once as a single contiguous group
+    // Filter to only beds that allow this plant's type
     const plantedCodes = new Set()
     
-    for (const allocation of plantAllocations) {
+    for (const allocation of scaledAllocations) {
       if (allocation.cellCount < 2) continue // Too small to place
       if (plantedCodes.has(allocation.code)) continue // Already placed
       
       let placed = false
       const plantLight = allocation.plant.lightLevel || 'high'
+      const plantType = allocation.plant.type || 'vegetable'
       
-      // Sort beds by: 1) available space (prefer emptier beds to fill evenly), 2) light preference
-      const bedsWithSpace = sortedBeds
+      // Filter beds by allowed types for this plant
+      const candidateBeds = sortedBeds
+        .filter(({ bed }) => {
+          const allowedTypes = bed.allowedTypes || ['vegetable', 'fruit', 'herb']
+          const isEligible = allowedTypes.includes(plantType)
+          if (!isEligible) {
+            console.log(`  ${allocation.code} (${plantType}) not eligible for bed ${bed.name} (allows: ${allowedTypes.join(',')})`)
+          }
+          return isEligible
+        })
         .map(({ bed, bedIndex }) => {
           const availableCells = resultCells[bedIndex].filter(c => c === null).length
           const bedLight = bed.lightLevel || 'high'
@@ -170,17 +199,47 @@ export class GardenGenerationService {
           return { bed, bedIndex, availableCells, lightScore }
         })
         .filter(b => b.availableCells >= 2)
-        .sort((a, b) => {
-          // Prioritize filling beds with more empty space first
-          const spaceDiff = b.availableCells - a.availableCells
-          if (Math.abs(spaceDiff) > 8) return spaceDiff // Significant difference in space
-          
-          // Within similar space availability, prefer better light match
-          return a.lightScore - b.lightScore
+
+      // Soft light preference: compute adjustedLightScore to avoid monopolizing scarce perfect-light beds
+      // If there's only one bed with the perfect light and the group is small vs that bed's free space,
+      // add a small penalty so near-best (e.g., medium) can be chosen when reasonable.
+      const lightCounts = beds.reduce((acc, b) => {
+        const l = (b.lightLevel || 'high').toLowerCase()
+        acc[l] = (acc[l] || 0) + 1
+        return acc
+      }, {})
+
+      const eligibleBeds = candidateBeds
+        .map(b => {
+          let adjustedLightScore = b.lightScore
+          if (prioritizeLight) {
+            const bedLightName = (b.bed.lightLevel || 'high').toLowerCase()
+            const plantPrefLight = (plantLight || 'high').toLowerCase()
+            const isPerfect = bedLightName === plantPrefLight
+            const countThisLight = lightCounts[bedLightName] || 0
+            const fillRatio = b.availableCells > 0 ? allocation.cellCount / b.availableCells : 1
+            // Apply penalty only when perfect match is scarce and this placement would underuse the bed
+            if (isPerfect && countThisLight === 1 && fillRatio < 0.35) {
+              adjustedLightScore += 0.75
+            }
+          }
+          return { ...b, adjustedLightScore }
         })
+        // Sort by (adjusted light) then (space desc)
+        .sort((a, b) => {
+          const ls = a.adjustedLightScore - b.adjustedLightScore
+          if (ls !== 0) return ls
+          return b.availableCells - a.availableCells
+        })
+
+      console.log(
+        `Placing ${allocation.code} (${plantType}, ${allocation.cellCount} cells) - candidates: ${candidateBeds.length}, ` +
+        `bestLightScore: ${prioritizeLight && candidateBeds.length ? Math.min(...candidateBeds.map(b => b.lightScore)) : 'n/a'}, ` +
+        `topAdjustedLight: ${eligibleBeds.length ? eligibleBeds[0].adjustedLightScore : 'n/a'}`
+      )
       
-      // Try to place this plant in the best matching bed
-      for (const { bed, bedIndex, availableCells } of bedsWithSpace) {
+      // Try to place this plant in the best matching eligible bed
+      for (const { bed, bedIndex, availableCells } of eligibleBeds) {
         const bedRows = bed.rows
         const bedCols = bed.cols
         
@@ -206,6 +265,7 @@ export class GardenGenerationService {
               resultCells[bedIndex][idx] = allocation.code
             }
           }
+          console.log(`  ✓ Placed ${allocation.code} in bed ${bedIndex} (${bed.name}) as ${shape.rows}x${shape.cols}`)
           plantedCodes.add(allocation.code)
           placed = true
           break // Move to next plant
@@ -213,16 +273,21 @@ export class GardenGenerationService {
       }
       
       if (!placed) {
-        console.warn(`Could not place plant ${allocation.code} with ${allocation.cellCount} cells`)
+        console.warn(`Could not place plant ${allocation.code} (type: ${plantType}) - no eligible beds with space`)
       }
     }
 
-    // Fill remaining nulls by extending adjacent groups within each bed
+    // Step 4: Fill remaining nulls by extending adjacent groups within each bed
+    // IMPORTANT: Only extend with plants that are allowed in this bed's type restrictions
     for (let b = 0; b < bedCount; b++) {
       const bed = beds[b]
       const bedCols = bed.cols
       const bedRows = bed.rows
       const cells = resultCells[b]
+      const allowedTypes = bed.allowedTypes || ['vegetable', 'fruit', 'herb']
+      
+      // Create a map of plant code -> plant type for quick lookup
+      const plantTypeMap = new Map(plants.map(p => [p.code, p.type || 'vegetable']))
       
       for (let i = 0; i < cells.length; i++) {
         if (cells[i] === null) {
@@ -233,7 +298,15 @@ export class GardenGenerationService {
           if (row < bedRows - 1) neighbors.push(cells[(row + 1) * bedCols + col])
           if (col > 0) neighbors.push(cells[row * bedCols + (col - 1)])
           if (col < bedCols - 1) neighbors.push(cells[row * bedCols + (col + 1)])
-          const valid = neighbors.filter(n => n !== null)
+          
+          // Filter neighbors to only those that are allowed in this bed
+          const valid = neighbors
+            .filter(n => n !== null)
+            .filter(n => {
+              const plantType = plantTypeMap.get(n)
+              return plantType && allowedTypes.includes(plantType)
+            })
+          
           if (valid.length > 0) {
             const counts = {}
             valid.forEach(n => counts[n] = (counts[n] || 0) + 1)
@@ -244,8 +317,8 @@ export class GardenGenerationService {
       }
     }
 
-    // Convert back to Bed instances, preserving bed names
-    return beds.map((b, i) => new Bed(b.rows, b.cols, b.lightLevel, resultCells[i], b.name))
+    // Convert back to Bed instances, preserving bed names and allowedTypes
+    return beds.map((b, i) => new Bed(b.rows, b.cols, b.lightLevel, resultCells[i], b.name, b.allowedTypes))
   }
 
   /**

@@ -2,12 +2,13 @@
  * Bed Model - represents a single garden bed
  */
 export class Bed {
-  constructor(rows, cols, lightLevel = 'high', cells = null) {
+  constructor(rows, cols, lightLevel = 'high', cells = null, name = '', allowedTypes = ['vegetable', 'fruit', 'herb']) {
     this.rows = rows
     this.cols = cols
     this.lightLevel = lightLevel
     this.cells = cells || Array.from({ length: rows * cols }, () => null)
     this.name = name
+    this.allowedTypes = allowedTypes
   }
 
   get size() {
@@ -30,7 +31,7 @@ export class Bed {
     }
     const newCells = [...this.cells]
     newCells[index] = plantCode
-  return new Bed(this.rows, this.cols, this.lightLevel, newCells, this.name)
+    return new Bed(this.rows, this.cols, this.lightLevel, newCells, this.name, this.allowedTypes)
   }
 
   /**
@@ -41,7 +42,7 @@ export class Bed {
     Object.entries(updates).forEach(([index, plantCode]) => {
       newCells[parseInt(index)] = plantCode
     })
-    return new Bed(this.rows, this.cols, this.lightLevel, newCells, this.name)
+    return new Bed(this.rows, this.cols, this.lightLevel, newCells, this.name, this.allowedTypes)
   }
 
   /**
@@ -52,7 +53,7 @@ export class Bed {
     indices.forEach(i => {
       newCells[i] = null
     })
-    return new Bed(this.rows, this.cols, this.lightLevel, newCells, this.name)
+    return new Bed(this.rows, this.cols, this.lightLevel, newCells, this.name, this.allowedTypes)
   }
 
   /**
@@ -124,7 +125,9 @@ export class Bed {
       rows: this.rows,
       cols: this.cols,
       lightLevel: this.lightLevel,
-      cells: this.cells
+      cells: this.cells,
+      name: this.name,
+      allowedTypes: this.allowedTypes
     }
   }
 
@@ -132,6 +135,13 @@ export class Bed {
    * Deserialize from plain object
    */
   static fromJSON(json) {
-    return new Bed(json.rows, json.cols, json.lightLevel, json.cells)
+    return new Bed(
+      json.rows, 
+      json.cols, 
+      json.lightLevel, 
+      json.cells, 
+      json.name || '', 
+      json.allowedTypes || ['vegetable', 'fruit', 'herb']
+    )
   }
 }
