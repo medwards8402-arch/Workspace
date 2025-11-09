@@ -46,10 +46,10 @@ export function PlantInfo() {
     return (
       <div className="card" style={{ width: '300px' }}>
         <div className="card-header">
-          <h6 className="card-title m-0">Plant Info</h6>
+          <h6 className="card-title m-0">Crop Info</h6>
         </div>
         <div className="card-body">
-          <p className="text-muted mb-0">Click on a cell to view plant details</p>
+          <p className="text-muted mb-0">Click on a cell to view crop details</p>
         </div>
       </div>
     )
@@ -88,10 +88,10 @@ export function PlantInfo() {
         </div>
         <div className="card-body">
           <p className="mb-2">
-            <strong>{selectedIndices.size}</strong> cells selected with <strong>{uniquePlantCodes.length}</strong> different plants
+            <strong>{selectedIndices.size}</strong> cells selected with <strong>{uniquePlantCodes.length}</strong> different crops
           </p>
           <div className="alert alert-info small mb-0">
-            Select cells with the same plant to view details and edit notes
+            Select cells with the same crop to view details and edit notes
           </div>
         </div>
       </div>
@@ -141,26 +141,6 @@ export function PlantInfo() {
           </div>
         )}
         
-        <div className="mb-2">
-          <strong>Plant Code:</strong> {plant.code}
-        </div>
-        
-        <div className="mb-2">
-          <strong>Planting Time:</strong><br />
-          {(() => {
-            // Get last frost date from zone
-            const zone = garden.zone || '5a'
-            const today = new Date()
-            const z = USDA_ZONES[zone]
-            if (!z) return 'Zone not set'
-            let year = today.getFullYear()
-            const lastFrost = new Date(year, z.month - 1, z.day)
-            if (lastFrost < today) lastFrost.setFullYear(year + 1)
-            const plantDate = new Date(lastFrost)
-            plantDate.setDate(plantDate.getDate() + plant.plantAfterFrostDays)
-            return plantDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
-          })()}
-        </div>
         {plant.startIndoorsWeeks > 0 && (
           <div className="mb-2">
             <strong>Start Indoors:</strong><br />
@@ -178,6 +158,22 @@ export function PlantInfo() {
             })()}
           </div>
         )}
+        <div className="mb-2">
+          <strong>Outdoor Planting:</strong><br />
+          {(() => {
+            // Get last frost date from zone
+            const zone = garden.zone || '5a'
+            const today = new Date()
+            const z = USDA_ZONES[zone]
+            if (!z) return 'Zone not set'
+            let year = today.getFullYear()
+            const lastFrost = new Date(year, z.month - 1, z.day)
+            if (lastFrost < today) lastFrost.setFullYear(year + 1)
+            const plantDate = new Date(lastFrost)
+            plantDate.setDate(plantDate.getDate() + plant.plantAfterFrostDays)
+            return plantDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+          })()}
+        </div>
         <div className="mb-3">
           <strong>Harvest:</strong><br />
           {(() => {
@@ -197,7 +193,7 @@ export function PlantInfo() {
         </div>
         
         <div className="mb-2">
-          <strong>Spacing:</strong><br />
+          <strong>Spacing (sq ft):</strong><br />
           {plant.cellsRequired ? (
             <>1 plant per {plant.cellsRequired} cell{plant.cellsRequired > 1 ? 's' : ''}</>
           ) : (
@@ -208,7 +204,7 @@ export function PlantInfo() {
         {plant.cellsRequired && plant.cellsRequired > 1 && (
           <div className="mb-2">
             <div className="alert alert-warning small mb-0" style={{ padding: '0.5rem' }}>
-              <strong>⚠️ Sprawling plant:</strong> Each plant requires {plant.cellsRequired} cells (square feet) of space
+              <strong>⚠️ Sprawling crop:</strong> Each plant requires {plant.cellsRequired} cells (square feet) of space
             </div>
           </div>
         )}
@@ -236,7 +232,7 @@ export function PlantInfo() {
             rows="4"
             value={noteText}
             onChange={handleNoteChange}
-            placeholder="Add notes about this plant..."
+            placeholder="Add notes about this crop..."
           />
         </div>
       </div>

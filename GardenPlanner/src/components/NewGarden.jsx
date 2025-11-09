@@ -93,16 +93,15 @@ export function NewGarden({ onAfterGenerate }) {
     <div className="row g-3">
       <div className="col-12">
         <Tip id="auto-planting-guide">
-          Select your plants and configure your beds below. When you generate, the planner will automatically arrange plants in 
-          companion groups based on their spacing requirements and sun exposure needs. Plants will be placed in contiguous blocks, 
-          with sun-loving varieties prioritized for full-sun beds and shade-tolerant greens placed in shadier spots. 
-          Spacing follows square foot gardening techniques for optimal plant density.
+          Select your crops and configure your raised beds below. When you generate, the planner will automatically arrange crops in 
+          contiguous blocks based on spacing requirements and sun exposure needs. Fruiting crops favor high-light beds while leafy greens 
+          can occupy shadier spots. Spacing follows square foot gardening methods for intensive raised bed production.
         </Tip>
       </div>
       <div className="col-md-6">
         <div className="card">
           <div className="card-header">
-            <h5 className="card-title m-0">Garden Beds</h5>
+            <h5 className="card-title m-0">Raised Beds</h5>
           </div>
           <div className="card-body">
             <table className="table table-bordered align-middle">
@@ -195,7 +194,7 @@ export function NewGarden({ onAfterGenerate }) {
               Add Bed
             </button>
             <div className="alert alert-info mt-2">
-              <strong>Total Space:</strong> {beds.length} {beds.length === 1 ? 'bed' : 'beds'}; {totalCells} cells
+              <strong>Total Growing Area:</strong> {beds.length} raised {beds.length === 1 ? 'bed' : 'beds'}; {totalCells} sq ft cells
             </div>
           </div>
         </div>
@@ -204,7 +203,7 @@ export function NewGarden({ onAfterGenerate }) {
       <div className="col-md-6">
         <div className="card">
           <div className="card-header d-flex justify-content-between align-items-center">
-            <h5 className="card-title m-0">Select Plants</h5>
+            <h5 className="card-title m-0">Select Crops</h5>
             <span className="badge bg-secondary">{selectedPlants.size} selected</span>
           </div>
           <div className="card-body" style={{ maxHeight: '500px', overflowY: 'auto' }}>
@@ -241,7 +240,7 @@ export function NewGarden({ onAfterGenerate }) {
           onClick={handleGenerateClick}
           title={selectedPlants.size === 0 ? "Generate empty garden beds" : `Generate garden with ${selectedPlants.size} plant varieties`}
         >
-          Generate Garden
+          Generate Layout
         </button>
       </div>
 
@@ -270,11 +269,11 @@ export function NewGarden({ onAfterGenerate }) {
                 <p>
                   {selectedPlants.size === 0 ? (
                     <>
-                      Generate a new garden with <strong>empty beds</strong> ({beds.length} {beds.length === 1 ? 'bed' : 'beds'})?
+                      Generate a new layout with <strong>empty raised beds</strong> ({beds.length} {beds.length === 1 ? 'bed' : 'beds'})?
                     </>
                   ) : (
                     <>
-                      Generate a new garden with <strong>{selectedPlants.size} plant varieties</strong> distributed across <strong>{beds.length} {beds.length === 1 ? 'bed' : 'beds'}</strong>?
+                      Generate a new layout with <strong>{selectedPlants.size} crop varieties</strong> distributed across <strong>{beds.length} {beds.length === 1 ? 'raised bed' : 'raised beds'}</strong>?
                     </>
                   )}
                 </p>

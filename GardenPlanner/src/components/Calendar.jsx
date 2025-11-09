@@ -35,7 +35,7 @@ export function Calendar() {
   }
 
   if (tasks.length === 0) {
-    return <div className="alert alert-secondary">No plants added yet.</div>
+    return <div className="alert alert-secondary">No crops added yet.</div>
   }
 
   return (

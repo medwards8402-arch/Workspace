@@ -9,48 +9,48 @@ export function Information() {
       <div className="col-12">
         <div className="card">
           <div className="card-header">
-            <h5 className="card-title m-0">📖 How to Use Garden Planner</h5>
+            <h5 className="card-title m-0">📖 How to Use Raised Bed Planner</h5>
           </div>
           <div className="card-body">
             <div className="row g-4">
               {/* New Garden Tab */}
               <div className="col-md-4">
-                <h6 className="text-primary">🌱 New Garden</h6>
+                <h6 className="text-primary">🌱 New Layout</h6>
                 <p>
-                  Use this tab to create a new garden layout from scratch:
+                  Use this tab to create a new raised bed layout from scratch:
                 </p>
                 <ul className="small">
-                  <li><strong>Configure Beds:</strong> Add, remove, or customize garden beds. Set the dimensions (rows × columns), light level (low/medium/high), and name for each bed.</li>
-                  <li><strong>Select Plants:</strong> Choose which vegetables, herbs, and fruits you want to grow. Each plant shows its spacing density (plants per square foot).</li>
-                  <li><strong>Generate:</strong> Click "Generate Garden" to automatically arrange your selected plants across all beds using square foot gardening techniques. Plants are placed in contiguous groups based on spacing needs and light preferences.</li>
-                  <li><strong>Note:</strong> Generating a new garden will overwrite your current layout.</li>
+                  <li><strong>Configure Raised Beds:</strong> Add, remove, or customize beds. Set the dimensions (rows × columns), light level (low/medium/high), and name for each raised bed.</li>
+                  <li><strong>Select Crops:</strong> Choose which vegetables and herbs you want to grow. Each crop shows its spacing density (plants per square foot).</li>
+                  <li><strong>Generate:</strong> Click "Generate Layout" to automatically arrange your selected crops across all raised beds using square foot gardening techniques. Crops are placed in contiguous groups based on spacing needs and light preferences.</li>
+                  <li><strong>Note:</strong> Generating a new layout will overwrite your current design.</li>
                 </ul>
               </div>
 
-              {/* Garden Plan Tab */}
+              {/* Layout Tab */}
               <div className="col-md-4">
-                <h6 className="text-primary">🏡 Garden Plan</h6>
+                <h6 className="text-primary">🏡 Layout</h6>
                 <p>
-                  Your main workspace for viewing and editing your garden:
+                  Your main workspace for viewing and editing your raised bed layout:
                 </p>
                 <ul className="small">
-                  <li><strong>Plant Palette:</strong> Select a plant from the left sidebar, then click any cell in your beds to place it. Selected plants stick as you scroll.</li>
-                  <li><strong>Edit Cells:</strong> Click a planted cell to select it. Press Delete or Backspace to remove plants. Click and drag to select multiple cells.</li>
-                  <li><strong>Plant Details:</strong> Click any planted cell to see detailed growing information in the right panel, including actual planting dates based on your USDA zone and spacing requirements.</li>
-                  <li><strong>Save/Load:</strong> Use the Save button to export your garden to a .pln file. Use Load to import a previously saved plan.</li>
+                  <li><strong>Crop Palette:</strong> Select a crop from the left sidebar, then click any cell in your beds to place it. Selected crops stick as you scroll.</li>
+                  <li><strong>Edit Cells:</strong> Click a planted cell to select it. Press Delete or Backspace to remove crops. Click and drag to select multiple cells.</li>
+                  <li><strong>Crop Details:</strong> Click any planted cell to see detailed growing information in the right panel, including target dates based on your USDA zone and spacing requirements.</li>
+                  <li><strong>Save/Load:</strong> Use the Save button to export your layout to a .pln file. Use Load to import a previously saved plan.</li>
                   <li><strong>Undo/Redo:</strong> Use the buttons or Ctrl+Z (undo) and Ctrl+Y (redo) to step through changes.</li>
-                  <li><strong>Garden Name:</strong> Click the 📝 icon next to your garden name in the header to rename it.</li>
+                  <li><strong>Plan Name:</strong> Click the 📝 icon next to your plan name in the header to rename it.</li>
                 </ul>
               </div>
 
-              {/* Planting Calendar Tab */}
+              {/* Calendar Tab */}
               <div className="col-md-4">
-                <h6 className="text-primary">📅 Planting Calendar</h6>
+                <h6 className="text-primary">📅 Calendar</h6>
                 <p>
                   View your planting schedule organized by month:
                 </p>
                 <ul className="small">
-                  <li><strong>Monthly View:</strong> See which plants to start indoors, transplant outdoors, direct sow, and harvest each month.</li>
+                  <li><strong>Monthly View:</strong> See which crops to start indoors, transplant outdoors, direct sow, and harvest each month.</li>
                   <li><strong>Zone-Based:</strong> All dates are calculated based on your selected USDA hardiness zone and the last frost date for your area.</li>
                   <li><strong>Color-Coded:</strong> Each plant appears in its designated color for easy identification.</li>
                   <li><strong>Activity Types:</strong> 
@@ -72,13 +72,13 @@ export function Information() {
               <div className="col-12">
                 <h6 className="text-primary">🖨️ PDF Export</h6>
                 <p className="small">
-                  Create a printable planting guide to take outside to your garden. Click the 🖨️ PDF button in the header to generate a comprehensive PDF with:
+                  Create a printable plan to take outside to your raised beds. Click the 🖨️ PDF button in the header to generate a comprehensive PDF with:
                 </p>
                 <ul className="small mb-0">
-                  <li><strong>Garden Layout:</strong> Color-coded visual map of all beds showing where each plant is located</li>
-                  <li><strong>Planting Instructions:</strong> Each plant displays quantity info—fractions (1/2, 1/4) show cells per plant for large crops like squash, while numbers show how many to plant per cell</li>
-                  <li><strong>Monthly Calendar:</strong> When to start seeds, transplant, and harvest based on your USDA zone</li>
-                  <li><strong>Growing Notes:</strong> Detailed care instructions for each plant in your garden</li>
+                  <li><strong>Layout:</strong> Color-coded visual map of beds showing where each crop is located</li>
+                  <li><strong>Planting Instructions:</strong> Each crop displays quantity info—fractions (1/2, 1/4) show cells per plant for large crops like squash, while numbers show how many to plant per cell</li>
+                  <li><strong>Calendar:</strong> When to start seeds, transplant, and harvest based on your USDA zone</li>
+                  <li><strong>Growing Notes:</strong> Detailed care instructions for each crop in your plan</li>
                 </ul>
               </div>
             </div>
@@ -90,14 +90,14 @@ export function Information() {
       <div className="col-12">
         <div className="card">
           <div className="card-header">
-            <h5 className="card-title m-0">ℹ️ About Garden Planner</h5>
+            <h5 className="card-title m-0">ℹ️ About Raised Bed Planner</h5>
           </div>
           <div className="card-body">
             <div className="row g-4">
               <div className="col-md-6">
                 <h6>🌿 Square Foot Gardening</h6>
                 <p className="small">
-                  Garden Planner uses <strong>square foot gardening</strong> techniques, a space-efficient method developed by Mel Bartholomew. 
+                  Raised Bed Planner uses <strong>square foot gardening</strong> techniques, a space-efficient method developed by Mel Bartholomew. 
                   Each garden square represents one square foot, and plants are spaced based on their size:
                 </p>
                 <ul className="small">
@@ -113,7 +113,7 @@ export function Information() {
               <div className="col-md-6">
                 <h6>📜 License & Usage</h6>
                 <p className="small">
-                  <strong>Garden Planner</strong> is provided free of charge for personal and educational use only. 
+                  <strong>Raised Bed Planner</strong> is provided free of charge for personal and educational use only. 
                   You may use this tool to plan your home gardens, share your garden plans with friends, 
                   or use it in educational settings.
                 </p>
@@ -124,7 +124,7 @@ export function Information() {
                 <p className="small mb-0">
                   <strong>Author:</strong> Matthew Edwards<br />
                   <strong>Technology:</strong> React, JavaScript, Bootstrap<br />
-                  <strong>Data Storage:</strong> All garden data is stored locally in your browser. Nothing is sent to external servers.
+                  <strong>Data Storage:</strong> All plan data is stored locally in your browser. Nothing is sent to external servers.
                 </p>
               </div>
             </div>
@@ -139,7 +139,7 @@ export function Information() {
                   <li><strong>Companion Planting:</strong> Group compatible plants together. For example, tomatoes grow well with basil, and carrots with onions.</li>
                   <li><strong>Light Requirements:</strong> Pay attention to light levels. Most fruiting plants (tomatoes, peppers, squash) need high light, while leafy greens can tolerate partial shade.</li>
                   <li><strong>Start Small:</strong> If you're new to gardening, start with 1-2 beds and expand as you gain experience.</li>
-                  <li><strong>Save Often:</strong> Export your garden plan regularly to avoid losing your layout. Plans are saved with a .pln extension.</li>
+                  <li><strong>Save Often:</strong> Export your plan regularly to avoid losing your layout. Plans are saved with a .pln extension.</li>
                 </ul>
               </div>
             </div>

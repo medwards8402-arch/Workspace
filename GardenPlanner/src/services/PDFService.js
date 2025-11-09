@@ -36,7 +36,7 @@ export class PDFService {
     // Title
     doc.setFontSize(24)
     doc.setFont('helvetica', 'bold')
-    doc.text(garden.name || 'My Garden', margin, yPos)
+  doc.text(garden.name || 'My Raised Bed Plan', margin, yPos)
     yPos += 12
 
     doc.setFontSize(10)
@@ -48,7 +48,7 @@ export class PDFService {
     checkPageBreak(40)
     doc.setFontSize(16)
     doc.setFont('helvetica', 'bold')
-    doc.text('Garden Plan', margin, yPos)
+  doc.text('Layout', margin, yPos)
     yPos += 8
 
     // Calculate bed layouts and arrange in columns
@@ -192,7 +192,7 @@ export class PDFService {
 
     doc.setFontSize(16)
     doc.setFont('helvetica', 'bold')
-    doc.text('Planting Calendar', margin, yPos)
+  doc.text('Planting Schedule', margin, yPos)
     yPos += 8
 
     // Get calendar data

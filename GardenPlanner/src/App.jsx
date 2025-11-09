@@ -108,13 +108,13 @@ export default function App() {
           {/* Level 1: Title + Tabs + Actions */}
           <div className="d-flex align-items-center justify-content-between mb-1 flex-wrap gap-2">
             <div className="d-flex align-items-center flex-wrap" style={{gap: '0.5rem 0.75rem'}}>
-              <h1 className="h5 m-0">Garden Planner</h1>
+              <h1 className="h5 m-0">Raised Bed Planner</h1>
               <ul className="nav nav-pills">
                 <li className="nav-item">
                   <button 
                     className={`nav-link ${activeTab === 'new-garden' ? 'active' : ''}`} 
                     onClick={(e) => { e.stopPropagation(); setActiveTab('new-garden'); }} 
-                    title="Configure and generate a new garden layout"
+                    title="Configure and generate a new raised bed layout"
                   >
                     <Icon name="plus-square" className="me-1" /> New
                   </button>
@@ -123,9 +123,9 @@ export default function App() {
                   <button 
                     className={`nav-link ${activeTab === 'plan' ? 'active' : ''}`} 
                     onClick={(e) => { e.stopPropagation(); setActiveTab('plan'); }} 
-                    title="Edit and view your garden layout"
+                    title="Edit and view your raised bed layout"
                   >
-                    <Icon name="grid" className="me-1" /> Plan
+                    <Icon name="grid" className="me-1" /> Layout
                   </button>
                 </li>
                 <li className="nav-item">
