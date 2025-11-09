@@ -195,8 +195,8 @@ export class PDFService {
   doc.text('Planting Schedule', margin, yPos)
     yPos += 8
 
-    // Get calendar data
-    const calendarData = this.generateCalendarData(garden)
+  // Get calendar data (includes spring + fall where applicable)
+  const calendarData = this.generateCalendarData(garden)
     
     doc.setFontSize(9)
     doc.setFont('helvetica', 'normal')
@@ -217,7 +217,7 @@ export class PDFService {
 
       data.activities.forEach((activity) => {
         checkPageBreak(5)
-        doc.text(`• ${activity.type}: ${activity.plantName}`, margin + 3, yPos)
+  doc.text(`• ${activity.type}: ${activity.plantName}`, margin + 3, yPos)
         yPos += 4
       })
 
@@ -330,9 +330,16 @@ export class PDFService {
     const lastFrost = new Date(year, z.month - 1, z.day)
     if (lastFrost < today) lastFrost.setFullYear(year + 1)
     
-    // Generate tasks using the calendar module
+    // Compute first fall frost if available
+    let firstFallFrost = null
+    if (z.firstMonth && z.firstDay) {
+      firstFallFrost = new Date(lastFrost.getFullYear(), z.firstMonth - 1, z.firstDay)
+      if (firstFallFrost < lastFrost) firstFallFrost.setFullYear(lastFrost.getFullYear() + 1)
+    }
+
+    // Generate tasks using the calendar module (spring + fall cycles)
     const usedCodes = new Set(garden.uniquePlants)
-    const tasks = makeCalendarTasks(usedCodes, PLANTS, lastFrost)
+    const tasks = makeCalendarTasks(usedCodes, PLANTS, lastFrost, firstFallFrost)
     const byMonth = groupTasksByMonth(tasks)
     
     // Convert to the format we need for PDF
@@ -342,7 +349,7 @@ export class PDFService {
       monthData[key] = {
         monthName: data.monthName,
         activities: data.tasks.map(task => ({
-          type: task.type,
+          type: formatTaskType(task.type),
           plantName: task.plant.name,
           plantCode: task.plant.code
         }))
@@ -400,5 +407,33 @@ export class PDFService {
       console.error('Failed to generate PDF:', error)
       return false
     }
+  }
+
+  /**
+   * Format task type labels for PDF readability
+   */
+  static formatTaskTypeLabel(raw) {
+    switch(raw) {
+      case 'indoor': return 'Start Indoors'
+      case 'sow': return 'Plant Outdoors'
+      case 'harvest': return 'Harvest'
+      case 'indoorFall': return 'Start Indoors (Fall)'
+      case 'sowFall': return 'Plant Outdoors (Fall)'
+      case 'harvestFall': return 'Harvest (Fall)'
+      default: return raw
+    }
+  }
+}
+
+// Helper outside class for mapping task types during PDF data conversion
+function formatTaskType(type) {
+  switch(type) {
+    case 'indoor': return 'Start Indoors'
+    case 'sow': return 'Plant Outdoors'
+    case 'harvest': return 'Harvest'
+    case 'indoorFall': return 'Start Indoors (Fall)'
+    case 'sowFall': return 'Plant Outdoors (Fall)'
+    case 'harvestFall': return 'Harvest (Fall)'
+    default: return type
   }
 }

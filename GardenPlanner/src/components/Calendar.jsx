@@ -8,14 +8,20 @@ import { TipsStack } from './TipsStack'
 export function Calendar() {
   const { garden } = useGardenOperations()
   
-  const lastFrost = useMemo(() => {
+  const { lastFrost, firstFallFrost } = useMemo(() => {
     const today = new Date()
     const z = USDA_ZONES[garden.zone]
     if (!z) return null
     let year = today.getFullYear()
-    const d = new Date(year, z.month - 1, z.day)
-    if (d < today) d.setFullYear(year + 1)
-    return d
+    const spring = new Date(year, z.month - 1, z.day)
+    if (spring < today) spring.setFullYear(year + 1)
+    let fall = null
+    if (z.firstMonth && z.firstDay) {
+      fall = new Date(spring.getFullYear(), z.firstMonth - 1, z.firstDay)
+      // If fall date already passed relative to spring year, increment year
+      if (fall < spring) fall.setFullYear(spring.getFullYear() + 1)
+    }
+    return { lastFrost: spring, firstFallFrost: fall }
   }, [garden.zone])
 
   const usedCodes = useMemo(() => {
@@ -23,8 +29,9 @@ export function Calendar() {
   }, [garden])
 
   const tasks = useMemo(() => {
-    return makeCalendarTasks(usedCodes, PLANTS, lastFrost)
-  }, [usedCodes, lastFrost])
+    if (!lastFrost) return []
+    return makeCalendarTasks(usedCodes, PLANTS, lastFrost, firstFallFrost)
+  }, [usedCodes, lastFrost, firstFallFrost])
 
   const byMonth = useMemo(() => {
     return groupTasksByMonth(tasks)
@@ -59,8 +66,8 @@ export function Calendar() {
                 {tasks.map((t, i) => (
                   <div 
                     className={`d-flex align-items-center gap-2 p-1 rounded border-start border-3 ${
-                      t.type==='indoor' ? 'border-success' : 
-                      t.type==='sow' ? 'border-primary' : 
+                      t.type.startsWith('indoor') ? 'border-success' : 
+                      t.type.startsWith('sow') ? 'border-primary' : 
                       'border-warning'
                     }`} 
                     key={i} 

@@ -7,13 +7,15 @@ import { PLANTS } from './data'
  * @param {Date} lastFrostDate - The last frost date for the zone
  * @returns {Array} Sorted array of task objects with date, type, icon, plant, and label
  */
-export function makeCalendarTasks(usedCodes, plants, lastFrostDate) {
+export function makeCalendarTasks(usedCodes, plants, lastFrostDate, firstFallFrostDate) {
   if (!lastFrostDate) return []
   const plantMap = new Map(plants.map(p => [p.code, p]))
   const out = []
   usedCodes.forEach(code => {
     const plant = plantMap.get(code)
     if (!plant) return
+
+    // SPRING CYCLE
     if (plant.startIndoorsWeeks > 0) {
       const d = new Date(lastFrostDate)
       d.setDate(d.getDate() - plant.startIndoorsWeeks * 7)
@@ -25,6 +27,22 @@ export function makeCalendarTasks(usedCodes, plants, lastFrostDate) {
     const harvest = new Date(sow)
     harvest.setDate(harvest.getDate() + plant.harvestWeeks * 7)
     out.push({ date: harvest, type: 'harvest', icon: '🎉', plant, label: `Harvest ${plant.name}` })
+
+    // FALL CYCLE (cool-season repeat crops)
+    if (plant.supportsFall && firstFallFrostDate) {
+      // Optional indoor start for fall cycle
+      if (plant.fallStartIndoorsWeeks && plant.fallStartIndoorsWeeks > 0) {
+        const fallIndoor = new Date(firstFallFrostDate)
+        fallIndoor.setDate(fallIndoor.getDate() - plant.fallStartIndoorsWeeks * 7)
+        out.push({ date: fallIndoor, type: 'indoorFall', icon: '🌱', plant, label: `Start ${plant.name} indoors (fall)` })
+      }
+      const fallSow = new Date(firstFallFrostDate)
+      fallSow.setDate(fallSow.getDate() - plant.fallPlantBeforeFrostDays)
+      out.push({ date: fallSow, type: 'sowFall', icon: plant.fallStartIndoorsWeeks>0 ? '🌿' : '🌱', plant, label: plant.fallStartIndoorsWeeks>0 ? `Transplant ${plant.name} (fall)` : `Sow ${plant.name} (fall)` })
+      const fallHarvest = new Date(fallSow)
+      fallHarvest.setDate(fallHarvest.getDate() + plant.harvestWeeks * 7)
+      out.push({ date: fallHarvest, type: 'harvestFall', icon: '🎉', plant, label: `Harvest ${plant.name} (fall)` })
+    }
   })
   return out.sort((a,b)=> a.date-b.date)
 }
