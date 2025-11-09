@@ -64,6 +64,24 @@ export function Information() {
                 </ul>
               </div>
             </div>
+
+            <hr className="my-3" />
+
+            {/* PDF Export Section */}
+            <div className="row">
+              <div className="col-12">
+                <h6 className="text-primary">🖨️ PDF Export</h6>
+                <p className="small">
+                  Create a printable planting guide to take outside to your garden. Click the 🖨️ PDF button in the header to generate a comprehensive PDF with:
+                </p>
+                <ul className="small mb-0">
+                  <li><strong>Garden Layout:</strong> Color-coded visual map of all beds showing where each plant is located</li>
+                  <li><strong>Planting Instructions:</strong> Each plant displays quantity info—fractions (1/2, 1/4) show cells per plant for large crops like squash, while numbers show how many to plant per cell</li>
+                  <li><strong>Monthly Calendar:</strong> When to start seeds, transplant, and harvest based on your USDA zone</li>
+                  <li><strong>Growing Notes:</strong> Detailed care instructions for each plant in your garden</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>

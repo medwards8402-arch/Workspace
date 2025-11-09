@@ -111,8 +111,8 @@ export function NewGarden({ onAfterGenerate }) {
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Rows</th>
-                  <th>Cols</th>
+                  <th>Rows (ft)</th>
+                  <th>Cols (ft)</th>
                   <th>Light</th>
                   <th>Remove</th>
                 </tr>

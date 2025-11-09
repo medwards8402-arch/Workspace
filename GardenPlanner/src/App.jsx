@@ -62,6 +62,24 @@ export default function App() {
     }
   }
 
+  const handlePrintToPDF = async () => {
+    try {
+      // Dynamic import to avoid loading jsPDF until needed
+      const { PDFService } = await import('./services/PDFService')
+      const safeName = (garden.name || 'garden-plan')
+        .replace(/[^a-z0-9_-]/gi, '-')
+        .toLowerCase()
+      const filename = `${safeName}.pdf`
+      
+      if (!PDFService.savePDF(garden, filename)) {
+        alert('Failed to generate PDF')
+      }
+    } catch (error) {
+      console.error('Failed to generate PDF:', error)
+      alert(`Failed to generate PDF: ${error.message}`)
+    }
+  }
+
   // Click-away deselection
   const handleContainerClick = () => {
     setSelectedPlant(null)
@@ -106,6 +124,13 @@ export default function App() {
                 title="Load garden from file"
               >
                 📂 Load
+              </button>
+              <button
+                className="btn btn-sm btn-outline-primary"
+                onClick={(e) => { e.stopPropagation(); handlePrintToPDF(); }}
+                title="Export to PDF"
+              >
+                🖨️ PDF
               </button>
             </div>
             <div className="btn-group" role="group">
