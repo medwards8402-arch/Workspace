@@ -142,14 +142,15 @@ export function GardenBed({ bedIndex, bed, onChange, plants, selectedCode, bedRo
     }
   }, [deselectTrigger])
 
-  // Deselect if another bed becomes active
+  // Deselect if another bed becomes active - but do it BEFORE the new bed sets its selection
   useEffect(() => {
     // Only clear if activeBed is set to a DIFFERENT bed (not this one, not null)
-    if (activeBed !== null && activeBed !== bedIndex) {
-      setSelectedIndices(new Set());
+    if (activeBed !== null && activeBed !== bedIndex && selectedIndices.size > 0) {
+      flushSync(() => {
+        setSelectedIndices(new Set());
+      });
     }
-    // Don't clear when activeBed becomes this bedIndex - that's when we're being activated
-  }, [activeBed, bedIndex])
+  }, [activeBed, bedIndex, selectedIndices])
 
   const handleDropAt = (i, code) => {
     const next = bed.slice()
@@ -159,8 +160,7 @@ export function GardenBed({ bedIndex, bed, onChange, plants, selectedCode, bedRo
   }
 
   const handleClickAt = (i) => {
-    // Set active bed FIRST and flush to DOM synchronously
-    // This ensures other beds deselect before we select
+    // Set active bed first - this will trigger other beds to deselect synchronously
     flushSync(() => {
       setActiveBed(bedIndex);
     });
@@ -184,14 +184,14 @@ export function GardenBed({ bedIndex, bed, onChange, plants, selectedCode, bedRo
   }
 
   const handleDoubleClickAt = (i) => {
-    // Set active bed FIRST and flush to DOM synchronously
+    // Set active bed first - this will trigger other beds to deselect synchronously
     flushSync(() => {
       setActiveBed(bedIndex);
     });
     
     const plantCode = bed[i]
     if (!plantCode) {
-      setSelectedIndices(new Set())
+      setSelectedIndices(new Set());
       return
     }
     // BFS to find all orthogonally connected same-plant cells
@@ -216,7 +216,7 @@ export function GardenBed({ bedIndex, bed, onChange, plants, selectedCode, bedRo
         }
       }
     }
-    setSelectedIndices(visited)
+    setSelectedIndices(visited);
   }
 
   const handleMouseDownAt = (i) => {
