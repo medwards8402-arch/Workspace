@@ -21,7 +21,7 @@ export function PlantPalette({ plants }) {
   }
   
   return (
-    <div className="card" style={{width: 200, minWidth: 200, maxWidth: 200, maxHeight: '80vh', display: 'flex', flexDirection: 'column'}} onClick={handleCardClick} title="Select a plant to add to your garden">
+    <div className="card" style={{width: 200, minWidth: 200, maxWidth: 200, maxHeight: '80vh', display: 'flex', flexDirection: 'column', position: 'sticky', top: '1rem'}} onClick={handleCardClick} title="Select a plant to add to your garden">
       <div className="card-header" onClick={handleCardClick}>Plant Palette</div>
       <div className="list-group list-group-flush overflow-auto" style={{flex: 1, minHeight: 0}}>
         {sortedPlants.map(p => (

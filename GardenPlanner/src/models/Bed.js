@@ -7,6 +7,7 @@ export class Bed {
     this.cols = cols
     this.lightLevel = lightLevel
     this.cells = cells || Array.from({ length: rows * cols }, () => null)
+    this.name = name
   }
 
   get size() {
@@ -29,7 +30,7 @@ export class Bed {
     }
     const newCells = [...this.cells]
     newCells[index] = plantCode
-    return new Bed(this.rows, this.cols, this.lightLevel, newCells)
+  return new Bed(this.rows, this.cols, this.lightLevel, newCells, this.name)
   }
 
   /**
@@ -40,7 +41,7 @@ export class Bed {
     Object.entries(updates).forEach(([index, plantCode]) => {
       newCells[parseInt(index)] = plantCode
     })
-    return new Bed(this.rows, this.cols, this.lightLevel, newCells)
+    return new Bed(this.rows, this.cols, this.lightLevel, newCells, this.name)
   }
 
   /**
@@ -51,7 +52,7 @@ export class Bed {
     indices.forEach(i => {
       newCells[i] = null
     })
-    return new Bed(this.rows, this.cols, this.lightLevel, newCells)
+    return new Bed(this.rows, this.cols, this.lightLevel, newCells, this.name)
   }
 
   /**

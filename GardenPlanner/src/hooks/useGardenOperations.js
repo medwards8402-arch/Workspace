@@ -64,30 +64,21 @@ export function useGardenOperations() {
   }, [dispatch])
 
   const generateGarden = useCallback((config) => {
-    const { bedCount, bedRows, bedCols, bedLightLevels, plantCodes } = config
-    
-    // Create empty beds
-    const beds = Array.from({ length: bedCount }, (_, i) => {
-      const lightLevel = bedLightLevels?.[i] || 'high'
-      return new Bed(bedRows, bedCols, lightLevel)
-    })
+    // New flexible bed config: config.beds is array of { name, rows, cols, lightLevel }
+    const { beds: bedConfigs, plantCodes } = config
+    const beds = bedConfigs.map(bed => new Bed(bed.rows, bed.cols, bed.lightLevel, null, bed.name))
 
-    // Generate layout if plants are selected
     let filledBeds = beds
     if (plantCodes && plantCodes.length > 0) {
       const plants = PLANTS.filter(p => plantCodes.includes(p.code))
       filledBeds = GardenGenerationService.generate(plants, beds, true)
     }
 
-    dispatch({ 
-      type: GARDEN_ACTIONS.RESET_GARDEN, 
-      payload: { 
-        bedCount, 
-        bedRows, 
-        bedCols, 
-        bedLightLevels,
-        beds: filledBeds 
-      } 
+    dispatch({
+      type: GARDEN_ACTIONS.RESET_GARDEN,
+      payload: {
+        beds: filledBeds
+      }
     })
   }, [dispatch])
 

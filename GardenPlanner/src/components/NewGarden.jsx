@@ -9,18 +9,18 @@ import { useGardenOperations } from '../hooks/useGardenOperations'
  */
 export function NewGarden({ onAfterGenerate }) {
   const { generateGarden } = useGardenOperations()
-  
-  // Garden configuration state
-  const [bedCount, setBedCount] = useState(3)
-  // Default rows should be 8 per requirements
-  const [bedRows, setBedRows] = useState(8)
-  const [bedCols, setBedCols] = useState(4)
-  const [bedLightLevels, setBedLightLevels] = useState(['high', 'medium', 'low'])
-  
+
+  // Dynamic beds state: array of { name, rows, cols, lightLevel }
+  const [beds, setBeds] = useState([
+    { name: 'Bed 1', rows: 8, cols: 4, lightLevel: 'high' },
+    { name: 'Bed 2', rows: 8, cols: 4, lightLevel: 'medium' },
+    { name: 'Bed 3', rows: 8, cols: 4, lightLevel: 'low' }
+  ])
+
   // Plant selection state
   const [selectedPlants, setSelectedPlants] = useState(new Set())
   const [showConfirm, setShowConfirm] = useState(false)
-  
+
   // Min/max validation constants
   const MIN_BEDS = 1
   const MAX_BEDS = 10
@@ -28,6 +28,28 @@ export function NewGarden({ onAfterGenerate }) {
   const MAX_ROWS = 12
   const MIN_COLS = 2
   const MAX_COLS = 12
+
+  // Bed management handlers
+  const handleAddBed = () => {
+    if (beds.length < MAX_BEDS) {
+      setBeds([...beds, {
+        name: `Bed ${beds.length + 1}`,
+        rows: 8,
+        cols: 4,
+        lightLevel: 'high'
+      }])
+    }
+  }
+
+  const handleRemoveBed = (index) => {
+    if (beds.length > MIN_BEDS) {
+      setBeds(beds.filter((_, i) => i !== index))
+    }
+  }
+
+  const handleBedChange = (index, field, value) => {
+    setBeds(beds.map((bed, i) => i === index ? { ...bed, [field]: value } : bed))
+  }
 
   const handlePlantToggle = (code) => {
     const newSet = new Set(selectedPlants)
@@ -37,33 +59,6 @@ export function NewGarden({ onAfterGenerate }) {
       newSet.add(code)
     }
     setSelectedPlants(newSet)
-  }
-  
-  const handleBedCountChange = (newCount) => {
-    setBedCount(newCount)
-    // Adjust bedLightLevels array to match new bed count
-    const newLightLevels = [...bedLightLevels]
-    while (newLightLevels.length < newCount) {
-      const i = newLightLevels.length
-      // Bed 1: high, Bed 2: medium, Bed 3: low, rest: high
-      if (i === 1) {
-        newLightLevels.push('medium')
-      } else if (i === 2) {
-        newLightLevels.push('low')
-      } else {
-        newLightLevels.push('high')
-      }
-    }
-    while (newLightLevels.length > newCount) {
-      newLightLevels.pop()
-    }
-    setBedLightLevels(newLightLevels)
-  }
-  
-  const handleLightLevelChange = (bedIndex, level) => {
-    const newLightLevels = [...bedLightLevels]
-    newLightLevels[bedIndex] = level
-    setBedLightLevels(newLightLevels)
   }
 
   const handleGenerateClick = (e) => {
@@ -75,15 +70,11 @@ export function NewGarden({ onAfterGenerate }) {
     e.stopPropagation()
     // Use new architecture's generateGarden
     generateGarden({
-      bedCount,
-      bedRows,
-      bedCols,
-      bedLightLevels,
+      beds,
       plantCodes: Array.from(selectedPlants)
     })
     setShowConfirm(false)
     setSelectedPlants(new Set()) // Clear selection after generation
-    // Switch to garden plan tab if callback provided
     if (typeof onAfterGenerate === 'function') {
       onAfterGenerate()
     }
@@ -94,7 +85,7 @@ export function NewGarden({ onAfterGenerate }) {
     setShowConfirm(false)
   }
 
-  const totalCells = bedCount * bedRows * bedCols
+  const totalCells = beds.reduce((sum, bed) => sum + bed.rows * bed.cols, 0)
   const sortedPlants = [...PLANTS].sort((a, b) => a.name.localeCompare(b.name))
 
   return (
@@ -102,94 +93,101 @@ export function NewGarden({ onAfterGenerate }) {
       <div className="col-md-6">
         <div className="card">
           <div className="card-header">
-            <h5 className="card-title m-0">Garden Configuration</h5>
+            <h5 className="card-title m-0">Garden Beds</h5>
           </div>
           <div className="card-body">
-            <div className="mb-3">
-              <label className="form-label">Number of Beds</label>
-              <input
-                type="number"
-                className="form-control"
-                value={bedCount}
-                onChange={(e) => {
-                  const val = parseInt(e.target.value)
-                  if (!isNaN(val) && val >= MIN_BEDS && val <= MAX_BEDS) {
-                    handleBedCountChange(val)
-                  }
-                }}
-                onClick={(e) => e.stopPropagation()}
-                min={MIN_BEDS}
-                max={MAX_BEDS}
-                title="How many separate garden beds to create"
-              />
-              <div className="form-text">Between {MIN_BEDS} and {MAX_BEDS} beds</div>
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label">Rows per Bed</label>
-              <input
-                type="number"
-                className="form-control"
-                value={bedRows}
-                onChange={(e) => {
-                  const val = parseInt(e.target.value)
-                  if (!isNaN(val) && val >= MIN_ROWS && val <= MAX_ROWS) {
-                    setBedRows(val)
-                  }
-                }}
-                onClick={(e) => e.stopPropagation()}
-                min={MIN_ROWS}
-                max={MAX_ROWS}
-                title="Number of rows in each bed (1 row = 1 foot)"
-              />
-              <div className="form-text">Between {MIN_ROWS} and {MAX_ROWS} rows</div>
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label">Columns per Bed</label>
-              <input
-                type="number"
-                className="form-control"
-                value={bedCols}
-                onChange={(e) => {
-                  const val = parseInt(e.target.value)
-                  if (!isNaN(val) && val >= MIN_COLS && val <= MAX_COLS) {
-                    setBedCols(val)
-                  }
-                }}
-                onClick={(e) => e.stopPropagation()}
-                min={MIN_COLS}
-                max={MAX_COLS}
-                title="Number of columns in each bed (1 column = 1 foot)"
-              />
-              <div className="form-text">Between {MIN_COLS} and {MAX_COLS} columns</div>
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label fw-bold" title="Configure sunlight exposure for each bed">Bed Light Levels</label>
-              <div className="d-flex flex-column gap-2">
-                {Array.from({ length: bedCount }, (_, i) => (
-                  <div key={i} className="input-group input-group-sm">
-                    <span className="input-group-text" style={{ minWidth: '80px' }}>Bed {i + 1}</span>
-                    <select
-                      className="form-select"
-                      value={bedLightLevels[i] || 'high'}
-                      onChange={(e) => handleLightLevelChange(i, e.target.value)}
-                      onClick={(e) => e.stopPropagation()}
-                      title={`Sunlight level for Bed ${i + 1} - plants prefer matching conditions`}
-                    >
-                      <option value="low">☁️ Low</option>
-                      <option value="medium">⛅ Medium</option>
-                      <option value="high">☀️ High</option>
-                    </select>
-                  </div>
+            <table className="table table-bordered align-middle">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Rows</th>
+                  <th>Cols</th>
+                  <th>Light</th>
+                  <th>Remove</th>
+                </tr>
+              </thead>
+              <tbody>
+                {beds.map((bed, i) => (
+                  <tr key={i}>
+                    <td>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={bed.name}
+                        onChange={e => handleBedChange(i, 'name', e.target.value)}
+                        maxLength={32}
+                        title="Edit bed name"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={bed.rows}
+                        min={MIN_ROWS}
+                        max={MAX_ROWS}
+                        onChange={e => {
+                          const val = parseInt(e.target.value)
+                          if (!isNaN(val) && val >= MIN_ROWS && val <= MAX_ROWS) {
+                            handleBedChange(i, 'rows', val)
+                          }
+                        }}
+                        title="Rows (feet)"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={bed.cols}
+                        min={MIN_COLS}
+                        max={MAX_COLS}
+                        onChange={e => {
+                          const val = parseInt(e.target.value)
+                          if (!isNaN(val) && val >= MIN_COLS && val <= MAX_COLS) {
+                            handleBedChange(i, 'cols', val)
+                          }
+                        }}
+                        title="Columns (feet)"
+                      />
+                    </td>
+                    <td>
+                      <select
+                        className="form-select"
+                        value={bed.lightLevel}
+                        onChange={e => handleBedChange(i, 'lightLevel', e.target.value)}
+                        title="Sunlight level"
+                      >
+                        <option value="low">☁️ Low</option>
+                        <option value="medium">⛅ Medium</option>
+                        <option value="high">☀️ High</option>
+                      </select>
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleRemoveBed(i)}
+                        disabled={beds.length <= MIN_BEDS}
+                        title="Remove this bed"
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
                 ))}
-              </div>
-              <div className="form-text">Plants prefer beds matching their light requirements</div>
-            </div>
-
-            <div className="alert alert-info">
-              <strong>Total Space:</strong> {bedCount} {bedCount === 1 ? 'bed' : 'beds'} × {bedRows}×{bedCols} = {totalCells} cells
+              </tbody>
+            </table>
+            <button
+              className="btn btn-success"
+              onClick={handleAddBed}
+              disabled={beds.length >= MAX_BEDS}
+              title="Add a new bed"
+            >
+              Add Bed
+            </button>
+            <div className="form-text mt-2">Each bed can have its own name, dimensions, and sunlight level.</div>
+            <div className="alert alert-info mt-2">
+              <strong>Total Space:</strong> {beds.length} {beds.length === 1 ? 'bed' : 'beds'}; {totalCells} cells
             </div>
           </div>
         </div>
@@ -263,7 +261,7 @@ export function NewGarden({ onAfterGenerate }) {
                   <strong>Warning:</strong> This will overwrite your current garden layout.
                 </div>
                 <p>
-                  Generate a new garden with <strong>{selectedPlants.size} plant varieties</strong> distributed across <strong>{bedCount} {bedCount === 1 ? 'bed' : 'beds'}</strong>?
+                  Generate a new garden with <strong>{selectedPlants.size} plant varieties</strong> distributed across <strong>{beds.length} {beds.length === 1 ? 'bed' : 'beds'}</strong>?
                 </p>
                 <p className="mb-0">
                   This action cannot be undone (yet).

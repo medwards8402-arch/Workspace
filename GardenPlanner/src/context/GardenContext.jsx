@@ -90,21 +90,15 @@ function gardenReducer(state, action) {
     }
 
     case GARDEN_ACTIONS.RESET_GARDEN: {
-      const { beds: providedBeds, bedCount, bedRows, bedCols, bedLightLevels } = action.payload
+      const { beds: providedBeds } = action.payload
       let beds = providedBeds
-      // Backward compatibility: if caller didn't supply pre-filled beds, create empty ones
       if (!beds || beds.length === 0) {
-        beds = Array.from({ length: bedCount }, (_, i) => {
-          const lightLevel = bedLightLevels?.[i] || 'high'
-          return new Bed(bedRows, bedCols, lightLevel)
-        })
+        beds = []
       }
       const newGarden = new Garden({
         beds,
         zone: state.garden.zone,
-        notes: {},
-        bedRows,
-        bedCols
+        notes: {}
       })
       return pushToHistory(state, newGarden)
     }

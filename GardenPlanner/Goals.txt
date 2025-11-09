@@ -1,3 +1,4 @@
-* Please find a way to show the light level of the beds in the garden plan.
-* The light level defaults are still not correct: all show high in the garden configuration for me.  I wonder if it's loading values in when it shouldn't be in the New Garden tab.
-* The plant info tab isn't populating anything when I select plants -- it shows the helper text to click on a cell to view.
+In the garden planner, I'd like the ability to add beds of different dimensions.  Instead of selecting an overall number of beds and their rows/columns:
+* Treat beds like tables and have the ability to add beds and remove beds.
+* Allow each bed to have different configurable dimensions and weather.
+* Allow the name to be editted.

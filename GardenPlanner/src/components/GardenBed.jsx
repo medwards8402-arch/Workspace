@@ -229,9 +229,17 @@ export function GardenBed({ bedIndex }) {
   // Check if any selected cells have plants
   const hasSelectedPlants = Array.from(selectedIndices).some(i => bed.getCell(i) !== null)
 
+  // Calculate card width based on bed dimensions
+  const cellSize = 68
+  const gap = 8
+  const gridWidth = bedCols * cellSize + (bedCols - 1) * gap
+  const gridHeight = bedRows * cellSize + (bedRows - 1) * gap
+  const cardPadding = 24 // 12px padding on each side
+  const cardWidth = gridWidth + cardPadding
+
   return (
     <div className="d-flex gap-3" onClick={handleCardClick}>
-      <div className="card" style={{ width: 320, minWidth: 320, maxWidth: 320 }}>
+      <div className="card" style={{ width: cardWidth, minWidth: cardWidth, maxWidth: cardWidth, height: 'fit-content' }}>
         <div className="card-header d-flex justify-content-between align-items-center" onClick={handleCardClick}>
           <span>
             Bed {bedIndex + 1}
@@ -256,15 +264,19 @@ export function GardenBed({ bedIndex }) {
             </button>
           </span>
         </div>
-        <div className="card-body d-flex justify-content-center" onClick={handleBedClick} style={{ padding: 12 }}>
+        <div className="card-body" onClick={handleBedClick} style={{ padding: 12, display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
           <div
             ref={gridRef}
             className="d-grid gap-2"
             style={{
-              gridTemplateColumns: `repeat(${bedCols}, 68px)`,
-              width: bedCols * 68 + (bedCols - 1) * 8,
-              minWidth: bedCols * 68 + (bedCols - 1) * 8,
-              maxWidth: bedCols * 68 + (bedCols - 1) * 8,
+              gridTemplateColumns: `repeat(${bedCols}, ${cellSize}px)`,
+              gridTemplateRows: `repeat(${bedRows}, ${cellSize}px)`,
+              width: gridWidth,
+              minWidth: gridWidth,
+              maxWidth: gridWidth,
+              height: gridHeight,
+              minHeight: gridHeight,
+              maxHeight: gridHeight,
             }}
             onClick={handleBedClick}
           >

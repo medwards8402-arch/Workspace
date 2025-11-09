@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useGardenOperations } from '../hooks/useGardenOperations'
 import { useSelection } from '../hooks/useSelection'
-import { PLANTS } from '../data'
+import { PLANTS, USDA_ZONES } from '../data'
 
 /**
  * PlantInfo component shows details for selected plant(s)
@@ -147,33 +147,68 @@ export function PlantInfo() {
         
         <div className="mb-2">
           <strong>Planting Time:</strong><br />
-          {plant.plantAfterFrostDays >= 0 
-            ? `${plant.plantAfterFrostDays} days after last frost`
-            : `${Math.abs(plant.plantAfterFrostDays)} days before last frost`
-          }
+          {(() => {
+            // Get last frost date from zone
+            const zone = garden.zone || '5a'
+            const today = new Date()
+            const z = USDA_ZONES[zone]
+            if (!z) return 'Zone not set'
+            let year = today.getFullYear()
+            const lastFrost = new Date(year, z.month - 1, z.day)
+            if (lastFrost < today) lastFrost.setFullYear(year + 1)
+            const plantDate = new Date(lastFrost)
+            plantDate.setDate(plantDate.getDate() + plant.plantAfterFrostDays)
+            return plantDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+          })()}
         </div>
-        
         {plant.startIndoorsWeeks > 0 && (
           <div className="mb-2">
             <strong>Start Indoors:</strong><br />
-            {plant.startIndoorsWeeks} weeks before outdoor planting
+            {(() => {
+              const zone = garden.zone || '5a'
+              const today = new Date()
+              const z = USDA_ZONES[zone]
+              if (!z) return 'Zone not set'
+              let year = today.getFullYear()
+              const lastFrost = new Date(year, z.month - 1, z.day)
+              if (lastFrost < today) lastFrost.setFullYear(year + 1)
+              const indoorDate = new Date(lastFrost)
+              indoorDate.setDate(indoorDate.getDate() - plant.startIndoorsWeeks * 7)
+              return indoorDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+            })()}
           </div>
         )}
-        
         <div className="mb-3">
           <strong>Harvest:</strong><br />
-          {plant.harvestWeeks} weeks after planting
+          {(() => {
+            const zone = garden.zone || '5a'
+            const today = new Date()
+            const z = USDA_ZONES[zone]
+            if (!z) return 'Zone not set'
+            let year = today.getFullYear()
+            const lastFrost = new Date(year, z.month - 1, z.day)
+            if (lastFrost < today) lastFrost.setFullYear(year + 1)
+            const plantDate = new Date(lastFrost)
+            plantDate.setDate(plantDate.getDate() + plant.plantAfterFrostDays)
+            const harvestDate = new Date(plantDate)
+            harvestDate.setDate(harvestDate.getDate() + plant.harvestWeeks * 7)
+            return harvestDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+          })()}
         </div>
         
         <div className="mb-2">
           <strong>Spacing:</strong><br />
-          {plant.sqftSpacing} plant{plant.sqftSpacing > 1 ? 's' : ''} per square foot
+          {plant.cellsRequired ? (
+            <>1 plant per {plant.cellsRequired} cell{plant.cellsRequired > 1 ? 's' : ''}</>
+          ) : (
+            <>{plant.sqftSpacing} plant{plant.sqftSpacing > 1 ? 's' : ''} per cell</>
+          )}
         </div>
         
-        {plant.cellsRequired && (
+        {plant.cellsRequired && plant.cellsRequired > 1 && (
           <div className="mb-2">
             <div className="alert alert-warning small mb-0" style={{ padding: '0.5rem' }}>
-              <strong>⚠️ Needs {plant.cellsRequired} cells:</strong> This plant sprawls and requires {plant.cellsRequired} square feet of space
+              <strong>⚠️ Sprawling plant:</strong> Each plant requires {plant.cellsRequired} cells (square feet) of space
             </div>
           </div>
         )}

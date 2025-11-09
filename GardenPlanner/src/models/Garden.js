@@ -8,8 +8,7 @@ export class Garden {
     this.beds = config.beds || []
     this.zone = config.zone || '5a'
     this.notes = config.notes || {}
-    this.bedRows = config.bedRows || 8
-    this.bedCols = config.bedCols || 4
+    // Remove global bedRows/bedCols; rely on per-bed config
   }
 
   /**
