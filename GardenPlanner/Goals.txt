@@ -1,8 +1,3 @@
-Please suggest and implement things that will help maintain this code as you (AI) work with me to make changes.  For example: refector, add tests you can inspect, and logging you can inspect.
-
-Future work this code will need to be robust against includes:
-* Form information for plants so I can journal how things happen over the year.
-* A garden planner tab where the number and size of garden beds change.  The ability to prepopulate a garden given a number of selected plants.
-* The ability to save and load gardens from file
-* The ability to generate PDF reports of the garden for off-screen viewing.
-* The ability to view and interact with the website on a smart phone size screen.
+* Please find a way to show the light level of the beds in the garden plan.
+* The light level defaults are still not correct: all show high in the garden configuration for me.  I wonder if it's loading values in when it shouldn't be in the New Garden tab.
+* The plant info tab isn't populating anything when I select plants -- it shows the helper text to click on a cell to view.

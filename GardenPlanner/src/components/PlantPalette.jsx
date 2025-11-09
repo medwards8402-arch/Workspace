@@ -18,13 +18,14 @@ export function PlantPalette({ plants, selectedCode, onSelect }) {
   }
   
   return (
-    <div className="card h-100" style={{width: 200, minWidth: 200, maxWidth: 200}} onClick={handleCardClick}>
+    <div className="card" style={{width: 200, minWidth: 200, maxWidth: 200, maxHeight: '80vh', display: 'flex', flexDirection: 'column'}} onClick={handleCardClick} title="Select a plant to add to your garden">
       <div className="card-header" onClick={handleCardClick}>Plant Palette</div>
-      <div className="list-group list-group-flush overflow-auto" style={{maxHeight: '70vh'}}>
+      <div className="list-group list-group-flush overflow-auto" style={{flex: 1, minHeight: 0}}>
         {sortedPlants.map(p => (
           <button key={p.code} className={`list-group-item list-group-item-action d-flex align-items-center gap-2 ${selectedCode===p.code?'active':''}`}
             onClick={(e) => handlePlantClick(e, p.code)} draggable
-            onDragStart={e => { e.dataTransfer.setData('text/plain', p.code) }}>
+            onDragStart={e => { e.dataTransfer.setData('text/plain', p.code) }}
+            title={`${p.name} - ${p.sqftSpacing}/sqft, ${p.lightLevel} light${p.cellsRequired ? `, needs ${p.cellsRequired} cells` : ''}`}>
             <span style={{fontSize: 22}}>{p.icon}</span>
             <span className="fw-semibold">{p.name}</span>
           </button>
