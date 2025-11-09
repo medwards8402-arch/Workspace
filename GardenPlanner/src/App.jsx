@@ -10,6 +10,7 @@ import { Settings } from './components/Settings'
 import { ZoneSelector } from './components/ZoneSelector'
 import { Tip } from './components/Tip'
 import { TipsStack } from './components/TipsStack'
+import { Icon } from './components/Icon'
 import { useGardenOperations } from './hooks/useGardenOperations'
 import { useHistory } from './hooks/useHistory'
 import { useFileOperations } from './hooks/useFileOperations'
@@ -103,7 +104,7 @@ export default function App() {
         {/* Main Header (now two levels):
             1) Title + Tabs on the left, Context actions on the right
             2) Global settings: Garden name + Zone/Frost selector */}
-        <header className="mb-2">
+  <header className="mb-2 app-header">
           {/* Level 1: Title + Tabs + Actions */}
           <div className="d-flex align-items-center justify-content-between mb-1 flex-wrap gap-2">
             <div className="d-flex align-items-center flex-wrap" style={{gap: '0.5rem 0.75rem'}}>
@@ -115,7 +116,7 @@ export default function App() {
                     onClick={(e) => { e.stopPropagation(); setActiveTab('new-garden'); }} 
                     title="Configure and generate a new garden layout"
                   >
-                    New Garden
+                    <Icon name="plus-square" className="me-1" /> New
                   </button>
                 </li>
                 <li className="nav-item">
@@ -124,7 +125,7 @@ export default function App() {
                     onClick={(e) => { e.stopPropagation(); setActiveTab('plan'); }} 
                     title="Edit and view your garden layout"
                   >
-                    Garden Plan
+                    <Icon name="grid" className="me-1" /> Plan
                   </button>
                 </li>
                 <li className="nav-item">
@@ -133,7 +134,7 @@ export default function App() {
                     onClick={(e) => { e.stopPropagation(); setActiveTab('calendar'); }} 
                     title="View planting schedule by month"
                   >
-                    Calendar
+                    <Icon name="calendar" className="me-1" /> Calendar
                   </button>
                 </li>
                 <li className="nav-item ms-auto">
@@ -142,7 +143,7 @@ export default function App() {
                     onClick={(e) => { e.stopPropagation(); setActiveTab('info'); }} 
                     title="Usage instructions and information"
                   >
-                    <small>About</small>
+                    <Icon name="info" className="me-1" /> About
                   </button>
                 </li>
                 <li className="nav-item">
@@ -151,7 +152,7 @@ export default function App() {
                     onClick={(e) => { e.stopPropagation(); setActiveTab('settings'); }} 
                     title="Application settings and preferences"
                   >
-                    <small>Settings</small>
+                    <Icon name="settings" className="me-1" /> Settings
                   </button>
                 </li>
               </ul>
@@ -162,44 +163,44 @@ export default function App() {
                   {activeTab === 'plan' && (
                     <div className="btn-group btn-group-sm" role="group">
                       <button
-                        className="btn btn-outline-secondary"
+                        className="btn btn-outline-secondary d-flex align-items-center"
                         onClick={(e) => { e.stopPropagation(); undo(); }}
                         disabled={!canUndo}
                         title="Undo (Ctrl+Z)"
                       >
-                        ↶ Undo
+                        <Icon name="undo" className="me-1" /> Undo
                       </button>
                       <button
-                        className="btn btn-outline-secondary"
+                        className="btn btn-outline-secondary d-flex align-items-center"
                         onClick={(e) => { e.stopPropagation(); redo(); }}
                         disabled={!canRedo}
                         title="Redo (Ctrl+Y)"
                       >
-                        ↷ Redo
+                        <Icon name="redo" className="me-1" /> Redo
                       </button>
                     </div>
                   )}
                   <div className="btn-group btn-group-sm" role="group">
                     <button
-                      className="btn btn-outline-primary"
+                      className="btn btn-outline-primary d-flex align-items-center"
                       onClick={(e) => { e.stopPropagation(); handleSaveToFile(); }}
                       title="Save garden to file"
                     >
-                      💾 Save
+                      <Icon name="save" className="me-1" /> Save
                     </button>
                     <button
-                      className="btn btn-outline-primary"
+                      className="btn btn-outline-primary d-flex align-items-center"
                       onClick={(e) => { e.stopPropagation(); handleLoadFromFile(); }}
                       title="Load garden from file"
                     >
-                      📂 Load
+                      <Icon name="folder-open" className="me-1" /> Load
                     </button>
                     <button
-                      className="btn btn-outline-primary"
+                      className="btn btn-outline-primary d-flex align-items-center"
                       onClick={(e) => { e.stopPropagation(); handlePrintToPDF(); }}
                       title="Export to PDF"
                     >
-                      🖨️ PDF
+                      <Icon name="printer" className="me-1" /> PDF
                     </button>
                   </div>
                 </>
@@ -208,15 +209,16 @@ export default function App() {
           </div>
 
           {/* Level 2: Global settings for this plan */}
-          <div className="d-flex align-items-center justify-content-between flex-wrap gap-2">
-            <button 
-              className="btn btn-sm btn-link text-decoration-none p-0"
-              onClick={(e) => { e.stopPropagation(); handleNameChange(); }}
-              title="Click to rename your garden"
-              style={{ fontSize: '0.95rem' }}
-            >
-              📝 {garden.name}
-            </button>
+          <div className="d-flex align-items-center justify-content-between flex-wrap gap-2 app-header-secondary">
+            <div className="d-flex align-items-center gap-2">
+              <button 
+                className="btn btn-sm btn-outline-success d-flex align-items-center garden-name-btn"
+                onClick={(e) => { e.stopPropagation(); handleNameChange(); }}
+                title="Rename garden"
+              >
+                <Icon name="edit" className="me-1" /> {garden.name}
+              </button>
+            </div>
             <ZoneSelector zone={garden.zone} onChange={setZone} />
           </div>
         </header>

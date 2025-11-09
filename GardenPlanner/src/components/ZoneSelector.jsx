@@ -14,10 +14,10 @@ export function ZoneSelector({ zone, onChange }) {
 
   return (
     <div className="d-flex align-items-center gap-2 flex-wrap">
-      <div className="input-group w-auto">
+      <div className="input-group input-group-sm w-auto">
         <span className="input-group-text" title="USDA Hardiness Zone for your location">USDA Zone</span>
         <select 
-          className="form-select" 
+          className="form-select form-select-sm" 
           value={zone} 
           onChange={e => onChange(e.target.value)} 
           onClick={(e) => e.stopPropagation()} 
@@ -26,10 +26,10 @@ export function ZoneSelector({ zone, onChange }) {
           {Object.keys(USDA_ZONES).map(z => <option key={z} value={z}>{z}</option>)}
         </select>
       </div>
-      <div className="input-group w-auto">
+      <div className="input-group input-group-sm w-auto">
         <span className="input-group-text" title="Average last frost date for your zone">Last Frost</span>
         <input 
-          className="form-control" 
+          className="form-control form-control-sm" 
           readOnly 
           value={frost} 
           title={`Average last frost date for zone ${zone}`} 

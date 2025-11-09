@@ -194,7 +194,6 @@ export function NewGarden({ onAfterGenerate }) {
             >
               Add Bed
             </button>
-            <div className="form-text mt-2">Each bed can have its own name, dimensions, and sunlight level.</div>
             <div className="alert alert-info mt-2">
               <strong>Total Space:</strong> {beds.length} {beds.length === 1 ? 'bed' : 'beds'}; {totalCells} cells
             </div>
