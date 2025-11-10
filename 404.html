@@ -9,7 +9,7 @@
     <script>
       (function() {
         var l = window.location;
-        var base = ''; // must match vite.config.js base
+        var base = '/garden-planner'; // must match vite.config.js base
         // number of segments to keep from the start ("" and "garden-planner")
         var keep = base.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean).length; // 1 for "/garden-planner"
         var parts = l.pathname.split('/');
