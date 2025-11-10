@@ -1,14 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Garden Planner</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <script type="module" crossorigin src="/Workspace/assets/index-6ynQNswP.js"></script>
-    <link rel="stylesheet" crossorigin href="/Workspace/assets/index-CJqFaLVq.css">
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
   </head>
   <body>
-    <div id="root"></div>
+    <p>Redirecting to the application…</p>
+    <script>
+      (function() {
+        var l = window.location;
+        var base = '/garden-planner'; // must match vite.config.js base
+        // number of segments to keep from the start ("" and "garden-planner")
+        var keep = base.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean).length; // 1 for "/garden-planner"
+        var parts = l.pathname.split('/');
+        // build the path after the base
+        var tail = parts.slice(1 + keep).join('/');
+        var p = '/' + tail;
+        // encode original query separately so we can restore it on index.html
+        var q = l.search ? l.search.slice(1).replace(/&/g, '~and~') : '';
+        var h = l.hash ? l.hash.slice(1) : '';
+        var target = l.protocol + '//' + l.host + base + '/?p=' + encodeURIComponent(p) + (q ? '&q=' + encodeURIComponent(q) : '') + (h ? '&h=' + encodeURIComponent(h) : '');
+        l.replace(target);
+      })();
+    </script>
   </body>
 </html>
