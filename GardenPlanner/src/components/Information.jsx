@@ -20,7 +20,7 @@ export function Information() {
                   Use this tab to create a new raised bed layout from scratch:
                 </p>
                 <ul className="small">
-                  <li><strong>Configure Raised Beds:</strong> Add, remove, or customize beds. Set the dimensions (rows × columns), light level (low/medium/high), and name for each raised bed.</li>
+                  <li><strong>Configure Raised Beds:</strong> Add, remove, or customize beds. Set the dimensions (rows × columns), light level (low/high), and name for each raised bed.</li>
                   <li><strong>Select Crops:</strong> Choose which vegetables and herbs you want to grow. Each crop shows its spacing density (plants per square foot).</li>
                   <li><strong>Generate:</strong> Click "Generate Layout" to automatically arrange your selected crops across all raised beds using square foot gardening techniques. Crops are placed in contiguous groups based on spacing needs and light preferences.</li>
                   <li><strong>Note:</strong> Generating a new layout will overwrite your current design.</li>

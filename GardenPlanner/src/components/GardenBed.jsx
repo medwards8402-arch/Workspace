@@ -247,7 +247,7 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
             Bed {bedIndex + 1}
             {lightLevel && (
               <span className="ms-2" title={`${lightLevel} light`} style={{ fontSize: '1.2em' }}>
-                {lightLevel === 'high' ? '☀️' : lightLevel === 'medium' ? '⛅' : '☁️'}
+                {lightLevel === 'high' ? '☀️' : '☁️'}
               </span>
             )}
           </span>

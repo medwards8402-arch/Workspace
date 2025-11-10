@@ -269,7 +269,7 @@ export function PlantInfo() {
         <div className="mb-2">
           <strong>Light Level:</strong><br />
           <span className="badge" style={{
-            backgroundColor: plant.lightLevel === 'high' ? '#fbbf24' : plant.lightLevel === 'medium' ? '#60a5fa' : '#94a3b8'
+            backgroundColor: plant.lightLevel === 'high' ? '#fbbf24' : '#94a3b8'
           }}>
             {plant.lightLevel}
           </span>

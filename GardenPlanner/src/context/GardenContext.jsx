@@ -43,7 +43,7 @@ export const GARDEN_ACTIONS = {
 // Initial State
 const createInitialGarden = () => {
   const beds = Array.from({ length: BED_COUNT }, (_, i) => {
-    const lightLevel = i === 1 ? 'medium' : i === 2 ? 'low' : 'high'
+    const lightLevel = i === 2 ? 'low' : 'high'
     return new Bed(BED_ROWS, BED_COLS, lightLevel)
   })
   

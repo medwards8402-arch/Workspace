@@ -105,7 +105,7 @@ export function devLog(action, data = {}) {
  * @param {number} bedCount - Number of beds to generate
  * @param {number} bedRows - Number of rows per bed
  * @param {number} bedCols - Number of columns per bed
- * @param {Array<string>} bedLightLevels - Light level for each bed ('low', 'medium', 'high')
+ * @param {Array<string>} bedLightLevels - Light level for each bed ('low', 'high')
  * @returns {Array<Array>} Array of bed arrays with populated plant codes
  */
 export function generateGarden(selectedPlantCodes, plantsData, bedCount, bedRows, bedCols, bedLightLevels = []) {

@@ -202,7 +202,7 @@ export class GardenGenerationService {
 
       // Soft light preference: compute adjustedLightScore to avoid monopolizing scarce perfect-light beds
       // If there's only one bed with the perfect light and the group is small vs that bed's free space,
-      // add a small penalty so near-best (e.g., medium) can be chosen when reasonable.
+      // add a small penalty so a secondary choice can be selected when reasonable.
       const lightCounts = beds.reduce((acc, b) => {
         const l = (b.lightLevel || 'high').toLowerCase()
         acc[l] = (acc[l] || 0) + 1
@@ -407,9 +407,9 @@ export class GardenGenerationService {
    * Check if plant light requirement is compatible with bed light level
    */
   static isLightCompatible(plantLight, bedLight) {
-    const levels = { low: 1, medium: 2, high: 3 }
+    const levels = { low: 1, high: 2 }
     const plantLevel = levels[plantLight] || 2
-    const bedLevel = levels[bedLight] || 3
+    const bedLevel = levels[bedLight] || 2
     
     // Allow plants to be in same or higher light
     return bedLevel >= plantLevel
@@ -418,30 +418,27 @@ export class GardenGenerationService {
   /**
    * Returns a numeric score for how suitable a bed light level is for a given plant.
    * Lower is better. Implements requested fallback preferences:
-   *  - Low bed: low best (0), then medium (1), then high (2)
-   *  - High bed: high best (0), then medium (1), then low (2)
-   *  - Medium bed: medium best (0), low and high equal secondary (1)
+   *  - Low bed: low best (0), then high (1)
+   *  - High bed: high best (0), then low (1)
    * If prioritizeLight=false, all scores are equal (0) to ignore light preferences.
    */
   static getBedPreferenceScore(plantLight, bedLight, prioritizeLight = true) {
     if (!prioritizeLight) return 0
 
-    const pl = (plantLight || 'medium').toLowerCase()
+    const pl = (plantLight || 'high').toLowerCase()
     const bl = (bedLight || 'high').toLowerCase()
 
     if (bl === 'low') {
       if (pl === 'low') return 0
-      if (pl === 'medium') return 1
-      return 2 // high
+      return 1 // high
     }
     if (bl === 'high') {
       if (pl === 'high') return 0
-      if (pl === 'medium') return 1
-      return 2 // low
+      return 1 // low
     }
-    // medium bed
-    if (pl === 'medium') return 0
-    return 1 // low or high are equally acceptable second choices
+    // default: treat as high bed
+    if (pl === 'high') return 0
+    return 1
   }
 
   /**

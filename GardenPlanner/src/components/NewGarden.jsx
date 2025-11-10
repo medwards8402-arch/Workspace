@@ -14,7 +14,7 @@ export function NewGarden({ onAfterGenerate }) {
   // Dynamic beds state: array of { name, rows, cols, lightLevel, allowedTypes }
   const [beds, setBeds] = useState([
     { name: 'Bed 1', rows: 4, cols: 8, lightLevel: 'high', allowedTypes: ['vegetable', 'fruit'] },
-    { name: 'Bed 2', rows: 4, cols: 8, lightLevel: 'medium', allowedTypes: ['vegetable', 'fruit'] },
+    { name: 'Bed 2', rows: 4, cols: 8, lightLevel: 'high', allowedTypes: ['vegetable', 'fruit'] },
     { name: 'Bed 3', rows: 4, cols: 8, lightLevel: 'low', allowedTypes: ['vegetable', 'fruit'] },
     { name: 'Herb Bed', rows: 2, cols: 4, lightLevel: 'high', allowedTypes: ['herb'] }
   ])
@@ -181,7 +181,6 @@ export function NewGarden({ onAfterGenerate }) {
                         title="Sunlight level"
                       >
                         <option value="low">☁️ Low</option>
-                        <option value="medium">⛅ Medium</option>
                         <option value="high">☀️ High</option>
                       </select>
                     </td>
