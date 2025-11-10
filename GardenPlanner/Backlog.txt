@@ -4,7 +4,15 @@ PDF betterment:
 * Don't print notes when there aren't any
 * Make it look better
 
+Bug: If first bed allows herbs and all veggies+basil is selected it will be filled with basil.
+
+Warnings would be nice: high light in a low light bed.
+
+Edit names from the Layout tab
+
+Hide the auto-planter behind experimental settings.
 
 Publish webpage somewhere
+    Better URL
     Collect feedback from people I know
     Post to reddit for more feedback
