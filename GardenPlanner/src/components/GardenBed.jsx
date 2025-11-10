@@ -3,7 +3,7 @@ import { useGardenOperations } from '../hooks/useGardenOperations'
 import { useSelection } from '../hooks/useSelection'
 import { PLANTS } from '../data'
 
-function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter, selected, cellSize }) {
+function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter, selected, cellSize, isDimmed }) {
   const scale = useMemo(() => cellSize / 68, [cellSize])
   const fs = (v) => Math.max(7, Math.round(v * scale))
   const gapPx = (v) => Math.max(1, Math.round(v * scale))
@@ -26,9 +26,9 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
     onMouseEnter()
   }
 
-  // Render multiple icons based on sqftSpacing
+  // Render multiple icons based on sqftSpacing (only for non-dimmed cells)
   const renderPlantIcons = () => {
-    if (!plant) return null
+    if (!plant || isDimmed) return null
     
     const spacing = plant.sqftSpacing || 1
     
@@ -113,7 +113,15 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
 
   return (
     <div className={`border rounded-3 d-flex flex-column align-items-center justify-content-center position-relative`} 
-         style={{width: cellSize, height: cellSize, background: 'var(--cell-bg)', borderStyle: 'dashed', cursor: 'pointer', userSelect: 'none'}}
+         style={{
+           width: cellSize, 
+           height: cellSize, 
+           background: 'var(--cell-bg)', 
+           borderStyle: 'dashed', 
+           cursor: 'pointer', 
+           userSelect: 'none',
+           opacity: isDimmed ? 0.7 : 1,
+         }}
          onDragOver={e => { e.preventDefault(); e.dataTransfer.dropEffect='copy' }}
          onDrop={onDrop}
          onClick={handleClick}
@@ -239,6 +247,257 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
   const cardPadding = 24 // 12px padding on each side
   const cardWidth = gridWidth + cardPadding
 
+  // Compute contiguous groups for sprawling crops to draw enlarged plant visuals
+  const sprawlingOverlays = useMemo(() => {
+    const overlays = []
+    const cells = bed.cells
+    const visited = new Set()
+    const codeToPlant = new Map(PLANTS.map(p => [p.code, p]))
+
+    const idxToRowCol = (idx) => ({ row: Math.floor(idx / bedCols), col: idx % bedCols })
+    const inBounds = (r, c) => r >= 0 && r < bedRows && c >= 0 && c < bedCols
+    const idxAt = (r, c) => r * bedCols + c
+
+    for (let i = 0; i < cells.length; i++) {
+      const code = cells[i]
+      if (!code || visited.has(i)) continue
+      const plant = codeToPlant.get(code)
+      if (!plant || !(plant.cellsRequired && plant.cellsRequired > 1)) continue
+
+      // BFS to collect contiguous group of the same plant code
+      const queue = [i]
+      const group = []
+      visited.add(i)
+      while (queue.length) {
+        const idx = queue.shift()
+        group.push(idx)
+        const { row, col } = idxToRowCol(idx)
+        const neighbors = [
+          [row-1, col],
+          [row+1, col],
+          [row, col-1],
+          [row, col+1],
+        ]
+        for (const [nr, nc] of neighbors) {
+          if (!inBounds(nr, nc)) continue
+          const nIdx = idxAt(nr, nc)
+          if (!visited.has(nIdx) && cells[nIdx] === code) {
+            visited.add(nIdx)
+            queue.push(nIdx)
+          }
+        }
+      }
+
+      // Compute bounding box for this group
+      let minR = bedRows, maxR = -1, minC = bedCols, maxC = -1
+      group.forEach(idx => {
+        const { row, col } = idxToRowCol(idx)
+        minR = Math.min(minR, row)
+        maxR = Math.max(maxR, row)
+        minC = Math.min(minC, col)
+        maxC = Math.max(maxC, col)
+      })
+
+      const spanRows = maxR - minR + 1
+      const spanCols = maxC - minC + 1
+      const groupSize = group.length // in sq ft
+      const requiredPerPlant = plant.cellsRequired
+      const plantCount = Math.max(1, Math.round(groupSize / requiredPerPlant))
+
+      // Divide the group into individual plant instances
+      // Each plant instance should occupy requiredPerPlant cells
+      // STRATEGY: Try horizontal placements first (left-to-right, top-to-bottom),
+      // then vertical placements to fill remaining gaps
+      const groupSet = new Set(group)
+      const plantInstances = []
+      const instanceVisited = new Set()
+      
+      const isSquareShape = requiredPerPlant === 4 || requiredPerPlant === 9
+      
+      // Helper: Try to claim a shape starting from an index
+      const tryClaimShape = (startIdx, preferHorizontal) => {
+        if (instanceVisited.has(startIdx)) return null
+        
+        const { row: startRow, col: startCol } = idxToRowCol(startIdx)
+        const instanceCells = []
+        
+        // Determine shape dimensions based on requiredPerPlant and orientation preference
+        let shapeRows, shapeCols
+        if (isSquareShape) {
+          // Square shapes don't need rotation (2x2 or 3x3)
+          const side = Math.sqrt(requiredPerPlant)
+          shapeRows = shapeCols = side
+        } else if (requiredPerPlant === 2) {
+          // 2-cell shapes: prefer 1x2 (horizontal) or 2x1 (vertical)
+          if (preferHorizontal) {
+            shapeRows = 1
+            shapeCols = 2
+          } else {
+            shapeRows = 2
+            shapeCols = 1
+          }
+        } else if (requiredPerPlant === 8) {
+          // 8-cell shapes: prefer 2x4 (horizontal) or 4x2 (vertical)
+          if (preferHorizontal) {
+            shapeRows = 2
+            shapeCols = 4
+          } else {
+            shapeRows = 4
+            shapeCols = 2
+          }
+        } else {
+          // Fallback: try to approximate a rectangular shape
+          const side = Math.sqrt(requiredPerPlant)
+          if (preferHorizontal) {
+            shapeRows = Math.floor(side)
+            shapeCols = Math.ceil(requiredPerPlant / shapeRows)
+          } else {
+            shapeCols = Math.floor(side)
+            shapeRows = Math.ceil(requiredPerPlant / shapeCols)
+          }
+        }
+        
+        // Try to claim the shape starting from startIdx
+        let canClaim = true
+        for (let rOffset = 0; rOffset < shapeRows && canClaim; rOffset++) {
+          for (let cOffset = 0; cOffset < shapeCols && canClaim; cOffset++) {
+            const r = startRow + rOffset
+            const c = startCol + cOffset
+            if (!inBounds(r, c)) {
+              canClaim = false
+              break
+            }
+            const idx = idxAt(r, c)
+            if (!groupSet.has(idx) || instanceVisited.has(idx)) {
+              canClaim = false
+              break
+            }
+          }
+        }
+        
+        if (!canClaim) return null
+        
+        // Claim the shape
+        for (let rOffset = 0; rOffset < shapeRows; rOffset++) {
+          for (let cOffset = 0; cOffset < shapeCols; cOffset++) {
+            const idx = idxAt(startRow + rOffset, startCol + cOffset)
+            instanceCells.push(idx)
+            instanceVisited.add(idx)
+          }
+        }
+        
+        return instanceCells
+      }
+      
+      // PASS 1: Try horizontal placements (scan top-to-bottom, left-to-right)
+      if (!isSquareShape) {
+        for (let r = minR; r <= maxR; r++) {
+          for (let c = minC; c <= maxC; c++) {
+            const idx = idxAt(r, c)
+            if (!groupSet.has(idx) || instanceVisited.has(idx)) continue
+            
+            const instanceCells = tryClaimShape(idx, true) // preferHorizontal
+            if (instanceCells) {
+              // Calculate center and bounds for this instance
+              let iMinR = bedRows, iMaxR = -1, iMinC = bedCols, iMaxC = -1
+              instanceCells.forEach(idx => {
+                const { row, col } = idxToRowCol(idx)
+                iMinR = Math.min(iMinR, row)
+                iMaxR = Math.max(iMaxR, row)
+                iMinC = Math.min(iMinC, col)
+                iMaxC = Math.max(iMaxC, col)
+              })
+              
+              const iSpanRows = iMaxR - iMinR + 1
+              const iSpanCols = iMaxC - iMinC + 1
+              const iCenterLeft = iMinC * (cellSize + gap) + (iSpanCols * cellSize + (iSpanCols - 1) * gap) / 2
+              const iCenterTop = iMinR * (cellSize + gap) + (iSpanRows * cellSize + (iSpanRows - 1) * gap) / 2
+              const iIconSize = Math.min(cellSize * 1.8, Math.max(cellSize * 0.7, Math.sqrt(instanceCells.length) * cellSize * 0.55))
+              
+              const iBoundingBox = {
+                left: iMinC * (cellSize + gap),
+                top: iMinR * (cellSize + gap),
+                width: iSpanCols * cellSize + (iSpanCols - 1) * gap,
+                height: iSpanRows * cellSize + (iSpanRows - 1) * gap,
+              }
+              
+              plantInstances.push({
+                cells: instanceCells,
+                centerLeft: iCenterLeft,
+                centerTop: iCenterTop,
+                iconSize: iIconSize,
+                boundingBox: iBoundingBox,
+              })
+            }
+          }
+        }
+      }
+      
+      // PASS 2: Fill gaps (square shapes or vertical fills)
+      for (let r = minR; r <= maxR; r++) {
+        for (let c = minC; c <= maxC; c++) {
+          const idx = idxAt(r, c)
+          if (!groupSet.has(idx) || instanceVisited.has(idx)) continue
+          
+          const instanceCells = tryClaimShape(idx, isSquareShape ? true : false) // vertical for non-square
+          if (instanceCells) {
+            // Calculate center and bounds for this instance
+            let iMinR = bedRows, iMaxR = -1, iMinC = bedCols, iMaxC = -1
+            instanceCells.forEach(idx => {
+              const { row, col } = idxToRowCol(idx)
+              iMinR = Math.min(iMinR, row)
+              iMaxR = Math.max(iMaxR, row)
+              iMinC = Math.min(iMinC, col)
+              iMaxC = Math.max(iMaxC, col)
+            })
+            
+            const iSpanRows = iMaxR - iMinR + 1
+            const iSpanCols = iMaxC - iMinC + 1
+            const iCenterLeft = iMinC * (cellSize + gap) + (iSpanCols * cellSize + (iSpanCols - 1) * gap) / 2
+            const iCenterTop = iMinR * (cellSize + gap) + (iSpanRows * cellSize + (iSpanRows - 1) * gap) / 2
+            const iIconSize = Math.min(cellSize * 1.8, Math.max(cellSize * 0.7, Math.sqrt(instanceCells.length) * cellSize * 0.55))
+            
+            const iBoundingBox = {
+              left: iMinC * (cellSize + gap),
+              top: iMinR * (cellSize + gap),
+              width: iSpanCols * cellSize + (iSpanCols - 1) * gap,
+              height: iSpanRows * cellSize + (iSpanRows - 1) * gap,
+            }
+            
+            plantInstances.push({
+              cells: instanceCells,
+              centerLeft: iCenterLeft,
+              centerTop: iCenterTop,
+              iconSize: iIconSize,
+              boundingBox: iBoundingBox,
+            })
+          }
+        }
+      }
+
+      overlays.push({
+        code,
+        plant,
+        plantCount,
+        requiredPerPlant,
+        groupSize,
+        cellIndices: group, // Store indices to dim underlying cells
+        plantInstances, // Individual plant icons to render
+      })
+    }
+
+    return overlays
+  }, [bed.cells, bedCols, bedRows, cellSize])
+
+  // Create set of indices that are part of sprawling groups (to dim them)
+  const sprawlingCellIndices = useMemo(() => {
+    const indices = new Set()
+    sprawlingOverlays.forEach(ov => {
+      ov.cellIndices.forEach(idx => indices.add(idx))
+    })
+    return indices
+  }, [sprawlingOverlays])
+
   return (
     <div className="d-flex gap-3" onClick={handleCardClick}>
       <div className="card" style={{ width: cardWidth, minWidth: cardWidth, maxWidth: cardWidth, height: 'fit-content' }}>
@@ -279,17 +538,20 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
               height: gridHeight,
               minHeight: gridHeight,
               maxHeight: gridHeight,
+              position: 'relative',
             }}
             onClick={handleBedClick}
           >
             {bed.cells.map((code, i) => {
               const plant = PLANTS.find(p => p.code === code)
+              const isDimmed = sprawlingCellIndices.has(i)
               return (
                 <Cell
                   key={i}
                   plant={plant}
                   selected={selectedIndices.has(i)}
                   cellSize={cellSize}
+                  isDimmed={isDimmed}
                   onDrop={(e) => {
                     e.preventDefault();
                     const c = e.dataTransfer.getData('text/plain');
@@ -302,6 +564,59 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
                 />
               );
             })}
+
+            {/* Large plant icons for sprawling crops - render individual plant instances */}
+            {sprawlingOverlays.map((ov, ovIdx) => (
+              <React.Fragment key={`sprawl-group-${ovIdx}`}>
+                {ov.plantInstances.map((instance, instIdx) => (
+                  <React.Fragment key={`sprawl-${ovIdx}-${instIdx}`}>
+                    {/* Subtle grouping border around this plant instance */}
+                    <div style={{
+                      position: 'absolute',
+                      left: instance.boundingBox.left,
+                      top: instance.boundingBox.top,
+                      width: instance.boundingBox.width,
+                      height: instance.boundingBox.height,
+                      border: `2px solid ${ov.plant.color}`,
+                      borderRadius: 8,
+                      pointerEvents: 'none',
+                      zIndex: 4,
+                      opacity: 0.4,
+                    }} />
+                    
+                    {/* Large plant icon */}
+                    <div style={{
+                         position: 'absolute',
+                         left: instance.centerLeft,
+                         top: instance.centerTop,
+                         transform: 'translate(-50%, -50%)',
+                         pointerEvents: 'none',
+                         zIndex: 5,
+                         display: 'flex',
+                         flexDirection: 'column',
+                         alignItems: 'center',
+                         gap: 2,
+                       }}
+                    >
+                      <div style={{
+                        fontSize: instance.iconSize,
+                        lineHeight: 1,
+                        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+                      }}>
+                        {ov.plant.icon}
+                      </div>
+                      {/* Label matching single-cell plant style */}
+                      <div className="small text-center" style={{
+                        lineHeight: 1.1,
+                        fontSize: Math.max(7, Math.round((instance.iconSize * 0.15) * (cellSize / 68)))
+                      }}>
+                        {ov.plant.name}
+                      </div>
+                    </div>
+                  </React.Fragment>
+                ))}
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </div>
