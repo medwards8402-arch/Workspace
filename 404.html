@@ -16,8 +16,10 @@
         // build the path after the base
         var tail = parts.slice(1 + keep).join('/');
         var p = '/' + tail;
-        // Build final URL using hash routing. Preserve query and hash.
-        var target = l.protocol + '//' + l.host + base + '/#' + p + (l.search || '') + (l.hash || '');
+        // encode original query separately so we can restore it on index.html
+        var q = l.search ? l.search.slice(1).replace(/&/g, '~and~') : '';
+        var h = l.hash ? l.hash.slice(1) : '';
+        var target = l.protocol + '//' + l.host + base + '/?p=' + encodeURIComponent(p) + (q ? '&q=' + encodeURIComponent(q) : '') + (h ? '&h=' + encodeURIComponent(h) : '');
         l.replace(target);
       })();
     </script>

@@ -9,6 +9,28 @@
     <link rel="stylesheet" crossorigin href="/garden-planner/assets/index-CJqFaLVq.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"></div>
+    <!-- GitHub Pages SPA redirect handler: reconstruct original path from query params (p, q, h) -->
+    <script>
+      (function() {
+        var params = new URLSearchParams(window.location.search);
+        var p = params.get('p'); // original pathname
+        if (p) {
+          try {
+            var q = params.get('q'); // original query (no leading ?)
+            var h = params.get('h'); // original hash (no leading #)
+            var path = decodeURIComponent(p);
+            // Normalize to ensure a leading slash
+            path = ('/' + path).replace(/\/+/, '/');
+            var url = path;
+            if (q) url += '?' + decodeURIComponent(q.replace(/~and~/g, '&'));
+            if (h) url += '#' + decodeURIComponent(h);
+            window.history.replaceState(null, '', url);
+          } catch (e) {
+            console.warn('SPA redirect reconstruction failed', e);
+          }
+        }
+      })();
+    </script>
   </body>
 </html>
