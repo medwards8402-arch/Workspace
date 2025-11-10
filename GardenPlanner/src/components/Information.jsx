@@ -17,12 +17,13 @@ export function Information() {
               <div className="col-md-4">
                 <h6 className="text-primary">🌱 New Layout</h6>
                 <p>
-                  Use this tab to create a new raised bed layout from scratch:
+                  Use this tab to quickly generate a starter layout using a 3-step wizard:
                 </p>
                 <ul className="small">
-                  <li><strong>Configure Raised Beds:</strong> Add, remove, or customize beds. Set the dimensions (rows × columns), light level (low/high), and name for each raised bed.</li>
-                  <li><strong>Select Crops:</strong> Choose which vegetables and herbs you want to grow. Each crop shows its spacing density (plants per square foot).</li>
-                  <li><strong>Generate:</strong> Click "Generate Layout" to automatically arrange your selected crops across all raised beds using square foot gardening techniques. Crops are placed in contiguous groups based on spacing needs and light preferences.</li>
+                  <li><strong>Step 1 - Raised Beds:</strong> Choose a preset template (Beginner, Family Garden, etc.) or customize each bed's size, light level (low/high), and allowed crop types.</li>
+                  <li><strong>Step 2 - Select Crops:</strong> Pick vegetables, fruits, and herbs to grow. Use filters by type, light level, or search. Quick-select buttons let you add all vegetables, fruits, or herbs at once.</li>
+                  <li><strong>Step 3 - Review & Generate:</strong> Review your configuration and click Generate to create an initial layout. The auto-planter arranges crops in contiguous blocks based on spacing and light preferences.</li>
+                  <li><strong>Important:</strong> This creates a <em>starting point</em> that you'll refine on the Layout tab. Don't overthink your selections—the goal is to get a draft layout quickly!</li>
                   <li><strong>Note:</strong> Generating a new layout will overwrite your current design.</li>
                 </ul>
               </div>
@@ -34,7 +35,8 @@ export function Information() {
                   Your main workspace for viewing and editing your raised bed layout:
                 </p>
                 <ul className="small">
-                  <li><strong>Crop Palette:</strong> Select a crop from the left sidebar, then click any cell in your beds to place it. Selected crops stick as you scroll.</li>
+                  <li><strong>Crop Palette:</strong> Select a crop from the left sidebar (use filters to narrow by type, light level, or search). Click any cell in your beds to place it. Selected crops stick as you scroll.</li>
+                  <li><strong>Drag & Drop:</strong> You can drag crops directly from the palette onto bed cells for faster placement.</li>
                   <li><strong>Edit Cells:</strong> Click a planted cell to select it. Press Delete or Backspace to remove crops. Click and drag to select multiple cells.</li>
                   <li><strong>Crop Details:</strong> Click any planted cell to see detailed growing information in the right panel, including target dates based on your USDA zone and spacing requirements.</li>
                   <li><strong>Save/Load:</strong> Use the Save button to export your layout to a .pln file. Use Load to import a previously saved plan.</li>
@@ -135,11 +137,13 @@ export function Information() {
               <div className="col-12">
                 <h6>💡 Tips & Best Practices</h6>
                 <ul className="small mb-0">
-                  <li><strong>Succession Planting:</strong> For continuous harvests, plant cool-season crops (lettuce, spinach) in early spring and again in fall.</li>
+                  <li><strong>Start with the Auto-Planner:</strong> Use the New Layout wizard to generate an initial layout quickly, then refine it on the Layout tab. The auto-planner helps you get started without analysis paralysis.</li>
+                  <li><strong>Light Requirements:</strong> The planner uses a two-tier light system: High light (☀️) for fruiting plants (tomatoes, peppers, squash) and Low light (☁️) for shade-tolerant crops (leafy greens, root vegetables).</li>
+                  <li><strong>Succession Planting:</strong> For continuous harvests, plant cool-season crops (lettuce, spinach) in early spring and again in fall. The calendar shows both spring and fall planting windows where applicable.</li>
                   <li><strong>Companion Planting:</strong> Group compatible plants together. For example, tomatoes grow well with basil, and carrots with onions.</li>
-                  <li><strong>Light Requirements:</strong> Pay attention to light levels. Most fruiting plants (tomatoes, peppers, squash) need high light, while leafy greens can tolerate partial shade.</li>
-                  <li><strong>Start Small:</strong> If you're new to gardening, start with 1-2 beds and expand as you gain experience.</li>
-                  <li><strong>Save Often:</strong> Export your plan regularly to avoid losing your layout. Plans are saved with a .pln extension.</li>
+                  <li><strong>Start Small:</strong> If you're new to gardening, try the "Beginner" preset (2 beds, 40 sq ft) and expand as you gain experience.</li>
+                  <li><strong>Use Filters:</strong> When working in the Layout tab, use the crop palette filters to quickly find vegetables, fruits, herbs, or plants suitable for your light conditions.</li>
+                  <li><strong>Save Often:</strong> Export your plan regularly to avoid losing your layout. Plans are saved with a .pln extension and can be loaded later.</li>
                 </ul>
               </div>
             </div>
