@@ -49,7 +49,7 @@ export function PlantInfo() {
           <h6 className="card-title m-0">Crop Info</h6>
         </div>
         <div className="card-body">
-          <p className="text-muted mb-0">Click on a cell to view crop details</p>
+          <p className="text-muted mb-0">Click a square (1 sq ft) to view crop details</p>
         </div>
       </div>
     )
@@ -60,7 +60,7 @@ export function PlantInfo() {
   const plantCodes = selectedCells.map(idx => bed.getCell(idx)).filter(Boolean)
   const uniquePlantCodes = [...new Set(plantCodes)]
   
-  // If only empty cells selected
+  // If only empty squares selected
   if (uniquePlantCodes.length === 0) {
     return (
       <div className="card" style={{ width: '300px' }}>
@@ -69,7 +69,7 @@ export function PlantInfo() {
         </div>
         <div className="card-body">
           <p className="mb-2">
-            <strong>{selectedIndices.size}</strong> empty {selectedIndices.size === 1 ? 'cell' : 'cells'} selected
+            <strong>{selectedIndices.size}</strong> empty {selectedIndices.size === 1 ? 'square' : 'squares'} selected
           </p>
           <div className="alert alert-info small mb-0">
             Select a planted cell to view details
@@ -88,7 +88,7 @@ export function PlantInfo() {
         </div>
         <div className="card-body">
           <p className="mb-2">
-            <strong>{selectedIndices.size}</strong> cells selected with <strong>{uniquePlantCodes.length}</strong> different crops
+            <strong>{selectedIndices.size}</strong> squares selected with <strong>{uniquePlantCodes.length}</strong> different crops
           </p>
           <div className="alert alert-info small mb-0">
             Select cells with the same crop to view details and edit notes
@@ -137,7 +137,7 @@ export function PlantInfo() {
       <div className="card-body">
         {selectedIndices.size > 1 && (
           <div className="mb-2">
-            <span className="badge bg-secondary">{selectedIndices.size} cells selected</span>
+            <span className="badge bg-secondary">{selectedIndices.size} sq ft selected</span>
           </div>
         )}
         
@@ -250,21 +250,18 @@ export function PlantInfo() {
         )}
         
         <div className="mb-2">
-          <strong>Spacing (sq ft):</strong><br />
-          {plant.cellsRequired ? (
-            <>1 plant per {plant.cellsRequired} cell{plant.cellsRequired > 1 ? 's' : ''}</>
+          <strong>Spacing:</strong><br />
+          {plant.cellsRequired && plant.cellsRequired > 1 ? (
+            <>
+              1 plant / {plant.cellsRequired} sq ft{' '}
+              <span className="badge bg-warning text-dark" title={`Sprawling crop: reserve ${plant.cellsRequired} sq ft per plant`}>sprawling</span>
+            </>
           ) : (
-            <>{plant.sqftSpacing} plant{plant.sqftSpacing > 1 ? 's' : ''} per cell</>
+            <>
+              {plant.sqftSpacing} plant{plant.sqftSpacing > 1 ? 's' : ''} / sq ft
+            </>
           )}
         </div>
-        
-        {plant.cellsRequired && plant.cellsRequired > 1 && (
-          <div className="mb-2">
-            <div className="alert alert-warning small mb-0" style={{ padding: '0.5rem' }}>
-              <strong>⚠️ Sprawling crop:</strong> Each plant requires {plant.cellsRequired} cells (square feet) of space
-            </div>
-          </div>
-        )}
         
         <div className="mb-2">
           <strong>Light Level:</strong><br />
@@ -292,7 +289,7 @@ export function PlantInfo() {
           <label className="form-label fw-bold">Notes:</label>
           {hasMultipleValues && (
             <div className="alert alert-warning small mb-2">
-              Selected cells have different notes. Changes will overwrite all.
+              Selected squares have different notes. Changes will overwrite all.
             </div>
           )}
           <textarea

@@ -83,7 +83,7 @@ export function PlantPalette({ plants }) {
             <button key={p.code} className={`list-group-item list-group-item-action d-flex align-items-center gap-2 ${selectedPlant===p.code?'active':''}`}
               onClick={(e) => handlePlantClick(e, p.code)} draggable
               onDragStart={e => { e.dataTransfer.setData('text/plain', p.code) }}
-              title={`${p.name} - ${p.sqftSpacing}/sqft, ${p.lightLevel} light${p.cellsRequired ? `, needs ${p.cellsRequired} cells` : ''}`}
+              title={`${p.name} - ${p.sqftSpacing}/sqft, ${p.lightLevel} light${p.cellsRequired ? `, needs ${p.cellsRequired} sq ft` : ''}`}
               style={{fontSize: '0.85rem', padding: '0.5rem 0.75rem'}}>
               <span style={{fontSize: 20}}>{p.icon}</span>
               <span className="fw-semibold">{p.name}</span>

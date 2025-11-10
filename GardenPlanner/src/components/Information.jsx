@@ -78,7 +78,7 @@ export function Information() {
                 </p>
                 <ul className="small mb-0">
                   <li><strong>Layout:</strong> Color-coded visual map of beds showing where each crop is located</li>
-                  <li><strong>Planting Instructions:</strong> Each crop displays quantity info—fractions (1/2, 1/4) show cells per plant for large crops like squash, while numbers show how many to plant per cell</li>
+                  <li><strong>Planting Instructions:</strong> Each crop displays quantity info—fractions (1/2, 1/4) show sq ft per plant for large crops like squash, while numbers show how many to plant per sq ft</li>
                   <li><strong>Calendar:</strong> When to start seeds, transplant, and harvest based on your USDA zone</li>
                   <li><strong>Growing Notes:</strong> Detailed care instructions for each crop in your plan</li>
                 </ul>

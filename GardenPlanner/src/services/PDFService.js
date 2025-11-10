@@ -140,10 +140,10 @@ export class PDFService {
                   // Show total plants based on sqftSpacing
                   const totalPlants = Math.ceil(groupSize / plant.sqftSpacing)
                   if (plant.sqftSpacing > 1) {
-                    // Multiple plants per cell (e.g., 4 per cell, 16 per cell)
-                    quantityText = `${plant.sqftSpacing} per cell`
+                    // Multiple plants per square foot (e.g., 4 per sq ft, 16 per sq ft)
+                    quantityText = `${plant.sqftSpacing} per sq ft`
                   } else {
-                    // One plant per cell
+                    // One plant per square foot
                     quantityText = `${totalPlants} plant${totalPlants > 1 ? 's' : ''}`
                   }
                 }

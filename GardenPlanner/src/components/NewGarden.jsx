@@ -584,8 +584,11 @@ export function NewGarden({ onAfterGenerate }) {
                                 <span style={{ fontSize: '1.5em' }}>{plant.icon}</span>
                                 <div className="flex-grow-1">
                                   <div className="fw-bold">{plant.name}</div>
+                                  {/* Display multi-square-foot sprawling crops using cellsRequired; fallback to per sq ft spacing */}
                                   <div className="small text-muted">
-                                    {plant.sqftSpacing}/sq ft • {plant.lightLevel === 'high' ? '☀️' : '☁️'} {plant.lightLevel}
+                                    {plant.cellsRequired && plant.cellsRequired > 1
+                                      ? `1 plant per ${plant.cellsRequired} sq ft`
+                                      : `${plant.sqftSpacing}/sq ft`} • {plant.lightLevel === 'high' ? '☀️' : '☁️'} {plant.lightLevel}
                                   </div>
                                 </div>
                               </div>
