@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+  </head>
+  <body>
+    <p>Redirecting to the application…</p>
+    <script>
+      (function() {
+        var l = window.location;
+        var base = '/garden-planner'; // must match vite.config.js base
+        // number of segments to keep from the start ("" and "garden-planner")
+        var keep = base.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean).length; // 1 for "/garden-planner"
+        var parts = l.pathname.split('/');
+        // build the path after the base
+        var tail = parts.slice(1 + keep).join('/');
+        var p = '/' + tail;
+        // Build final URL using hash routing. Preserve query and hash.
+        var target = l.protocol + '//' + l.host + base + '/#' + p + (l.search || '') + (l.hash || '');
+        l.replace(target);
+      })();
+    </script>
+  </body>
+</html>
