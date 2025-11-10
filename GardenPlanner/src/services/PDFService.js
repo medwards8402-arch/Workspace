@@ -131,26 +131,46 @@ export class PDFService {
                 doc.setFillColor(red, green, blue)
               }
               doc.rect(x, y, cellSize, cellSize, 'F')
-              
-              // Draw selective borders - only where adjacent cells differ
+
+              // Draw borders: always for single-cell, only outer for sprawling
               doc.setDrawColor(220, 220, 220)
               doc.setLineWidth(0.1)
-              
-              // Top border (if different plant above or edge)
-              if (r === 0 || bed.cells[(r - 1) * bed.cols + c] !== plantCode) {
-                doc.line(x, y, x + cellSize, y)
+              let isSprawling = false;
+              for (const group of sprawlingGroups) {
+                if (group.cellIndices.includes(cellIndex)) {
+                  isSprawling = true;
+                  break;
+                }
               }
-              // Bottom border (if different plant below or edge)
-              if (r === bed.rows - 1 || bed.cells[(r + 1) * bed.cols + c] !== plantCode) {
-                doc.line(x, y + cellSize, x + cellSize, y + cellSize)
-              }
-              // Left border (if different plant left or edge)
-              if (c === 0 || bed.cells[r * bed.cols + (c - 1)] !== plantCode) {
-                doc.line(x, y, x, y + cellSize)
-              }
-              // Right border (if different plant right or edge)
-              if (c === bed.cols - 1 || bed.cells[r * bed.cols + (c + 1)] !== plantCode) {
-                doc.line(x + cellSize, y, x + cellSize, y + cellSize)
+              if (!isSprawling) {
+                // Single-cell: always draw all borders
+                doc.line(x, y, x + cellSize, y) // Top
+                doc.line(x, y + cellSize, x + cellSize, y + cellSize) // Bottom
+                doc.line(x, y, x, y + cellSize) // Left
+                doc.line(x + cellSize, y, x + cellSize, y + cellSize) // Right
+              } else {
+                // Sprawling crop: only draw border if at edge of group
+                for (const group of sprawlingGroups) {
+                  if (group.cellIndices.includes(cellIndex)) {
+                    // Top
+                    if (r === 0 || !group.cellIndices.includes((r - 1) * bed.cols + c)) {
+                      doc.line(x, y, x + cellSize, y)
+                    }
+                    // Bottom
+                    if (r === bed.rows - 1 || !group.cellIndices.includes((r + 1) * bed.cols + c)) {
+                      doc.line(x, y + cellSize, x + cellSize, y + cellSize)
+                    }
+                    // Left
+                    if (c === 0 || !group.cellIndices.includes(r * bed.cols + (c - 1))) {
+                      doc.line(x, y, x, y + cellSize)
+                    }
+                    // Right
+                    if (c === bed.cols - 1 || !group.cellIndices.includes(r * bed.cols + (c + 1))) {
+                      doc.line(x + cellSize, y, x + cellSize, y + cellSize)
+                    }
+                    break;
+                  }
+                }
               }
               
               // Add plant name and quantity info (only once per contiguous group)
@@ -555,188 +575,167 @@ export class PDFService {
    * Returns array of groups with plant instances using two-pass strategy
    */
   static detectSprawlingGroups(bed, cellSize) {
-    const groups = []
-    const cells = bed.cells
-    const visited = new Set()
-    const bedRows = bed.rows
-    const bedCols = bed.cols
-    
-    const idxToRowCol = (idx) => ({ row: Math.floor(idx / bedCols), col: idx % bedCols })
-    const inBounds = (r, c) => r >= 0 && r < bedRows && c >= 0 && c < bedCols
-    const idxAt = (r, c) => r * bedCols + c
-    
-    for (let i = 0; i < cells.length; i++) {
-      const code = cells[i]
-      if (!code || visited.has(i)) continue
-      const plant = PLANTS.find(p => p.code === code)
-      if (!plant || !(plant.cellsRequired && plant.cellsRequired > 1)) continue
-      
-      // BFS to collect contiguous group
-      const queue = [i]
-      const group = []
-      visited.add(i)
+    const groups = [];
+    const cells = bed.cells;
+    const visited = new Set();
+    const bedRows = bed.rows;
+    const bedCols = bed.cols;
+    const idxToRowCol = idx => ({ row: Math.floor(idx / bedCols), col: idx % bedCols });
+    const idxAt = (row, col) => row * bedCols + col;
+    const inBounds = (row, col) => row >= 0 && row < bedRows && col >= 0 && col < bedCols;
+    for (let idx = 0; idx < cells.length; idx++) {
+      if (visited.has(idx) || !cells[idx]) continue;
+      const code = cells[idx];
+      const plant = PLANTS.find(p => p.code === code);
+      if (!plant || !plant.cellsRequired || plant.cellsRequired === 1) continue;
+      const queue = [idx];
+      visited.add(idx);
+      const group = [];
       while (queue.length) {
-        const idx = queue.shift()
-        group.push(idx)
-        const { row, col } = idxToRowCol(idx)
+        const current = queue.shift();
+        group.push(current);
+        const { row, col } = idxToRowCol(current);
         const neighbors = [
           [row-1, col], [row+1, col], [row, col-1], [row, col+1]
-        ]
+        ];
         for (const [nr, nc] of neighbors) {
-          if (!inBounds(nr, nc)) continue
-          const nIdx = idxAt(nr, nc)
+          if (!inBounds(nr, nc)) continue;
+          const nIdx = idxAt(nr, nc);
           if (!visited.has(nIdx) && cells[nIdx] === code) {
-            visited.add(nIdx)
-            queue.push(nIdx)
+            visited.add(nIdx);
+            queue.push(nIdx);
           }
         }
       }
-      
       // Compute bounding box
-      let minR = bedRows, maxR = -1, minC = bedCols, maxC = -1
+      let minR = bedRows, maxR = -1, minC = bedCols, maxC = -1;
       group.forEach(idx => {
-        const { row, col } = idxToRowCol(idx)
-        minR = Math.min(minR, row)
-        maxR = Math.max(maxR, row)
-        minC = Math.min(minC, col)
-        maxC = Math.max(maxC, col)
-      })
-      
-      const requiredPerPlant = plant.cellsRequired
-      const isSquareShape = requiredPerPlant === 4 || requiredPerPlant === 9
-      const groupSet = new Set(group)
-      const instanceVisited = new Set()
-      const plantInstances = []
-      
+        const { row, col } = idxToRowCol(idx);
+        minR = Math.min(minR, row);
+        maxR = Math.max(maxR, row);
+        minC = Math.min(minC, col);
+        maxC = Math.max(maxC, col);
+      });
+      const requiredPerPlant = plant.cellsRequired;
+      const isSquareShape = requiredPerPlant === 4 || requiredPerPlant === 9;
+      const groupSet = new Set(group);
+      const instanceVisited = new Set();
+      const plantInstances = [];
       // Helper: Try to claim a shape
       const tryClaimShape = (startIdx, preferHorizontal) => {
-        if (instanceVisited.has(startIdx)) return null
-        
-        const { row: startRow, col: startCol } = idxToRowCol(startIdx)
-        const instanceCells = []
-        
-        let shapeRows, shapeCols
+        if (instanceVisited.has(startIdx)) return null;
+        const { row: startRow, col: startCol } = idxToRowCol(startIdx);
+        const instanceCells = [];
+        let shapeRows, shapeCols;
         if (isSquareShape) {
-          const side = Math.sqrt(requiredPerPlant)
-          shapeRows = shapeCols = side
+          const side = Math.sqrt(requiredPerPlant);
+          shapeRows = shapeCols = side;
         } else if (requiredPerPlant === 2) {
           if (preferHorizontal) {
-            shapeRows = 1; shapeCols = 2
+            shapeRows = 1; shapeCols = 2;
           } else {
-            shapeRows = 2; shapeCols = 1
+            shapeRows = 2; shapeCols = 1;
           }
         } else if (requiredPerPlant === 8) {
           if (preferHorizontal) {
-            shapeRows = 2; shapeCols = 4
+            shapeRows = 2; shapeCols = 4;
           } else {
-            shapeRows = 4; shapeCols = 2
+            shapeRows = 4; shapeCols = 2;
           }
         } else {
-          const side = Math.sqrt(requiredPerPlant)
+          const side = Math.sqrt(requiredPerPlant);
           if (preferHorizontal) {
-            shapeRows = Math.floor(side)
-            shapeCols = Math.ceil(requiredPerPlant / shapeRows)
+            shapeRows = Math.floor(side);
+            shapeCols = Math.ceil(requiredPerPlant / shapeRows);
           } else {
-            shapeCols = Math.floor(side)
-            shapeRows = Math.ceil(requiredPerPlant / shapeCols)
+            shapeCols = Math.floor(side);
+            shapeRows = Math.ceil(requiredPerPlant / shapeCols);
           }
         }
-        
-        let canClaim = true
+        let canClaim = true;
         for (let rOffset = 0; rOffset < shapeRows && canClaim; rOffset++) {
           for (let cOffset = 0; cOffset < shapeCols && canClaim; cOffset++) {
-            const r = startRow + rOffset
-            const c = startCol + cOffset
+            const r = startRow + rOffset;
+            const c = startCol + cOffset;
             if (!inBounds(r, c)) {
-              canClaim = false
-              break
+              canClaim = false;
+              break;
             }
-            const idx = idxAt(r, c)
+            const idx = idxAt(r, c);
             if (!groupSet.has(idx) || instanceVisited.has(idx)) {
-              canClaim = false
-              break
+              canClaim = false;
+              break;
             }
           }
         }
-        
-        if (!canClaim) return null
-        
+        if (!canClaim) return null;
         for (let rOffset = 0; rOffset < shapeRows; rOffset++) {
           for (let cOffset = 0; cOffset < shapeCols; cOffset++) {
-            const idx = idxAt(startRow + rOffset, startCol + cOffset)
-            instanceCells.push(idx)
-            instanceVisited.add(idx)
+            const idx = idxAt(startRow + rOffset, startCol + cOffset);
+            instanceCells.push(idx);
+            instanceVisited.add(idx);
           }
         }
-        
-        return instanceCells
-      }
-      
+        return instanceCells;
+      };
       // PASS 1: Horizontal placements
       if (!isSquareShape) {
         for (let r = minR; r <= maxR; r++) {
           for (let c = minC; c <= maxC; c++) {
-            const idx = idxAt(r, c)
-            if (!groupSet.has(idx) || instanceVisited.has(idx)) continue
-            
-            const instanceCells = tryClaimShape(idx, true)
+            const idx = idxAt(r, c);
+            if (!groupSet.has(idx) || instanceVisited.has(idx)) continue;
+            const instanceCells = tryClaimShape(idx, true);
             if (instanceCells) {
-              let iMinR = bedRows, iMaxR = -1, iMinC = bedCols, iMaxC = -1
+              let iMinR = bedRows, iMaxR = -1, iMinC = bedCols, iMaxC = -1;
               instanceCells.forEach(idx => {
-                const { row, col } = idxToRowCol(idx)
-                iMinR = Math.min(iMinR, row)
-                iMaxR = Math.max(iMaxR, row)
-                iMinC = Math.min(iMinC, col)
-                iMaxC = Math.max(iMaxC, col)
-              })
-              
+                const { row, col } = idxToRowCol(idx);
+                iMinR = Math.min(iMinR, row);
+                iMaxR = Math.max(iMaxR, row);
+                iMinC = Math.min(iMinC, col);
+                iMaxC = Math.max(iMaxC, col);
+              });
               plantInstances.push({
                 cells: instanceCells,
                 minR: iMinR, maxR: iMaxR, minC: iMinC, maxC: iMaxC,
                 centerR: (iMinR + iMaxR) / 2 + 0.5,
                 centerC: (iMinC + iMaxC) / 2 + 0.5
-              })
+              });
             }
           }
         }
       }
-      
       // PASS 2: Fill gaps
       for (let r = minR; r <= maxR; r++) {
         for (let c = minC; c <= maxC; c++) {
-          const idx = idxAt(r, c)
-          if (!groupSet.has(idx) || instanceVisited.has(idx)) continue
-          
-          const instanceCells = tryClaimShape(idx, isSquareShape)
+          const idx = idxAt(r, c);
+          if (!groupSet.has(idx) || instanceVisited.has(idx)) continue;
+          const instanceCells = tryClaimShape(idx, isSquareShape);
           if (instanceCells) {
-            let iMinR = bedRows, iMaxR = -1, iMinC = bedCols, iMaxC = -1
+            let iMinR = bedRows, iMaxR = -1, iMinC = bedCols, iMaxC = -1;
             instanceCells.forEach(idx => {
-              const { row, col } = idxToRowCol(idx)
-              iMinR = Math.min(iMinR, row)
-              iMaxR = Math.max(iMaxR, row)
-              iMinC = Math.min(iMinC, col)
-              iMaxC = Math.max(iMaxC, col)
-            })
-            
+              const { row, col } = idxToRowCol(idx);
+              iMinR = Math.min(iMinR, row);
+              iMaxR = Math.max(iMaxR, row);
+              iMinC = Math.min(iMinC, col);
+              iMaxC = Math.max(iMaxC, col);
+            });
             plantInstances.push({
               cells: instanceCells,
               minR: iMinR, maxR: iMaxR, minC: iMinC, maxC: iMaxC,
               centerR: (iMinR + iMaxR) / 2 + 0.5,
               centerC: (iMinC + iMaxC) / 2 + 0.5
-            })
+            });
           }
         }
       }
-      
       groups.push({
         code,
         plant,
         cellIndices: group,
         plantInstances
-      })
+      });
     }
-    
-    return groups
+    return groups;
   }
 
   /**
@@ -766,12 +765,12 @@ export class PDFService {
    */
   static savePDF(garden, filename) {
     try {
-      const doc = this.generatePDF(garden)
-      doc.save(filename)
-      return true
+      const doc = this.generatePDF(garden);
+      doc.save(filename);
+      return true;
     } catch (error) {
-      console.error('Failed to generate PDF:', error)
-      return false
+      console.error('Failed to generate PDF:', error);
+      return false;
     }
   }
 
@@ -803,3 +802,5 @@ function formatTaskType(type) {
     default: return type
   }
 }
+
+export default PDFService;
