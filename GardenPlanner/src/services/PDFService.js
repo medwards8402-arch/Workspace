@@ -412,32 +412,27 @@ export class PDFService {
     })
 
     // Section 3: Notes
-    doc.addPage()
-    yPos = margin
-
-    doc.setFontSize(16)
-    doc.setFont('helvetica', 'bold')
-    doc.text('Notes', margin, yPos)
-    yPos += 8
-
     const hasNotes = Object.keys(garden.notes).length > 0
-    
     if (hasNotes) {
-      doc.setFontSize(9)
-      doc.setFont('helvetica', 'normal')
+      doc.addPage();
+      yPos = margin;
+      doc.setFontSize(16);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Notes', margin, yPos);
+      yPos += 8;
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
 
       // Group notes by plant code and note text
-      const noteGroups = new Map()
-      
-      Object.entries(garden.notes).forEach(([key, note]) => {
-        if (!note || !note.trim()) return
-        
-        const [bedIndex, cellIndex] = key.split('.').map(Number)
-        const bed = garden.beds[bedIndex]
-        if (!bed) return
+      const noteGroups = new Map();
 
-        const plantCode = bed.cells[cellIndex]
-        const plant = plantCode ? PLANTS.find(p => p.code === plantCode) : null
+      Object.entries(garden.notes).forEach(([key, note]) => {
+        if (!note || !note.trim()) return;
+        const [bedIndex, cellIndex] = key.split('.').map(Number);
+        const bed = garden.beds[bedIndex];
+        if (!bed) return;
+        const plantCode = bed.cells[cellIndex];
+        const plant = plantCode ? PLANTS.find(p => p.code === plantCode) : null;
         
         // Create grouping key: plantCode + note text
         const groupKey = `${plantCode || 'none'}|||${note.trim()}`

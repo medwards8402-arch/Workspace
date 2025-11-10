@@ -84,6 +84,9 @@ export const PLANTS = [
   { name: 'Turnips', code: 'TUR', icon: '🟣', color: '#c084fc', type: 'vegetable', plantAfterFrostDays: -21, startIndoorsWeeks: 0, harvestWeeks: 7, sqftSpacing: 9, lightLevel: 'low', supportsFall: true, fallPlantBeforeFrostDays: 56, fallStartIndoorsWeeks: 0, tips: ['Harvest greens and roots; both are edible'] },
   { name: 'Watermelon', code: 'WAT', icon: '🍉', color: '#10b981', type: 'fruit', plantAfterFrostDays: 14, startIndoorsWeeks: 0, harvestWeeks: 14, sqftSpacing: 1, lightLevel: 'high', cellsRequired: 4 },
   { name: 'Zucchini', code: 'ZUC', icon: '🥒', color: '#4d7c0f', type: 'vegetable', plantAfterFrostDays: 7, startIndoorsWeeks: 0, harvestWeeks: 8, sqftSpacing: 1, lightLevel: 'high', cellsRequired: 2 },
+  { name: 'Blueberry', code: 'BLU', icon: '🫐', color: '#3b82f6', type: 'fruit', plantAfterFrostDays: 0, startIndoorsWeeks: 0, harvestWeeks: 156, sqftSpacing: 1, lightLevel: 'high', tips: ['Requires acidic soil (pH 4.5–5.5)', 'Perennial; mulch and water regularly'], supportsFall: false },
+  { name: 'Raspberry', code: 'RSP', icon: '🍇', color: '#a21caf', type: 'fruit', plantAfterFrostDays: -7, startIndoorsWeeks: 0, harvestWeeks: 104, sqftSpacing: 1, lightLevel: 'high', tips: ['Provide trellis/support for canes', 'Perennial; prune old canes after fruiting'], supportsFall: false },
+  { name: 'Grape', code: 'GRP', icon: '🍇', color: '#6d28d9', type: 'fruit', plantAfterFrostDays: 0, startIndoorsWeeks: 0, harvestWeeks: 156, sqftSpacing: 1, lightLevel: 'high', tips: ['Provide sturdy trellis or arbor', 'Prune annually for best yield'], supportsFall: false },
 ];
 
 export const BED_ROWS = 8;

@@ -30,6 +30,16 @@ export default function App() {
     return 'new-garden'
   })
 
+  // On mount, if default URL and any bed has plants, go to layout page
+  useEffect(() => {
+    const hash = window.location.hash.slice(1)
+    if (!hash || hash === 'new-garden') {
+      if (garden && garden.beds && garden.beds.some(bed => bed.cells && bed.cells.some(cell => !!cell))) {
+        setActiveTab('plan');
+      }
+    }
+  }, [garden])
+
   // Update URL hash when tab changes
   useEffect(() => {
     window.location.hash = activeTab
