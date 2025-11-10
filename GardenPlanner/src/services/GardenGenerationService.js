@@ -58,16 +58,19 @@ export class GardenGenerationService {
       
   // Calculate adaptive minimum: ensure all plants can fit
   // Use 2 as absolute minimum (needed for placement), but allow smaller allocations if many plants
+  // SPECIAL-CASE: Herbs should be allowed to allocate in increments of 1 sq ft.
   const adaptiveMin = Math.max(2, Math.min(4, Math.floor(spaceAvailable / (plantCount * 1.2))))
       
       const groupAllocations = groupPlants.map(({ code, plant, cellsPerPlant }) => {
         const weight = Math.sqrt(cellsPerPlant)
   // Allocate based on this group's available space
         const allocation = Math.round((weight / totalWeight) * spaceAvailable)
+        // Minimum per-plant allocation: allow herbs to be 1, others follow adaptiveMin (>=2)
+        const minForPlant = (plant.type || 'vegetable') === 'herb' ? 1 : adaptiveMin
         return {
           code,
           plant,
-          cellCount: Math.max(adaptiveMin, Math.min(spaceAvailable, allocation))
+          cellCount: Math.max(minForPlant, Math.min(spaceAvailable, allocation))
         }
       })
       
@@ -76,7 +79,8 @@ export class GardenGenerationService {
       if (totalAllocated > spaceAvailable) {
         const scaleFactor = spaceAvailable / totalAllocated
         groupAllocations.forEach(a => {
-          a.cellCount = Math.max(2, Math.round(a.cellCount * scaleFactor))
+          const isHerb = (a.plant.type || 'vegetable') === 'herb'
+          a.cellCount = Math.max(isHerb ? 1 : 2, Math.round(a.cellCount * scaleFactor))
         })
       }
       
@@ -175,7 +179,8 @@ export class GardenGenerationService {
     const plantedCodes = new Set()
     
     for (const allocation of scaledAllocations) {
-      if (allocation.cellCount < 2) continue // Too small to place
+  // Allow herbs to be placed as single 1 sq ft squares; others require >=2 for useful grouping
+  if (allocation.cellCount < 2 && (allocation.plant.type || 'vegetable') !== 'herb') continue // Too small to place
       if (plantedCodes.has(allocation.code)) continue // Already placed
       
       let placed = false
@@ -198,7 +203,7 @@ export class GardenGenerationService {
           const lightScore = this.getBedPreferenceScore(plantLight, bedLight, prioritizeLight)
           return { bed, bedIndex, availableCells, lightScore }
         })
-        .filter(b => b.availableCells >= 2)
+  .filter(b => b.availableCells >= ((allocation.plant.type || 'vegetable') === 'herb' ? 1 : 2))
 
       // Soft light preference: compute adjustedLightScore to avoid monopolizing scarce perfect-light beds
       // If there's only one bed with the perfect light and the group is small vs that bed's free space,
@@ -245,7 +250,10 @@ export class GardenGenerationService {
         
         // Try to place the entire allocation for this plant in one group
         const idealSize = Math.min(allocation.cellCount, availableCells)
-        const minSize = Math.max(2, Math.min(4, idealSize))
+        // Herbs may be placed as single-square groups; others maintain a minimum useful size
+        const minSize = (allocation.plant.type || 'vegetable') === 'herb'
+          ? 1
+          : Math.max(2, Math.min(4, idealSize))
         
         let shape = findBestShape(idealSize, bedRows, bedCols, bedIndex)
         
@@ -304,6 +312,8 @@ export class GardenGenerationService {
             .filter(n => n !== null)
             .filter(n => {
               const plantType = plantTypeMap.get(n)
+              // Do not extend herbs automatically; keep herbs in 1 sq ft increments
+              if (plantType === 'herb') return false
               return plantType && allowedTypes.includes(plantType)
             })
           
