@@ -17,7 +17,7 @@ import { useFileOperations } from './hooks/useFileOperations'
 import { useSelection } from './hooks/useSelection'
 
 export default function App() {
-  const { garden, setZone, setName } = useGardenOperations()
+  const { garden, setZone, setName, addBed, removeBed, updateBed, deleteNotes } = useGardenOperations()
   const { undo, redo, canUndo, canRedo } = useHistory()
   const { exportToFile, importFromFile } = useFileOperations()
   const { clearSelection, setSelectedPlant, setActiveBed } = useSelection()
@@ -98,7 +98,7 @@ export default function App() {
   const handleContainerClick = () => {
     setSelectedPlant(null)
     clearSelection()
-    setActiveBed(null)
+    // Keep activeBed (bed selection) unless user clicks blank area outside main app sections
   }
 
   const handleNameChange = () => {
@@ -106,6 +106,166 @@ export default function App() {
     if (newName !== null && newName.trim()) {
       setName(newName.trim())
     }
+  }
+
+  // Compact Bed Config (used for both Add and Update)
+  const [newBedName, setNewBedName] = useState('')
+  const [newBedRows, setNewBedRows] = useState(8)
+  const [newBedCols, setNewBedCols] = useState(4)
+  const [newBedLight, setNewBedLight] = useState('high')
+  const [selectedBedIndex, setSelectedBedIndex] = useState(null)
+
+  // When selecting a bed, preload the config fields with that bed's values for editing
+  useEffect(() => {
+    if (selectedBedIndex !== null && selectedBedIndex !== undefined) {
+      const b = garden.getBed(selectedBedIndex)
+      if (b) {
+        setNewBedRows(String(b.rows))
+        setNewBedCols(String(b.cols))
+        setNewBedName(b.name || '')
+        setNewBedLight(b.lightLevel || 'high')
+      }
+    } else {
+      // Keep last-used config values for adding when no selection
+    }
+  }, [selectedBedIndex, garden])
+  const handleSelectBed = (index) => {
+    setSelectedBedIndex(prev => prev === index ? null : index)
+    setActiveBed(index)
+  }
+
+  const handleRemoveSelectedBed = () => {
+    if (selectedBedIndex === null) return
+    const bed = garden.getBed(selectedBedIndex)
+    const planted = bed?.plantedCellCount || 0
+    if (planted > 0) {
+      if (!window.confirm(`Bed has ${planted} planted cell${planted === 1 ? '' : 's'}. Remove bed anyway?`)) return
+    } else {
+      if (!window.confirm('Remove this empty bed?')) return
+    }
+    removeBed(selectedBedIndex)
+    setSelectedBedIndex(null)
+  }
+
+  const applyResize = () => {
+    if (selectedBedIndex === null) return
+    const bed = garden.getBed(selectedBedIndex)
+    if (!bed) return
+    const targetRows = Math.max(1, Math.min(24, parseInt(resizeRows || bed.rows, 10)))
+    const targetCols = Math.max(1, Math.min(24, parseInt(resizeCols || bed.cols, 10)))
+    if (targetRows === bed.rows && targetCols === bed.cols) return
+
+    // Determine lost planted cells & notes if shrinking
+    let lostPlanted = 0
+    let lostNoteCount = 0
+    const trimmedIndices = []
+    if (targetRows < bed.rows || targetCols < bed.cols) {
+      for (let r = 0; r < bed.rows; r++) {
+        for (let c = 0; c < bed.cols; c++) {
+          const oldIdx = r * bed.cols + c
+          const outOfBounds = (r >= targetRows) || (c >= targetCols)
+          if (outOfBounds) {
+            const cellVal = bed.cells[oldIdx]
+            if (cellVal) lostPlanted++
+            const noteKey = `${selectedBedIndex}.${oldIdx}`
+            if (garden.notes[noteKey]) lostNoteCount++
+            trimmedIndices.push(oldIdx)
+          }
+        }
+      }
+    }
+    if (lostPlanted > 0 || lostNoteCount > 0) {
+      const parts = []
+      if (lostPlanted > 0) parts.push(`${lostPlanted} planted cell${lostPlanted === 1 ? '' : 's'}`)
+      if (lostNoteCount > 0) parts.push(`${lostNoteCount} note${lostNoteCount === 1 ? '' : 's'}`)
+      if (!window.confirm(`Resizing will remove ${parts.join(' and ')}. Continue?`)) return
+    }
+
+    const newCellCount = targetRows * targetCols
+    const newCells = new Array(newCellCount).fill(null)
+    const minRows = Math.min(bed.rows, targetRows)
+    const minCols = Math.min(bed.cols, targetCols)
+    for (let r = 0; r < minRows; r++) {
+      for (let c = 0; c < minCols; c++) {
+        const oldIdx = r * bed.cols + c
+        const newIdx = r * targetCols + c
+        newCells[newIdx] = bed.cells[oldIdx]
+      }
+    }
+    const BedCtor = bed.constructor
+    const resizedBed = new BedCtor(targetRows, targetCols, bed.lightLevel, newCells, bed.name, bed.allowedTypes)
+
+    // Remove notes for trimmed cells first (creates its own history entry)
+    if (trimmedIndices.length > 0) {
+      deleteNotes(selectedBedIndex, trimmedIndices)
+    }
+    updateBed(selectedBedIndex, resizedBed)
+  }
+
+  const submitConfig = () => {
+    const rows = Math.max(1, Math.min(24, parseInt(newBedRows) || 1))
+    const cols = Math.max(1, Math.min(24, parseInt(newBedCols) || 1))
+    const name = (newBedName || '').trim()
+    const lightLevel = newBedLight === 'low' ? 'low' : 'high'
+
+    if (selectedBedIndex === null) {
+      // Add new bed with current settings
+      addBed({ rows, cols, lightLevel, name })
+      return
+    }
+
+    // Update existing bed (resize + rename + light) with safety
+    const bed = garden.getBed(selectedBedIndex)
+    if (!bed) return
+    const targetRows = rows
+    const targetCols = cols
+
+    // Determine lost planted cells & notes if shrinking
+    let lostPlanted = 0
+    let lostNoteCount = 0
+    const trimmedIndices = []
+    if (targetRows < bed.rows || targetCols < bed.cols) {
+      for (let r = 0; r < bed.rows; r++) {
+        for (let c = 0; c < bed.cols; c++) {
+          const oldIdx = r * bed.cols + c
+          const outOfBounds = (r >= targetRows) || (c >= targetCols)
+          if (outOfBounds) {
+            const cellVal = bed.cells[oldIdx]
+            if (cellVal) lostPlanted++
+            const noteKey = `${selectedBedIndex}.${oldIdx}`
+            if (garden.notes[noteKey]) lostNoteCount++
+            trimmedIndices.push(oldIdx)
+          }
+        }
+      }
+    }
+    if (lostPlanted > 0 || lostNoteCount > 0) {
+      const parts = []
+      if (lostPlanted > 0) parts.push(`${lostPlanted} planted cell${lostPlanted === 1 ? '' : 's'}`)
+      if (lostNoteCount > 0) parts.push(`${lostNoteCount} note${lostNoteCount === 1 ? '' : 's'}`)
+      if (!window.confirm(`Updating size will remove ${parts.join(' and ')}. Continue?`)) return
+    }
+
+    // Build new cells array preserving overlap
+    const newCellCount = targetRows * targetCols
+    const newCells = new Array(newCellCount).fill(null)
+    const minRows = Math.min(bed.rows, targetRows)
+    const minCols = Math.min(bed.cols, targetCols)
+    for (let r = 0; r < minRows; r++) {
+      for (let c = 0; c < minCols; c++) {
+        const oldIdx = r * bed.cols + c
+        const newIdx = r * targetCols + c
+        newCells[newIdx] = bed.cells[oldIdx]
+      }
+    }
+
+    const BedCtor = bed.constructor
+    const updatedBed = new BedCtor(targetRows, targetCols, lightLevel, newCells, name, bed.allowedTypes)
+
+    if (trimmedIndices.length > 0) {
+      deleteNotes(selectedBedIndex, trimmedIndices)
+    }
+    updateBed(selectedBedIndex, updatedBed)
   }
 
   return (
@@ -220,14 +380,95 @@ export default function App() {
 
           {/* Level 2: Global settings for this plan */}
           <div className="d-flex align-items-center justify-content-between flex-wrap gap-2 app-header-secondary">
-            <div className="d-flex align-items-center gap-2">
-              <button 
+            <div className="d-flex align-items-center gap-2 flex-wrap">
+              <button
                 className="btn btn-sm btn-outline-success d-flex align-items-center garden-name-btn"
                 onClick={(e) => { e.stopPropagation(); handleNameChange(); }}
                 title="Rename garden"
               >
                 <Icon name="edit" className="me-1" /> {garden.name}
               </button>
+              {activeTab === 'plan' && (
+                <>
+                  <form
+                    className="d-flex align-items-center gap-2 flex-wrap bg-body-secondary rounded p-2"
+                    onSubmit={(e) => { e.preventDefault(); submitConfig() }}
+                    onClick={(e) => e.stopPropagation()}
+                    title={selectedBedIndex === null ? 'Add a new bed' : 'Update selected bed'}
+                  >
+                    <input
+                      type="text"
+                      className="form-control form-control-sm"
+                      placeholder={selectedBedIndex === null ? 'Name (optional)' : 'Rename bed'}
+                      value={newBedName}
+                      onChange={(e) => setNewBedName(e.target.value)}
+                      style={{width: 140}}
+                    />
+                    <div className="d-flex align-items-center gap-1">
+                      <input
+                        type="number"
+                        className="form-control form-control-sm"
+                        value={newBedRows}
+                        min={1}
+                        max={24}
+                        onChange={(e) => setNewBedRows(e.target.value)}
+                        title="Rows"
+                        style={{width: 70}}
+                      />
+                      <span className="text-muted" style={{fontSize: '0.8rem'}}>rows</span>
+                    </div>
+                    <div className="d-flex align-items-center gap-1">
+                      <input
+                        type="number"
+                        className="form-control form-control-sm"
+                        value={newBedCols}
+                        min={1}
+                        max={24}
+                        onChange={(e) => setNewBedCols(e.target.value)}
+                        title="Columns"
+                        style={{width: 70}}
+                      />
+                      <span className="text-muted" style={{fontSize: '0.8rem'}}>cols</span>
+                    </div>
+                    <button
+                      type="button"
+                      className={`btn btn-sm ${newBedLight === 'high' ? 'btn-outline-warning' : 'btn-outline-info'}`}
+                      onClick={() => setNewBedLight(newBedLight === 'high' ? 'low' : 'high')}
+                      title="Light level"
+                    >
+                      {newBedLight === 'high' ? '☀️' : '☁️'}
+                    </button>
+                    <button type="submit" className="btn btn-sm btn-success">{selectedBedIndex === null ? 'Add Bed' : 'Update Bed'}</button>
+                  </form>
+                  <div className="d-flex align-items-center gap-2 ms-1 flex-wrap">
+                    <select
+                      className="form-select form-select-sm"
+                      value={selectedBedIndex ?? ''}
+                      onChange={(e) => {
+                        const val = e.target.value
+                        if (val === '') { setSelectedBedIndex(null); setActiveBed(null); return }
+                        handleSelectBed(parseInt(val, 10))
+                      }}
+                      title="Select a bed to edit"
+                      style={{width: 140}}
+                    >
+                      <option value="">(Select Bed)</option>
+                      {garden.beds.map((b, i) => (
+                        <option key={i} value={i}>{(b.name && b.name.trim()) ? b.name : `Bed ${i + 1}`}</option>
+                      ))}
+                    </select>
+                    <button
+                      className="btn btn-sm btn-outline-danger d-flex align-items-center"
+                      disabled={selectedBedIndex === null}
+                      onClick={(e) => { e.stopPropagation(); handleRemoveSelectedBed() }}
+                      title={selectedBedIndex === null ? 'Select a bed first' : 'Remove selected bed'}
+                      style={{padding: '0.25rem 0.5rem'}}
+                    >
+                      🗑️ <span className="visually-hidden">Remove</span>
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
             <ZoneSelector zone={garden.zone} onChange={setZone} />
           </div>

@@ -46,6 +46,21 @@ export function useGardenOperations() {
     })
   }, [dispatch])
 
+  const addBed = useCallback((config = {}) => {
+    // config can specify rows, cols, lightLevel, name, allowedTypes
+    const rows = config.rows || 8
+    const cols = config.cols || 4
+    const lightLevel = config.lightLevel || 'high'
+    const name = config.name || ''
+    const allowedTypes = config.allowedTypes || ['vegetable', 'fruit', 'herb']
+    const bed = new Bed(rows, cols, lightLevel, null, name, allowedTypes)
+    dispatch({ type: GARDEN_ACTIONS.ADD_BED, payload: { bed } })
+  }, [dispatch])
+
+  const removeBed = useCallback((bedIndex) => {
+    dispatch({ type: GARDEN_ACTIONS.REMOVE_BED, payload: { bedIndex } })
+  }, [dispatch])
+
   const setNote = useCallback((bedIndex, cellIndex, note) => {
     dispatch({ 
       type: GARDEN_ACTIONS.SET_NOTE, 
@@ -94,6 +109,8 @@ export function useGardenOperations() {
     updateCells,
     clearCells,
     updateBed,
+  addBed,
+  removeBed,
     setNote,
     updateNotes,
     deleteNotes,

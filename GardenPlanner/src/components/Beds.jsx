@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { GardenBed } from './GardenBed'
+// No header-level actions here; add/remove is handled in App header
 
 export function Beds({ beds }) {
   const containerRef = useRef(null)
   const [containerWidth, setContainerWidth] = useState(0)
+  // No hooks needed here beyond layout sizing
 
   useEffect(() => {
     if (!containerRef.current) return

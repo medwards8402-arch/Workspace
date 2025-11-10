@@ -19,6 +19,8 @@ export const GARDEN_ACTIONS = {
   
   // Bed actions
   UPDATE_BED: 'UPDATE_BED',
+  ADD_BED: 'ADD_BED',
+  REMOVE_BED: 'REMOVE_BED',
   UPDATE_CELL: 'UPDATE_CELL',
   UPDATE_CELLS: 'UPDATE_CELLS',
   CLEAR_CELLS: 'CLEAR_CELLS',
@@ -118,6 +120,66 @@ function gardenReducer(state, action) {
       const { bedIndex, bed } = action.payload
       const newGarden = state.garden.updateBed(bedIndex, bed)
       return pushToHistory(state, newGarden)
+    }
+
+    case GARDEN_ACTIONS.ADD_BED: {
+      const { bed } = action.payload || {}
+      const newBed = bed || new Bed(BED_ROWS, BED_COLS, 'high')
+      const newGarden = new Garden({ ...state.garden, beds: [...state.garden.beds, newBed] })
+      const newState = pushToHistory(state, newGarden)
+      // Focus the newly added bed and clear selection
+      return {
+        ...newState,
+        selection: { bedIndex: null, cellIndices: new Set() },
+        activeBed: newGarden.beds.length - 1,
+      }
+    }
+
+    case GARDEN_ACTIONS.REMOVE_BED: {
+      const { bedIndex } = action.payload
+      if (bedIndex < 0 || bedIndex >= state.garden.beds.length) return state
+      const newBeds = state.garden.beds.filter((_, i) => i !== bedIndex)
+
+      // Re-map notes: drop notes for removed bed; shift indices for beds after it
+      const oldNotes = state.garden.notes || {}
+      const newNotes = {}
+      Object.entries(oldNotes).forEach(([key, note]) => {
+        const [bStr, cStr] = key.split('.')
+        const b = parseInt(bStr, 10)
+        const c = parseInt(cStr, 10)
+        if (Number.isNaN(b) || Number.isNaN(c)) return
+        if (b === bedIndex) return // drop
+        if (b > bedIndex) {
+          newNotes[`${b - 1}.${c}`] = note
+        } else {
+          newNotes[key] = note
+        }
+      })
+
+      const newGarden = new Garden({ ...state.garden, beds: newBeds, notes: newNotes })
+      const newState = pushToHistory(state, newGarden)
+
+      // Adjust selection and activeBed
+      const sel = state.selection
+      let newSelection = sel
+      if (sel?.bedIndex !== null && sel?.bedIndex !== undefined) {
+        if (sel.bedIndex === bedIndex) {
+          newSelection = { bedIndex: null, cellIndices: new Set() }
+        } else if (sel.bedIndex > bedIndex) {
+          newSelection = { bedIndex: sel.bedIndex - 1, cellIndices: sel.cellIndices }
+        }
+      }
+      let newActiveBed = state.activeBed
+      if (newActiveBed !== null && newActiveBed !== undefined) {
+        if (newActiveBed === bedIndex) newActiveBed = null
+        else if (newActiveBed > bedIndex) newActiveBed = newActiveBed - 1
+      }
+
+      return {
+        ...newState,
+        selection: newSelection,
+        activeBed: newActiveBed,
+      }
     }
 
     case GARDEN_ACTIONS.UPDATE_CELL: {

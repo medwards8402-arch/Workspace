@@ -135,12 +135,15 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
 }
 
 export function GardenBed({ bedIndex, cellSize = 68 }) {
-  const { garden, updateCell, updateCells, clearCells } = useGardenOperations()
+  const { garden, updateCell, updateCells, clearCells, updateBed, removeBed } = useGardenOperations()
   const { selectedPlant, selection, setSelection, setActiveBed, activeBed } = useSelection()
   const [isDragging, setIsDragging] = useState(false)
   const gridRef = useRef(null)
 
   const bed = garden.getBed(bedIndex)
+  useEffect(() => {
+    // no-op: header controls handle renaming and light toggling
+  }, [bed])
   const bedRows = bed.rows
   const bedCols = bed.cols
   const lightLevel = bed.lightLevel
@@ -151,8 +154,7 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
   const selectedIndices = isThisBedSelected ? selection.cellIndices : new Set()
 
   const handleClickAt = (i) => {
-    // Activate this bed and set selection atomically
-    setActiveBed(bedIndex)
+    // Only set cell selection; do not change activeBed here
     setSelection(bedIndex, new Set([i]))
     
     // If a plant is selected from palette
@@ -167,7 +169,7 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
   }
 
   const handleDoubleClickAt = (i) => {
-    setActiveBed(bedIndex)
+    // Do not change activeBed on double-click; only adjust selection
     
     const plantCode = bed.getCell(i)
     if (!plantCode) {
@@ -498,31 +500,45 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
     return indices
   }, [sprawlingOverlays])
 
+  const isSelectedBed = activeBed === bedIndex
+
   return (
     <div className="d-flex gap-3" onClick={handleCardClick}>
-      <div className="card" style={{ width: cardWidth, minWidth: cardWidth, maxWidth: cardWidth, height: 'fit-content' }}>
+      <div
+        className="card"
+        style={{
+          width: cardWidth,
+          minWidth: cardWidth,
+          maxWidth: cardWidth,
+          height: 'fit-content',
+          outline: isSelectedBed ? '3px solid var(--bs-primary)' : 'none',
+          outlineOffset: isSelectedBed ? '2px' : 0
+        }}
+        data-selected={isSelectedBed ? 'true' : 'false'}
+      >
         <div className="card-header d-flex justify-content-between align-items-center" onClick={handleCardClick}>
-          <span>
-            Bed {bedIndex + 1}
-            {lightLevel && (
-              <span className="ms-2" title={`${lightLevel} light`} style={{ fontSize: '1.2em' }}>
-                {lightLevel === 'high' ? '☀️' : '☁️'}
-              </span>
-            )}
-          </span>
-          <span style={{width: 100, display: 'inline-block', textAlign: 'right'}}>
-            <button
-              className="btn btn-sm btn-danger"
-              style={{minWidth: 90, opacity: selectedIndices.size > 0 && hasSelectedPlants ? 1 : 0.3, pointerEvents: selectedIndices.size > 0 && hasSelectedPlants ? 'auto' : 'none', transition: 'opacity 0.2s'}}
-              onClick={(e) => {
-                if (selectedIndices.size > 0 && hasSelectedPlants) {
-                  e.stopPropagation();
-                  handleDelete();
-                }
-              }}
-            >
-              Delete ({selectedIndices.size})
-            </button>
+          <div className="d-flex align-items-center gap-2">
+            <span className="fw-semibold">{(bed.name && bed.name.trim()) ? bed.name : `Bed ${bedIndex + 1}`}</span>
+            <span aria-label={bed.lightLevel === 'high' ? 'High light' : 'Low light'} title={bed.lightLevel === 'high' ? 'High light' : 'Low light'}>
+              {bed.lightLevel === 'high' ? '☀️' : '☁️'}
+            </span>
+          </div>
+          <span style={{minWidth: 120, display: 'inline-block', textAlign: 'right'}}>
+            <div className="d-flex align-items-center justify-content-end gap-2">
+              <button
+                className="btn btn-sm btn-danger"
+                style={{minWidth: 90, opacity: selectedIndices.size > 0 && hasSelectedPlants ? 1 : 0.3, pointerEvents: selectedIndices.size > 0 && hasSelectedPlants ? 'auto' : 'none', transition: 'opacity 0.2s'}}
+                onClick={(e) => {
+                  if (selectedIndices.size > 0 && hasSelectedPlants) {
+                    e.stopPropagation();
+                    handleDelete();
+                  }
+                }}
+                title="Delete selected cells"
+              >
+                Delete ({selectedIndices.size})
+              </button>
+            </div>
           </span>
         </div>
         <div className="card-body" onClick={handleBedClick} style={{ padding: 12, display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
