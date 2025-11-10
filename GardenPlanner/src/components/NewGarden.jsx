@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { PLANTS } from '../data'
 import { useGardenOperations } from '../hooks/useGardenOperations'
+import { useSettings } from '../context/SettingsContext'
 import { Tip } from './Tip'
 
 /**
@@ -11,6 +12,8 @@ import { Tip } from './Tip'
  */
 export function NewGarden({ onAfterGenerate }) {
   const { generateGarden } = useGardenOperations()
+  const { settings } = useSettings()
+  const autoPlannerEnabled = settings.experimental?.autoPlanner || false
 
   // Dynamic beds state: array of { name, rows, cols, lightLevel, allowedTypes }
   // Defaults set to Family Garden configuration
@@ -147,9 +150,16 @@ export function NewGarden({ onAfterGenerate }) {
     <div className="row g-3">
       {/* Header Tip */}
       <div className="col-12">
-        <Tip id="garden-setup-guide">
-          Configure your raised beds and select crops to generate your garden layout. Adjust bed sizes, light levels, and allowed crop types, then choose which plants you want to grow.
-        </Tip>
+        {autoPlannerEnabled ? (
+          <Tip id="garden-setup-guide">
+            Configure your raised beds and select crops to generate your garden layout. Adjust bed sizes, light levels, and allowed crop types, then choose which plants you want to grow.
+          </Tip>
+        ) : (
+          <Tip id="basic-garden-setup">
+            Configure your raised beds below. Adjust the bed names, sizes, and light levels to match your garden space. 
+            When you're ready, click "Create Beds" to set up your garden, then use the Plan tab to add plants manually.
+          </Tip>
+        )}
       </div>
 
       {/* Bed Configuration Section */}
@@ -169,7 +179,7 @@ export function NewGarden({ onAfterGenerate }) {
                     <th style={{ width: '25%' }}>Name</th>
                     <th style={{ width: '10%' }}>Size</th>
                     <th style={{ width: '15%' }}>Light</th>
-                    <th style={{ width: '30%' }}>Allowed Crop Types</th>
+                    {autoPlannerEnabled && <th style={{ width: '30%' }}>Allowed Crop Types</th>}
                     <th style={{ width: '10%' }}>Area</th>
                     <th style={{ width: '10%' }}></th>
                   </tr>
@@ -232,10 +242,11 @@ export function NewGarden({ onAfterGenerate }) {
                           <option value="high">☀️ High</option>
                         </select>
                       </td>
-                      <td>
-                        <div className="btn-group btn-group-sm w-100" role="group">
-                          {['vegetable', 'fruit', 'herb'].map(type => (
-                            <button
+                      {autoPlannerEnabled && (
+                        <td>
+                          <div className="btn-group btn-group-sm w-100" role="group">
+                            {['vegetable', 'fruit', 'herb'].map(type => (
+                              <button
                               key={type}
                               type="button"
                               className={`btn ${(bed.allowedTypes || []).includes(type) ? 'btn-success' : 'btn-outline-secondary'}`}
@@ -249,6 +260,7 @@ export function NewGarden({ onAfterGenerate }) {
                           ))}
                         </div>
                       </td>
+                      )}
                       <td className="text-center">
                         <span className="badge bg-light text-dark">
                           {bed.rows * bed.cols} sq ft
@@ -280,30 +292,31 @@ export function NewGarden({ onAfterGenerate }) {
         </div>
       </div>
 
-      {/* Plant Selection Section */}
-      <div className="col-12">
-        <div className="card">
-          <div className="card-header">
-            <div className="row align-items-center g-2">
-              <div className="col-md-8">
-                <h5 className="card-title m-0">
-                  Select Crops
-                  <span className="badge bg-primary ms-2">{selectedPlants.size} selected</span>
-                </h5>
-              </div>
-              <div className="col-md-4 text-md-end">
-                <div className="btn-group btn-group-sm" role="group">
-                  <button 
-                    className="btn btn-outline-success"
-                    onClick={handleSelectAllVisible}
-                    title="Select all visible plants"
-                  >
-                    Select All
-                  </button>
-                  <button 
-                    className="btn btn-outline-danger"
-                    onClick={handleDeselectAllVisible}
-                    title="Deselect all visible plants"
+      {/* Plant Selection Section - Only show if auto-planner is enabled */}
+      {autoPlannerEnabled && (
+        <div className="col-12">
+          <div className="card">
+            <div className="card-header">
+              <div className="row align-items-center g-2">
+                <div className="col-md-8">
+                  <h5 className="card-title m-0">
+                    Select Crops
+                    <span className="badge bg-primary ms-2">{selectedPlants.size} selected</span>
+                  </h5>
+                </div>
+                <div className="col-md-4 text-md-end">
+                  <div className="btn-group btn-group-sm" role="group">
+                    <button 
+                      className="btn btn-outline-success"
+                      onClick={handleSelectAllVisible}
+                      title="Select all visible plants"
+                    >
+                      Select All
+                    </button>
+                    <button 
+                      className="btn btn-outline-danger"
+                      onClick={handleDeselectAllVisible}
+                      title="Deselect all visible plants"
                   >
                     Clear
                   </button>
@@ -447,17 +460,24 @@ export function NewGarden({ onAfterGenerate }) {
           </div>
         </div>
       </div>
+      )}
 
       {/* Generate Button */}
       <div className="col-12">
         <button
           className="btn btn-success btn-lg w-100"
           onClick={handleGenerateClick}
-          disabled={selectedPlants.size === 0}
+          disabled={autoPlannerEnabled && selectedPlants.size === 0}
         >
-          <span className="me-2">🌱</span>
-          Generate Garden Layout
-          {selectedPlants.size > 0 && ` (${selectedPlants.size} crops)`}
+          <span className="me-2">{autoPlannerEnabled ? '🌱' : '📐'}</span>
+          {autoPlannerEnabled ? (
+            <>
+              Generate Garden Layout
+              {selectedPlants.size > 0 && ` (${selectedPlants.size} crops)`}
+            </>
+          ) : (
+            'Create Beds'
+          )}
         </button>
       </div>
 

@@ -1,11 +1,13 @@
 import React from 'react'
 import { useTips } from '../context/TipsContext'
+import { useSettings } from '../context/SettingsContext'
 
 /**
  * Settings component - application preferences and configuration
  */
 export function Settings() {
   const { resetAllTips, dismissedTips, dismissTip } = useTips()
+  const { settings, updateSetting } = useSettings()
 
   // Get all possible tip IDs
   const allTipIds = [
@@ -22,6 +24,10 @@ export function Settings() {
         dismissTip(tipId)
       }
     })
+  }
+
+  const handleToggleAutoPlanner = () => {
+    updateSetting('experimental.autoPlanner', !settings.experimental?.autoPlanner)
   }
 
   return (
@@ -64,6 +70,51 @@ export function Settings() {
                 but are not included in exported garden plan files.
               </small>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Experimental Settings */}
+      <div className="col-12">
+        <div className="card border-warning">
+          <div className="card-header bg-warning bg-opacity-10">
+            <h5 className="card-title m-0">
+              <span className="me-2">🧪</span>
+              Experimental Features
+            </h5>
+          </div>
+          <div className="card-body">
+            <div className="alert alert-warning mb-3">
+              <strong>⚠️ Warning:</strong> Experimental features may be unstable or incomplete. 
+              Use at your own risk and report any issues you encounter.
+            </div>
+
+            <div className="form-check form-switch mb-3">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="autoPlanner Toggle"
+                checked={settings.experimental?.autoPlanner || false}
+                onChange={handleToggleAutoPlanner}
+              />
+              <label className="form-check-label" htmlFor="autoPlannerToggle">
+                <strong>Auto Garden Planner</strong>
+                <div className="text-muted small mt-1">
+                  Enable automatic garden layout generation with plant selection and bed optimization. 
+                  This feature is currently buggy and may produce unexpected results.
+                </div>
+              </label>
+            </div>
+
+            {settings.experimental?.autoPlanner && (
+              <div className="alert alert-info mb-0">
+                <small>
+                  <strong>Auto-planner enabled:</strong> The "New" tab will now show plant selection 
+                  and bed configuration options for automated layout generation.
+                </small>
+              </div>
+            )}
           </div>
         </div>
       </div>

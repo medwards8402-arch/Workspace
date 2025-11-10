@@ -17,14 +17,14 @@ export function Information() {
               <div className="col-md-4">
                 <h6 className="text-primary">🌱 New Layout</h6>
                 <p>
-                  Use this tab to quickly generate a starter layout using a 3-step wizard:
+                  Use this tab to set up your raised bed garden:
                 </p>
                 <ul className="small">
-                  <li><strong>Step 1 - Raised Beds:</strong> Choose a preset template (Beginner, Family Garden, etc.) or customize each bed's size, light level (low/high), and allowed crop types.</li>
-                  <li><strong>Step 2 - Select Crops:</strong> Pick vegetables, fruits, and herbs to grow. Use filters by type, light level, or search. Quick-select buttons let you add all vegetables, fruits, or herbs at once.</li>
-                  <li><strong>Step 3 - Review & Generate:</strong> Review your configuration and click Generate to create an initial layout. The auto-planter arranges crops in contiguous blocks based on spacing and light preferences.</li>
-                  <li><strong>Important:</strong> This creates a <em>starting point</em> that you'll refine on the Layout tab. Don't overthink your selections—the goal is to get a draft layout quickly!</li>
-                  <li><strong>Note:</strong> Generating a new layout will overwrite your current design.</li>
+                  <li><strong>Configure Beds:</strong> Customize each bed's name, size (rows × columns), and light level (low/high for shade vs full sun).</li>
+                  <li><strong>Add/Remove Beds:</strong> Click "+ Add Another Bed" to add more raised beds, or remove beds you don't need.</li>
+                  <li><strong>Create Layout:</strong> Click "Create Beds" to set up your garden structure with empty beds.</li>
+                  <li><strong>Next Steps:</strong> After creating your beds, switch to the Plan tab to manually add crops by dragging and dropping from the plant palette.</li>
+                  <li><strong>Note:</strong> Creating a new layout will overwrite your current design.</li>
                 </ul>
               </div>
 
@@ -137,11 +137,11 @@ export function Information() {
               <div className="col-12">
                 <h6>💡 Tips & Best Practices</h6>
                 <ul className="small mb-0">
-                  <li><strong>Start with the Auto-Planner:</strong> Use the New Layout wizard to generate an initial layout quickly, then refine it on the Layout tab. The auto-planner helps you get started without analysis paralysis.</li>
+                  <li><strong>Plan Your Layout:</strong> Start by creating beds in the New tab, then add crops manually in the Layout tab. Consider plant spacing requirements and your available garden space.</li>
                   <li><strong>Light Requirements:</strong> The planner uses a two-tier light system: High light (☀️) for fruiting plants (tomatoes, peppers, squash) and Low light (☁️) for shade-tolerant crops (leafy greens, root vegetables).</li>
                   <li><strong>Succession Planting:</strong> For continuous harvests, plant cool-season crops (lettuce, spinach) in early spring and again in fall. The calendar shows both spring and fall planting windows where applicable.</li>
                   <li><strong>Companion Planting:</strong> Group compatible plants together. For example, tomatoes grow well with basil, and carrots with onions.</li>
-                  <li><strong>Start Small:</strong> If you're new to gardening, try the "Beginner" preset (2 beds, 40 sq ft) and expand as you gain experience.</li>
+                  <li><strong>Start Small:</strong> If you're new to gardening, start with 1-2 beds (20-40 sq ft) and expand as you gain experience.</li>
                   <li><strong>Use Filters:</strong> When working in the Layout tab, use the crop palette filters to quickly find vegetables, fruits, herbs, or plants suitable for your light conditions.</li>
                   <li><strong>Save Often:</strong> Export your plan regularly to avoid losing your layout. Plans are saved with a .pln extension and can be loaded later.</li>
                 </ul>
