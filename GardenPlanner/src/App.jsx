@@ -129,8 +129,8 @@ export default function App() {
 
   // Compact Bed Config (used for both Add and Update)
   const [newBedName, setNewBedName] = useState('')
-  const [newBedRows, setNewBedRows] = useState(8)
-  const [newBedCols, setNewBedCols] = useState(4)
+  const [newBedRows, setNewBedRows] = useState(4)
+  const [newBedCols, setNewBedCols] = useState(8)
   const [newBedLight, setNewBedLight] = useState('high')
   const [selectedBedIndex, setSelectedBedIndex] = useState(null)
 
