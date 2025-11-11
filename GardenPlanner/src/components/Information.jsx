@@ -13,56 +13,62 @@ export function Information() {
           </div>
           <div className="card-body">
             <div className="row g-4">
-              {/* New Garden Tab */}
-              <div className="col-md-4">
-                <h6 className="text-primary">🌱 New Layout</h6>
-                <p>
-                  Use this tab to set up your raised bed garden:
-                </p>
-                <ul className="small">
-                  <li><strong>Configure Beds:</strong> Customize each bed's name, size (rows × columns), and light level (low/high for shade vs full sun).</li>
-                  <li><strong>Add/Remove Beds:</strong> Click "+ Add Another Bed" to add more raised beds, or remove beds you don't need.</li>
-                  <li><strong>Create Layout:</strong> Click "Create Beds" to set up your garden structure with empty beds.</li>
-                  <li><strong>Next Steps:</strong> After creating your beds, switch to the Plan tab to manually add crops by dragging and dropping from the plant palette.</li>
-                  <li><strong>Note:</strong> Creating a new layout will overwrite your current design.</li>
-                </ul>
-              </div>
-
               {/* Layout Tab */}
-              <div className="col-md-4">
-                <h6 className="text-primary">🏡 Layout</h6>
+              <div className="col-md-6">
+                <h6 className="text-primary">� Layout Tab</h6>
                 <p>
-                  Your main workspace for viewing and editing your raised bed layout:
+                  Your main workspace for creating and managing your raised bed garden:
                 </p>
+                <h6 className="mt-3">Creating & Managing Beds</h6>
                 <ul className="small">
-                  <li><strong>Crop Palette:</strong> Select a crop from the left sidebar (use filters to narrow by type, light level, or search). Click any cell in your beds to place it. Selected crops stick as you scroll.</li>
-                  <li><strong>Drag & Drop:</strong> You can drag crops directly from the palette onto bed cells for faster placement.</li>
-                  <li><strong>Edit Cells:</strong> Click a planted cell to select it. Press Delete or Backspace to remove crops. Click and drag to select multiple cells.</li>
-                  <li><strong>Crop Details:</strong> Click any planted cell to see detailed growing information in the right panel, including target dates based on your USDA zone and spacing requirements.</li>
-                  <li><strong>Save/Load:</strong> Use the Save button to export your layout to a .pln file. Use Load to import a previously saved plan.</li>
-                  <li><strong>Undo/Redo:</strong> Use the buttons or Ctrl+Z (undo) and Ctrl+Y (redo) to step through changes.</li>
-                  <li><strong>Plan Name:</strong> Click the 📝 icon next to your plan name in the header to rename it.</li>
+                  <li><strong>Add a Bed:</strong> Use the bed selector dropdown (set to "New Bed"), configure name, size (rows × columns), and light level, then click "Add Bed".</li>
+                  <li><strong>Edit a Bed:</strong> Select a bed from the dropdown to load its settings. Modify the name, size, or light level, then click "Update Bed".</li>
+                  <li><strong>Reorder Beds:</strong> Use the up/down arrow buttons to change the display order of your beds.</li>
+                  <li><strong>Remove a Bed:</strong> Select a bed and click the "Remove" button. Beds with planted crops will prompt for confirmation.</li>
+                  <li><strong>Default Size:</strong> New beds default to 4 rows × 8 columns (32 square feet), but you can adjust from 1×1 to 12×12.</li>
+                  <li><strong>Light Levels:</strong> Toggle between ☀️ (High/Full Sun) for fruiting plants and ☁️ (Low/Partial Shade) for leafy greens.</li>
+                </ul>
+
+                <h6 className="mt-3">Planting Crops</h6>
+                <ul className="small">
+                  <li><strong>Crop Palette:</strong> Select a crop from the left sidebar. Use filters to narrow by type, light level, or search.</li>
+                  <li><strong>Drag & Drop:</strong> Drag crops directly from the palette onto bed cells for quick placement.</li>
+                  <li><strong>Click to Plant:</strong> Select a crop, then click any cell to place it. Selected crops stay active as you scroll.</li>
+                  <li><strong>Edit Cells:</strong> Click a planted cell to select it. Press Delete or Backspace to remove crops.</li>
+                  <li><strong>Multi-Select:</strong> Double-click a planted cell to select the entire plant group (for sprawling crops).</li>
+                  <li><strong>Delete Button:</strong> Each bed card shows a "Delete" button when cells are selected to remove crops in bulk.</li>
                 </ul>
               </div>
 
-              {/* Calendar Tab */}
-              <div className="col-md-4">
-                <h6 className="text-primary">📅 Calendar</h6>
+              {/* Calendar & Tools */}
+              <div className="col-md-6">
+                <h6 className="text-primary">📅 Calendar Tab</h6>
                 <p>
                   View your planting schedule organized by month:
                 </p>
                 <ul className="small">
                   <li><strong>Monthly View:</strong> See which crops to start indoors, transplant outdoors, direct sow, and harvest each month.</li>
-                  <li><strong>Zone-Based:</strong> All dates are calculated based on your selected USDA hardiness zone and the last frost date for your area.</li>
+                  <li><strong>Zone-Based:</strong> All dates are calculated based on your selected USDA hardiness zone and the last frost date.</li>
                   <li><strong>Color-Coded:</strong> Each plant appears in its designated color for easy identification.</li>
-                  <li><strong>Activity Types:</strong> 
-                    <ul>
-                      <li><em>Start Indoors:</em> Begin seeds in trays or pots</li>
-                      <li><em>Plant Outdoors:</em> Transplant seedlings or direct sow</li>
-                      <li><em>Harvest:</em> Expected harvest window</li>
-                    </ul>
-                  </li>
-                  <li><strong>Tip:</strong> Change your USDA zone using the dropdown in the header to see how planting dates adjust.</li>
+                  <li><strong>Activity Types:</strong> Start Indoors, Plant Outdoors, and Harvest windows.</li>
+                </ul>
+
+                <h6 className="mt-3 text-primary">🛠️ Tools & Features</h6>
+                <ul className="small">
+                  <li><strong>Rename Garden:</strong> Click the pencil icon + garden name in the top-left header.</li>
+                  <li><strong>USDA Zone:</strong> Select your zone from the dropdown in the header to adjust planting dates.</li>
+                  <li><strong>Save/Load:</strong> Export your layout to a .pln file or load a previously saved plan.</li>
+                  <li><strong>PDF Export:</strong> Generate a printable plan with layout, planting calendar, and growing instructions.</li>
+                  <li><strong>Clear All:</strong> Remove all beds at once (with confirmation if crops are present).</li>
+                  <li><strong>Undo/Redo:</strong> Use the buttons or Ctrl+Z (undo) and Ctrl+Y (redo) keyboard shortcuts.</li>
+                  <li><strong>Crop Details:</strong> Click any planted cell to see detailed growing information in the right panel.</li>
+                </ul>
+
+                <h6 className="mt-3 text-primary">💾 Saving Your Work</h6>
+                <ul className="small mb-0">
+                  <li><strong>Local Storage:</strong> Plans auto-save to your browser, but clearing browser data will erase them.</li>
+                  <li><strong>Export Files:</strong> Click "Save" to download a .pln file for permanent backup.</li>
+                  <li><strong>Important:</strong> Always export important plans—browser storage is not permanent!</li>
                 </ul>
               </div>
             </div>
@@ -74,11 +80,11 @@ export function Information() {
               <div className="col-12">
                 <h6 className="text-primary">🖨️ PDF Export</h6>
                 <p className="small">
-                  Create a printable plan to take outside to your raised beds. Click the 🖨️ PDF button in the header to generate a comprehensive PDF with:
+                  Create a printable plan to take outside. Click the PDF button in the header to generate a comprehensive document with:
                 </p>
                 <ul className="small mb-0">
-                  <li><strong>Layout:</strong> Color-coded visual map of beds showing where each crop is located</li>
-                  <li><strong>Planting Instructions:</strong> Each crop displays quantity info—fractions (1/2, 1/4) show sq ft per plant for large crops like squash, while numbers show how many to plant per sq ft</li>
+                  <li><strong>Layout:</strong> Color-coded visual map showing where each crop is located</li>
+                  <li><strong>Planting Instructions:</strong> Quantity info per crop (fractions show sq ft per plant; numbers show plants per sq ft)</li>
                   <li><strong>Calendar:</strong> When to start seeds, transplant, and harvest based on your USDA zone</li>
                   <li><strong>Growing Notes:</strong> Detailed care instructions for each crop in your plan</li>
                 </ul>

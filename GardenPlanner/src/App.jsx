@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { PLANTS } from './data'
 import { PlantPalette } from './components/PlantPalette'
 import { Beds } from './components/Beds'
-import { NewGarden } from './components/NewGarden'
 import { PlantInfo } from './components/PlantInfo'
 import { Calendar } from './components/Calendar'
 import { Information } from './components/Information'
@@ -26,19 +25,10 @@ export default function App() {
     // Read from URL hash on mount
     const hash = window.location.hash.slice(1)
     if (hash === 'calendar') return 'calendar'
-    if (hash === 'plan') return 'plan'
-    return 'new-garden'
+    if (hash === 'info') return 'info'
+    if (hash === 'settings') return 'settings'
+    return 'plan'
   })
-
-  // On mount, if default URL and any bed has plants, go to layout page
-  useEffect(() => {
-    const hash = window.location.hash.slice(1)
-    if (!hash || hash === 'new-garden') {
-      if (garden && garden.beds && garden.beds.some(bed => bed.cells && bed.cells.some(cell => !!cell))) {
-        setActiveTab('plan');
-      }
-    }
-  }, [garden])
 
   // Update URL hash when tab changes
   useEffect(() => {
@@ -273,15 +263,6 @@ export default function App() {
               <ul className="nav nav-pills">
                 <li className="nav-item">
                   <button 
-                    className={`nav-link ${activeTab === 'new-garden' ? 'active' : ''}`} 
-                    onClick={(e) => { e.stopPropagation(); setActiveTab('new-garden'); }} 
-                    title="Configure and generate a new raised bed layout"
-                  >
-                    <Icon name="plus-square" className="me-1" /> New
-                  </button>
-                </li>
-                <li className="nav-item">
-                  <button 
                     className={`nav-link ${activeTab === 'plan' ? 'active' : ''}`} 
                     onClick={(e) => { e.stopPropagation(); setActiveTab('plan'); }} 
                     title="Edit and view your raised bed layout"
@@ -492,10 +473,6 @@ export default function App() {
             <ZoneSelector zone={garden.zone} onChange={setZone} />
           </div>
         </header>
-
-        {activeTab === 'new-garden' && (
-          <NewGarden onAfterGenerate={() => setActiveTab('plan')} />
-        )}
 
         {activeTab === 'plan' && (
           <div className="row g-2 plan-layout d-flex">

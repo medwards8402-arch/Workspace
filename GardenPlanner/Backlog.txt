@@ -1,20 +1,8 @@
-Make the planting logic more maintainable.
-
 PDF betterment:
 * Don't print notes when there aren't any
 * Make it look better
 
-Bug: If first bed allows herbs and all veggies+basil is selected it will be filled with basil.
-
 Warnings would be nice: high light in a low light bed.
-
-Edit names from the Layout tab
-
-Hide the auto-planter behind experimental settings.
-
-Add and remove beds from the layout view (adjust dimensions?)
-
-Selectable beds -- remove from header instead of from bed button.  Resize, reprioritize.
 
 Publish webpage somewhere
     Better URL
@@ -22,3 +10,7 @@ Publish webpage somewhere
     Post to reddit for more feedback
 
 Drawing pumkins on empty beds is confusing.
+
+Bug: The undo and redo buttons don't appropriately work with the currently selected bed.
+
+Clicking on a bed header and off a bed header should select and deselect it for the purposes of editing (both visually and in the dropdown).
