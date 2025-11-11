@@ -12,7 +12,13 @@ Edit names from the Layout tab
 
 Hide the auto-planter behind experimental settings.
 
+Add and remove beds from the layout view (adjust dimensions?)
+
+Selectable beds -- remove from header instead of from bed button.  Resize, reprioritize.
+
 Publish webpage somewhere
     Better URL
     Collect feedback from people I know
     Post to reddit for more feedback
+
+Drawing pumkins on empty beds is confusing.

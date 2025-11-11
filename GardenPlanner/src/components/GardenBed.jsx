@@ -505,14 +505,14 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
   return (
     <div className="d-flex gap-3" onClick={handleCardClick}>
       <div
-        className="card"
+        className={`card ${isSelectedBed ? 'bg-primary-subtle border-primary' : ''}`}
         style={{
           width: cardWidth,
           minWidth: cardWidth,
           maxWidth: cardWidth,
           height: 'fit-content',
-          outline: isSelectedBed ? '3px solid var(--bs-primary)' : 'none',
-          outlineOffset: isSelectedBed ? '2px' : 0
+          position: 'relative',
+          transition: 'background-color 0.2s ease, border-color 0.2s ease'
         }}
         data-selected={isSelectedBed ? 'true' : 'false'}
       >

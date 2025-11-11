@@ -21,6 +21,7 @@ export const GARDEN_ACTIONS = {
   UPDATE_BED: 'UPDATE_BED',
   ADD_BED: 'ADD_BED',
   REMOVE_BED: 'REMOVE_BED',
+  REORDER_BED: 'REORDER_BED',
   UPDATE_CELL: 'UPDATE_CELL',
   UPDATE_CELLS: 'UPDATE_CELLS',
   CLEAR_CELLS: 'CLEAR_CELLS',
@@ -173,6 +174,90 @@ function gardenReducer(state, action) {
       if (newActiveBed !== null && newActiveBed !== undefined) {
         if (newActiveBed === bedIndex) newActiveBed = null
         else if (newActiveBed > bedIndex) newActiveBed = newActiveBed - 1
+      }
+
+      return {
+        ...newState,
+        selection: newSelection,
+        activeBed: newActiveBed,
+      }
+    }
+
+    case GARDEN_ACTIONS.REORDER_BED: {
+      const { fromIndex, toIndex } = action.payload
+      if (fromIndex < 0 || fromIndex >= state.garden.beds.length) return state
+      if (toIndex < 0 || toIndex >= state.garden.beds.length) return state
+      if (fromIndex === toIndex) return state
+
+      // Reorder beds array
+      const newBeds = [...state.garden.beds]
+      const [movedBed] = newBeds.splice(fromIndex, 1)
+      newBeds.splice(toIndex, 0, movedBed)
+
+      // Re-map notes: adjust all bed indices
+      const oldNotes = state.garden.notes || {}
+      const newNotes = {}
+      Object.entries(oldNotes).forEach(([key, note]) => {
+        const [bStr, cStr] = key.split('.')
+        const oldBedIdx = parseInt(bStr, 10)
+        const c = parseInt(cStr, 10)
+        if (Number.isNaN(oldBedIdx) || Number.isNaN(c)) return
+        
+        // Calculate new bed index after reordering
+        let newBedIdx = oldBedIdx
+        if (oldBedIdx === fromIndex) {
+          newBedIdx = toIndex
+        } else if (fromIndex < toIndex) {
+          // Moving down: beds between fromIndex+1 and toIndex shift up
+          if (oldBedIdx > fromIndex && oldBedIdx <= toIndex) {
+            newBedIdx = oldBedIdx - 1
+          }
+        } else {
+          // Moving up: beds between toIndex and fromIndex-1 shift down
+          if (oldBedIdx >= toIndex && oldBedIdx < fromIndex) {
+            newBedIdx = oldBedIdx + 1
+          }
+        }
+        newNotes[`${newBedIdx}.${c}`] = note
+      })
+
+      const newGarden = new Garden({ ...state.garden, beds: newBeds, notes: newNotes })
+      const newState = pushToHistory(state, newGarden)
+
+      // Adjust selection and activeBed
+      const sel = state.selection
+      let newSelection = sel
+      if (sel?.bedIndex !== null && sel?.bedIndex !== undefined) {
+        const oldBedIdx = sel.bedIndex
+        let newBedIdx = oldBedIdx
+        if (oldBedIdx === fromIndex) {
+          newBedIdx = toIndex
+        } else if (fromIndex < toIndex) {
+          if (oldBedIdx > fromIndex && oldBedIdx <= toIndex) {
+            newBedIdx = oldBedIdx - 1
+          }
+        } else {
+          if (oldBedIdx >= toIndex && oldBedIdx < fromIndex) {
+            newBedIdx = oldBedIdx + 1
+          }
+        }
+        newSelection = { bedIndex: newBedIdx, cellIndices: sel.cellIndices }
+      }
+
+      let newActiveBed = state.activeBed
+      if (newActiveBed !== null && newActiveBed !== undefined) {
+        const oldBedIdx = newActiveBed
+        if (oldBedIdx === fromIndex) {
+          newActiveBed = toIndex
+        } else if (fromIndex < toIndex) {
+          if (oldBedIdx > fromIndex && oldBedIdx <= toIndex) {
+            newActiveBed = oldBedIdx - 1
+          }
+        } else {
+          if (oldBedIdx >= toIndex && oldBedIdx < fromIndex) {
+            newActiveBed = oldBedIdx + 1
+          }
+        }
       }
 
       return {

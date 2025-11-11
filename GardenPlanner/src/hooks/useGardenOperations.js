@@ -61,6 +61,10 @@ export function useGardenOperations() {
     dispatch({ type: GARDEN_ACTIONS.REMOVE_BED, payload: { bedIndex } })
   }, [dispatch])
 
+  const reorderBed = useCallback((fromIndex, toIndex) => {
+    dispatch({ type: GARDEN_ACTIONS.REORDER_BED, payload: { fromIndex, toIndex } })
+  }, [dispatch])
+
   const setNote = useCallback((bedIndex, cellIndex, note) => {
     dispatch({ 
       type: GARDEN_ACTIONS.SET_NOTE, 
@@ -111,6 +115,7 @@ export function useGardenOperations() {
     updateBed,
   addBed,
   removeBed,
+    reorderBed,
     setNote,
     updateNotes,
     deleteNotes,

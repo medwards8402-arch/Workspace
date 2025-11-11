@@ -17,7 +17,7 @@ import { useFileOperations } from './hooks/useFileOperations'
 import { useSelection } from './hooks/useSelection'
 
 export default function App() {
-  const { garden, setZone, setName, addBed, removeBed, updateBed, deleteNotes } = useGardenOperations()
+  const { garden, setZone, setName, addBed, removeBed, updateBed, deleteNotes, reorderBed } = useGardenOperations()
   const { undo, redo, canUndo, canRedo } = useHistory()
   const { exportToFile, importFromFile } = useFileOperations()
   const { clearSelection, setSelectedPlant, setActiveBed } = useSelection()
@@ -94,6 +94,25 @@ export default function App() {
     }
   }
 
+  const handleDeleteAllBeds = () => {
+    const totalBeds = garden.beds.length
+    const totalPlanted = garden.beds.reduce((sum, bed) => sum + (bed.plantedCellCount || 0), 0)
+    
+    let message = `Delete all ${totalBeds} bed${totalBeds === 1 ? '' : 's'}?`
+    if (totalPlanted > 0) {
+      message = `Delete all ${totalBeds} bed${totalBeds === 1 ? '' : 's'} and ${totalPlanted} planted cell${totalPlanted === 1 ? '' : 's'}? This cannot be undone.`
+    }
+    
+    if (!window.confirm(message)) return
+    
+    // Remove all beds (from last to first to avoid index issues)
+    for (let i = garden.beds.length - 1; i >= 0; i--) {
+      removeBed(i)
+    }
+    setSelectedBedIndex(null)
+    setActiveBed(null)
+  }
+
   // Click-away deselection
   const handleContainerClick = () => {
     setSelectedPlant(null)
@@ -126,7 +145,8 @@ export default function App() {
         setNewBedLight(b.lightLevel || 'high')
       }
     } else {
-      // Keep last-used config values for adding when no selection
+      // Clear name when adding a new bed so user can type a fresh one
+      setNewBedName('')
     }
   }, [selectedBedIndex, garden])
   const handleSelectBed = (index) => {
@@ -140,77 +160,41 @@ export default function App() {
     const planted = bed?.plantedCellCount || 0
     if (planted > 0) {
       if (!window.confirm(`Bed has ${planted} planted cell${planted === 1 ? '' : 's'}. Remove bed anyway?`)) return
-    } else {
-      if (!window.confirm('Remove this empty bed?')) return
     }
     removeBed(selectedBedIndex)
     setSelectedBedIndex(null)
   }
 
-  const applyResize = () => {
-    if (selectedBedIndex === null) return
-    const bed = garden.getBed(selectedBedIndex)
-    if (!bed) return
-    const targetRows = Math.max(1, Math.min(24, parseInt(resizeRows || bed.rows, 10)))
-    const targetCols = Math.max(1, Math.min(24, parseInt(resizeCols || bed.cols, 10)))
-    if (targetRows === bed.rows && targetCols === bed.cols) return
+  const handleMoveBedUp = () => {
+    if (selectedBedIndex === null || selectedBedIndex === 0) return
+    reorderBed(selectedBedIndex, selectedBedIndex - 1)
+    setSelectedBedIndex(selectedBedIndex - 1)
+    setActiveBed(selectedBedIndex - 1)
+  }
 
-    // Determine lost planted cells & notes if shrinking
-    let lostPlanted = 0
-    let lostNoteCount = 0
-    const trimmedIndices = []
-    if (targetRows < bed.rows || targetCols < bed.cols) {
-      for (let r = 0; r < bed.rows; r++) {
-        for (let c = 0; c < bed.cols; c++) {
-          const oldIdx = r * bed.cols + c
-          const outOfBounds = (r >= targetRows) || (c >= targetCols)
-          if (outOfBounds) {
-            const cellVal = bed.cells[oldIdx]
-            if (cellVal) lostPlanted++
-            const noteKey = `${selectedBedIndex}.${oldIdx}`
-            if (garden.notes[noteKey]) lostNoteCount++
-            trimmedIndices.push(oldIdx)
-          }
-        }
-      }
-    }
-    if (lostPlanted > 0 || lostNoteCount > 0) {
-      const parts = []
-      if (lostPlanted > 0) parts.push(`${lostPlanted} planted cell${lostPlanted === 1 ? '' : 's'}`)
-      if (lostNoteCount > 0) parts.push(`${lostNoteCount} note${lostNoteCount === 1 ? '' : 's'}`)
-      if (!window.confirm(`Resizing will remove ${parts.join(' and ')}. Continue?`)) return
-    }
-
-    const newCellCount = targetRows * targetCols
-    const newCells = new Array(newCellCount).fill(null)
-    const minRows = Math.min(bed.rows, targetRows)
-    const minCols = Math.min(bed.cols, targetCols)
-    for (let r = 0; r < minRows; r++) {
-      for (let c = 0; c < minCols; c++) {
-        const oldIdx = r * bed.cols + c
-        const newIdx = r * targetCols + c
-        newCells[newIdx] = bed.cells[oldIdx]
-      }
-    }
-    const BedCtor = bed.constructor
-    const resizedBed = new BedCtor(targetRows, targetCols, bed.lightLevel, newCells, bed.name, bed.allowedTypes)
-
-    // Remove notes for trimmed cells first (creates its own history entry)
-    if (trimmedIndices.length > 0) {
-      deleteNotes(selectedBedIndex, trimmedIndices)
-    }
-    updateBed(selectedBedIndex, resizedBed)
+  const handleMoveBedDown = () => {
+    if (selectedBedIndex === null || selectedBedIndex >= garden.beds.length - 1) return
+    reorderBed(selectedBedIndex, selectedBedIndex + 1)
+    setSelectedBedIndex(selectedBedIndex + 1)
+    setActiveBed(selectedBedIndex + 1)
   }
 
   const submitConfig = () => {
-    const rows = Math.max(1, Math.min(24, parseInt(newBedRows) || 1))
-    const cols = Math.max(1, Math.min(24, parseInt(newBedCols) || 1))
+    const rows = Math.max(1, Math.min(12, parseInt(newBedRows) || 1))
+    const cols = Math.max(1, Math.min(12, parseInt(newBedCols) || 1))
     const name = (newBedName || '').trim()
     const lightLevel = newBedLight === 'low' ? 'low' : 'high'
 
     if (selectedBedIndex === null) {
       // Add new bed with current settings
-      addBed({ rows, cols, lightLevel, name })
+      const effectiveName = name || `Bed ${garden.beds.length + 1}`
+      const newBedIndex = garden.beds.length
+      addBed({ rows, cols, lightLevel, name: effectiveName })
+      // After adding, clear the name field and select the new bed
+      setNewBedName('')
+      // Select the newly added bed (it will be at the end of the array)
+      setSelectedBedIndex(newBedIndex)
+      setActiveBed(newBedIndex)
       return
     }
 
@@ -278,7 +262,14 @@ export default function App() {
           {/* Level 1: Title + Tabs + Actions */}
           <div className="d-flex align-items-center justify-content-between mb-1 flex-wrap gap-2">
             <div className="d-flex align-items-center flex-wrap" style={{gap: '0.5rem 0.75rem'}}>
-              <h1 className="h5 m-0">Raised Bed Planner</h1>
+              <button
+                className="btn btn-link p-0 m-0 text-body h5 text-decoration-none d-inline-flex align-items-center garden-name-btn"
+                onClick={(e) => { e.stopPropagation(); handleNameChange(); }}
+                title="Rename garden"
+                style={{fontSize: '1.5rem', fontWeight: '600'}}
+              >
+                <Icon name="edit" className="me-2" /> {garden.name || 'Raised Bed Planner'}
+              </button>
               <ul className="nav nav-pills">
                 <li className="nav-item">
                   <button 
@@ -372,6 +363,14 @@ export default function App() {
                     >
                       <Icon name="printer" className="me-1" /> PDF
                     </button>
+                    <button
+                      className="btn btn-outline-danger d-flex align-items-center"
+                      onClick={(e) => { e.stopPropagation(); handleDeleteAllBeds(); }}
+                      title="Delete all beds"
+                      disabled={garden.beds.length === 0}
+                    >
+                      <Icon name="trash" className="me-1" /> Clear All
+                    </button>
                   </div>
                 </>
               )}
@@ -381,54 +380,64 @@ export default function App() {
           {/* Level 2: Global settings for this plan */}
           <div className="d-flex align-items-center justify-content-between flex-wrap gap-2 app-header-secondary">
             <div className="d-flex align-items-center gap-2 flex-wrap">
-              <button
-                className="btn btn-sm btn-outline-success d-flex align-items-center garden-name-btn"
-                onClick={(e) => { e.stopPropagation(); handleNameChange(); }}
-                title="Rename garden"
-              >
-                <Icon name="edit" className="me-1" /> {garden.name}
-              </button>
               {activeTab === 'plan' && (
                 <>
+                  <select
+                    className="form-select form-select-sm"
+                    value={selectedBedIndex ?? ''}
+                    onChange={(e) => {
+                      const val = e.target.value
+                        if (val === '') { setSelectedBedIndex(null); setActiveBed(null); setNewBedName(''); return }
+                      handleSelectBed(parseInt(val, 10))
+                    }}
+                    title="Select a bed to edit"
+                    style={{width: 140}}
+                  >
+                    <option value="">(New Bed)</option>
+                    {garden.beds.map((b, i) => (
+                      <option key={i} value={i}>{(b.name && b.name.trim()) ? b.name : `Bed ${i + 1}`}</option>
+                    ))}
+                  </select>
                   <form
+                    id="bed-config-form"
                     className="d-flex align-items-center gap-2 flex-wrap bg-body-secondary rounded p-2"
                     onSubmit={(e) => { e.preventDefault(); submitConfig() }}
                     onClick={(e) => e.stopPropagation()}
                     title={selectedBedIndex === null ? 'Add a new bed' : 'Update selected bed'}
                   >
-                    <input
-                      type="text"
-                      className="form-control form-control-sm"
-                      placeholder={selectedBedIndex === null ? 'Name (optional)' : 'Rename bed'}
-                      value={newBedName}
-                      onChange={(e) => setNewBedName(e.target.value)}
-                      style={{width: 140}}
-                    />
+                    <div className="d-flex align-items-center gap-1">
+                      <Icon name="edit" style={{fontSize: '0.9rem', opacity: 0.6}} />
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        placeholder={selectedBedIndex === null ? '(Name)' : 'Rename bed'}
+                        value={newBedName}
+                        onChange={(e) => setNewBedName(e.target.value)}
+                        style={{width: 140}}
+                      />
+                    </div>
                     <div className="d-flex align-items-center gap-1">
                       <input
                         type="number"
                         className="form-control form-control-sm"
                         value={newBedRows}
                         min={1}
-                        max={24}
+                        max={12}
                         onChange={(e) => setNewBedRows(e.target.value)}
                         title="Rows"
-                        style={{width: 70}}
+                        style={{width: '6ch'}}
                       />
-                      <span className="text-muted" style={{fontSize: '0.8rem'}}>rows</span>
-                    </div>
-                    <div className="d-flex align-items-center gap-1">
+                      <span className="text-muted">×</span>
                       <input
                         type="number"
                         className="form-control form-control-sm"
                         value={newBedCols}
                         min={1}
-                        max={24}
+                        max={12}
                         onChange={(e) => setNewBedCols(e.target.value)}
                         title="Columns"
-                        style={{width: 70}}
+                        style={{width: '6ch'}}
                       />
-                      <span className="text-muted" style={{fontSize: '0.8rem'}}>cols</span>
                     </div>
                     <button
                       type="button"
@@ -438,37 +447,47 @@ export default function App() {
                     >
                       {newBedLight === 'high' ? '☀️' : '☁️'}
                     </button>
-                    <button type="submit" className="btn btn-sm btn-success">{selectedBedIndex === null ? 'Add Bed' : 'Update Bed'}</button>
                   </form>
-                  <div className="d-flex align-items-center gap-2 ms-1 flex-wrap">
-                    <select
-                      className="form-select form-select-sm"
-                      value={selectedBedIndex ?? ''}
-                      onChange={(e) => {
-                        const val = e.target.value
-                        if (val === '') { setSelectedBedIndex(null); setActiveBed(null); return }
-                        handleSelectBed(parseInt(val, 10))
-                      }}
-                      title="Select a bed to edit"
-                      style={{width: 140}}
-                    >
-                      <option value="">(Select Bed)</option>
-                      {garden.beds.map((b, i) => (
-                        <option key={i} value={i}>{(b.name && b.name.trim()) ? b.name : `Bed ${i + 1}`}</option>
-                      ))}
-                    </select>
+                  <div className="btn-group btn-group-sm" role="group">
                     <button
-                      className="btn btn-sm btn-outline-danger d-flex align-items-center"
+                      className="btn btn-outline-secondary d-flex align-items-center"
+                      disabled={selectedBedIndex === null || selectedBedIndex === 0}
+                      onClick={(e) => { e.stopPropagation(); handleMoveBedUp() }}
+                      title="Move bed up"
+                    >
+                      <Icon name="arrow-up" />
+                    </button>
+                    <button
+                      className="btn btn-outline-secondary d-flex align-items-center"
+                      disabled={selectedBedIndex === null || selectedBedIndex >= garden.beds.length - 1}
+                      onClick={(e) => { e.stopPropagation(); handleMoveBedDown() }}
+                      title="Move bed down"
+                    >
+                      <Icon name="arrow-down" />
+                    </button>
+                  </div>
+                  <div className="btn-group btn-group-sm" role="group">
+                    <button
+                      type="submit"
+                      form="bed-config-form"
+                      className="btn btn-outline-primary d-flex align-items-center"
+                      title={selectedBedIndex === null ? 'Add a new bed' : 'Update selected bed'}
+                    >
+                      <Icon name={selectedBedIndex === null ? 'plus-square' : 'check-square'} className="me-1" />
+                      {selectedBedIndex === null ? 'Add Bed' : 'Update Bed'}
+                    </button>
+                    <button
+                      className="btn btn-outline-danger d-flex align-items-center"
                       disabled={selectedBedIndex === null}
                       onClick={(e) => { e.stopPropagation(); handleRemoveSelectedBed() }}
                       title={selectedBedIndex === null ? 'Select a bed first' : 'Remove selected bed'}
-                      style={{padding: '0.25rem 0.5rem'}}
                     >
-                      🗑️ <span className="visually-hidden">Remove</span>
+                      <Icon name="trash" className="me-1" /> Remove
                     </button>
                   </div>
                 </>
               )}
+              
             </div>
             <ZoneSelector zone={garden.zone} onChange={setZone} />
           </div>
