@@ -13,4 +13,16 @@ Drawing pumkins on empty beds is confusing.
 
 Bug: The undo and redo buttons don't appropriately work with the currently selected bed.
 
+Aaron Feedback:
+
 Clicking on a bed header and off a bed header should select and deselect it for the purposes of editing (both visually and in the dropdown).
+
+I like the right pop-out that gives details on the plants, but I want it to show up when I select things in the Crop Palette
+
+Could be nice to reorder things, (drag-drop) once placed.
+
+I found myself overwriting previous plants because I tried to click on them to view the details, but had something selected in the left column, maybe there is no such thing as overwriting, plants only get placed into empty spaces and you have to use the delete button to remove
+
+Being able to Shift-click to select a whole row/column or even rectangle would be nice. CTRL click as well.
+
+It's not clear to me what the "Update Bed" button does. Tooltip maybe?
