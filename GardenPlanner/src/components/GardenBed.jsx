@@ -3,7 +3,7 @@ import { useGardenOperations } from '../hooks/useGardenOperations'
 import { useSelection } from '../hooks/useSelection'
 import { PLANTS } from '../data'
 
-function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter, selected, cellSize, isDimmed }) {
+function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter, selected, cellSize, isDimmed, showSprawlFallback }) {
   const scale = useMemo(() => cellSize / 68, [cellSize])
   const fs = (v) => Math.max(7, Math.round(v * scale))
   const gapPx = (v) => Math.max(1, Math.round(v * scale))
@@ -28,6 +28,16 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
 
   // Render multiple icons based on sqftSpacing (only for non-dimmed cells)
   const renderPlantIcons = () => {
+    // Fallback: show faded single icon for incomplete sprawling plant placement
+    if (plant && showSprawlFallback) {
+      return (
+        <>
+          <div style={{fontSize: fs(26), lineHeight: 1, opacity: 0.55}}>{plant.icon}</div>
+          <div className="small text-center" style={{lineHeight: 1.1, fontSize: fs(10), opacity: 0.55}}>{plant.name}</div>
+        </>
+      )
+    }
+
     if (!plant || isDimmed) return null
     
     const spacing = plant.sqftSpacing || 1
@@ -558,28 +568,39 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
             }}
             onClick={handleBedClick}
           >
-            {bed.cells.map((code, i) => {
-              const plant = PLANTS.find(p => p.code === code)
-              const isDimmed = sprawlingCellIndices.has(i)
-              return (
-                <Cell
-                  key={i}
-                  plant={plant}
-                  selected={selectedIndices.has(i)}
-                  cellSize={cellSize}
-                  isDimmed={isDimmed}
-                  onDrop={(e) => {
-                    e.preventDefault();
-                    const c = e.dataTransfer.getData('text/plain');
-                    if (c) handleDropAt(i, c);
-                  }}
-                  onClick={() => handleClickAt(i)}
-                  onDoubleClick={() => handleDoubleClickAt(i)}
-                  onMouseDown={() => handleMouseDownAt(i)}
-                  onMouseEnter={() => handleMouseEnterAt(i)}
-                />
-              );
-            })}
+            {(() => {
+              // Build set of cells that have a rendered plant instance icon (part of claimed overlay shape)
+              const instanceIconCells = new Set()
+              sprawlingOverlays.forEach(ov => {
+                ov.plantInstances.forEach(inst => {
+                  inst.cells.forEach(idx => instanceIconCells.add(idx))
+                })
+              })
+              return bed.cells.map((code, i) => {
+                const plant = PLANTS.find(p => p.code === code)
+                const isDimmed = sprawlingCellIndices.has(i)
+                const showSprawlFallback = !!(plant && plant.cellsRequired && plant.cellsRequired > 1 && isDimmed && !instanceIconCells.has(i))
+                return (
+                  <Cell
+                    key={i}
+                    plant={plant}
+                    selected={selectedIndices.has(i)}
+                    cellSize={cellSize}
+                    isDimmed={isDimmed}
+                    showSprawlFallback={showSprawlFallback}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      const c = e.dataTransfer.getData('text/plain');
+                      if (c) handleDropAt(i, c);
+                    }}
+                    onClick={() => handleClickAt(i)}
+                    onDoubleClick={() => handleDoubleClickAt(i)}
+                    onMouseDown={() => handleMouseDownAt(i)}
+                    onMouseEnter={() => handleMouseEnterAt(i)}
+                  />
+                );
+              })
+            })()}
 
             {/* Large plant icons for sprawling crops - render individual plant instances */}
             {sprawlingOverlays.map((ov, ovIdx) => (
