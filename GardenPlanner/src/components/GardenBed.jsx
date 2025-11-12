@@ -212,16 +212,14 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
   const handleMouseDownAt = (i) => {
     setIsMouseDown(true)
     if (selectedPlant) {
-      // Planting mode: start drag-to-plant
+      // Planting mode: start drag-to-plant immediately
       setIsDragging(true)
       updateCell(bedIndex, i, selectedPlant)
     } else {
-      // Selection mode: start drag-to-select
-      setIsDragging(true)
+      // Selection mode: don't start drag yet, wait for mouse movement
+      // Just record the starting position
       setDragSelectionStart(i)
       setDragSelectionCurrent(new Set([i]))
-      // Immediately set this bed as the selection target
-      setSelection(bedIndex, new Set([i]))
     }
   }
 
@@ -229,8 +227,15 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
     if (isDragging && selectedPlant) {
       // Planting mode: plant on hover
       updateCell(bedIndex, i, selectedPlant)
-    } else if (isDragging && !selectedPlant && dragSelectionStart !== null) {
-      // Selection mode: expand selection rectangle
+    } else if (isMouseDown && !selectedPlant && dragSelectionStart !== null && dragSelectionStart !== i) {
+      // Selection mode: start dragging only when mouse moves to a different cell
+      if (!isDragging) {
+        setIsDragging(true)
+        // Set this bed as the selection target
+        setSelection(bedIndex, new Set([dragSelectionStart]))
+      }
+      
+      // Expand selection rectangle
       const startRow = Math.floor(dragSelectionStart / bedCols)
       const startCol = dragSelectionStart % bedCols
       const currentRow = Math.floor(i / bedCols)

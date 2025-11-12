@@ -504,11 +504,11 @@ export default function App() {
           <div className="row g-2 plan-layout d-flex">
             <div className="col-12">
               <TipsStack>
-                <Tip id="garden-plan-selection">
-                  Click to select a cell or <strong>double-click</strong> a planted cell to select the entire plant group
+                <Tip id="getting-started">
+                  <strong>Getting Started:</strong> Create a bed with the dropdown, select a crop from the left palette, then click or drag to plant. Click a bed's header to rename or adjust it.
                 </Tip>
-                <Tip id="save-often">
-                  <strong>Save your work:</strong> Use the Save button in the header to export your garden plan to a .pln file. Your plan is not automatically saved!
+                <Tip id="selection-tips">
+                  <strong>Selection:</strong> Click to select a cell, drag to select multiple, or double-click a planted cell to select the entire crop. Delete with the Delete key.
                 </Tip>
               </TipsStack>
             </div>
