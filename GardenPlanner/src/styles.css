@@ -201,9 +201,15 @@ body {
     gap: 0.5rem !important;
   }
   
-  /* Bed dropdown - full width */
-  .app-header-secondary .form-select {
+  /* Bed dropdown - full width, but not zone selector */
+  .app-header-secondary > div:first-child .form-select {
     width: 100% !important;
+  }
+  
+  /* Zone selector - keep inputs compact */
+  .app-header-secondary > div:last-child .form-select,
+  .app-header-secondary > div:last-child .form-control {
+    width: auto !important;
   }
   
   /* Bed config form - full width, wrap internally */
@@ -235,8 +241,8 @@ body {
     flex: 1;
   }
   
-  /* Zone selector - full width */
+  /* Zone selector - keep compact, don't stretch to full width */
   .app-header-secondary > div:last-child {
-    width: 100% !important;
+    width: auto !important;
   }
 }
