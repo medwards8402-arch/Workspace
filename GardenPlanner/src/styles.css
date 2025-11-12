@@ -163,11 +163,16 @@ body {
     font-size: 1.25rem !important;
   }
   
-  /* Stack nav pills vertically on very small screens */
+  /* Stack nav pills on mobile - all on one line */
   .app-header .nav {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     gap: 0.25rem;
+  }
+  
+  /* Remove auto-margin on About nav item for mobile */
+  .app-header .nav .nav-item.ms-auto {
+    margin-left: 0 !important;
   }
   
   /* Hide button text on mobile, keep only icons */
