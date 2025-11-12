@@ -175,11 +175,6 @@ export default function App() {
 
   const handleRemoveSelectedBed = () => {
     if (selectedBedIndex === null) return
-    const bed = garden.getBed(selectedBedIndex)
-    const planted = bed?.plantedCellCount || 0
-    if (planted > 0) {
-      if (!window.confirm(`Bed has ${planted} planted cell${planted === 1 ? '' : 's'}. Remove bed anyway?`)) return
-    }
     removeBed(selectedBedIndex)
     setSelectedBedIndex(null)
   }
