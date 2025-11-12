@@ -22,6 +22,7 @@ export function ZoneSelector({ zone, onChange }) {
           onChange={e => onChange(e.target.value)} 
           onClick={(e) => e.stopPropagation()} 
           title="Select your USDA hardiness zone to calculate planting dates"
+          style={{width: '85px'}}
         >
           {Object.keys(USDA_ZONES).map(z => <option key={z} value={z}>{z}</option>)}
         </select>
@@ -32,7 +33,8 @@ export function ZoneSelector({ zone, onChange }) {
           className="form-control form-control-sm" 
           readOnly 
           value={frost} 
-          title={`Average last frost date for zone ${zone}`} 
+          title={`Average last frost date for zone ${zone}`}
+          style={{width: '100px'}}
         />
       </div>
     </div>
