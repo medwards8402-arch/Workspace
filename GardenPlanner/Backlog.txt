@@ -9,6 +9,4 @@ Publish webpage somewhere
 
 
 Aaron Feedback:
-
-* Could be nice to reorder things, (drag-drop) once placed.
 * I found myself overwriting previous plants because I tried to click on them to view the details, but had something selected in the left column, maybe there is no such thing as overwriting, plants only get placed into empty spaces and you have to use the delete button to remove
