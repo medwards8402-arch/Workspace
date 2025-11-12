@@ -15,7 +15,7 @@ export function ZoneSelector({ zone, onChange }) {
   return (
     <div className="d-flex align-items-center gap-2 flex-wrap">
       <div className="input-group input-group-sm w-auto">
-        <span className="input-group-text" title="USDA Hardiness Zone for your location">USDA Zone</span>
+        <span className="input-group-text" title="USDA Hardiness Zone for your location">Zone</span>
         <select 
           className="form-select form-select-sm" 
           value={zone} 

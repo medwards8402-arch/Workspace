@@ -206,10 +206,10 @@ body {
     width: 100% !important;
   }
   
-  /* Zone selector - keep inputs compact */
+  /* Zone selector - keep inputs compact, allow inline styles to override */
   .app-header-secondary > div:last-child .form-select,
   .app-header-secondary > div:last-child .form-control {
-    width: auto !important;
+    width: auto;
   }
   
   /* Bed config form - full width, wrap internally */
