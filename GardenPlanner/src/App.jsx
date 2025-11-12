@@ -504,12 +504,26 @@ export default function App() {
           <div className="row g-2 plan-layout d-flex">
             <div className="col-12">
               <TipsStack>
-                <Tip id="getting-started">
-                  <strong>Getting Started:</strong> Create a bed with the dropdown, select a crop from the left palette, then click or drag to plant. Click a bed's header to rename or adjust it.
-                </Tip>
-                <Tip id="selection-tips">
-                  <strong>Selection:</strong> Click to select a cell, drag to select multiple, or double-click a planted cell to select the entire crop. Delete with the Delete key.
-                </Tip>
+                {garden.beds.length === 0 && (
+                  <Tip id="create-bed">
+                    <strong>Create a Bed:</strong> Use the "Add Bed" button to create your first raised bed. You can customize its size, name, and light level.
+                  </Tip>
+                )}
+                {garden.beds.length > 0 && garden.beds.every(bed => bed.plantedCellCount === 0) && (
+                  <Tip id="planting-crops">
+                    <strong>Planting Crops:</strong> Select a crop from the left palette, then click or drag on cells to plant. Some crops need multiple cells to grow properly.
+                  </Tip>
+                )}
+                {garden.beds.some(bed => bed.plantedCellCount > 0) && (
+                  <Tip id="selection-tips">
+                    <strong>Selection:</strong> Click to select a cell, drag to select multiple, or double-click a planted cell to select the entire crop. Delete with the Delete key.
+                  </Tip>
+                )}
+                {selectedBedIndex !== null && (
+                  <Tip id="editing-beds">
+                    <strong>Editing Beds:</strong> With a bed selected, use the form to rename it, change dimensions, or adjust light level. Click "Update Bed" to save changes, or "Remove" to delete the bed.
+                  </Tip>
+                )}
               </TipsStack>
             </div>
             <div className="col-md-2 plan-palette">
