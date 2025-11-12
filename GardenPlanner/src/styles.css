@@ -147,3 +147,91 @@ body {
 }
 
 /* no horizontal scrollbar styling needed when hidden */
+
+/* Mobile optimization for header - smartphones and small devices */
+@media (max-width: 768px) {
+  /* Level 1: Title and Navigation */
+  .app-header > div:first-child {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center;
+    gap: 1rem !important;
+  }
+  
+  .garden-name-btn {
+    max-width: 90vw;
+    font-size: 1.25rem !important;
+  }
+  
+  /* Stack nav pills vertically on very small screens */
+  .app-header .nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+  
+  /* Hide button text on mobile, keep only icons */
+  .app-header .btn-group .btn span:not(.me-1):not(.ms-1) {
+    display: none;
+  }
+  
+  /* Make action buttons in level 1 more compact */
+  .app-header > div:first-child > div:last-child {
+    width: 100%;
+    justify-content: center !important;
+    flex-wrap: wrap;
+  }
+  
+  /* Level 2: Bed Controls */
+  .app-header-secondary {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+  
+  /* Bed controls container */
+  .app-header-secondary > div:first-child {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.5rem !important;
+  }
+  
+  /* Bed dropdown - full width */
+  .app-header-secondary .form-select {
+    width: 100% !important;
+  }
+  
+  /* Bed config form - full width, wrap internally */
+  #bed-config-form {
+    width: 100% !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+  }
+  
+  #bed-config-form > div:first-child {
+    flex: 1 1 100%;
+  }
+  
+  #bed-config-form input[type="text"] {
+    width: 100% !important;
+  }
+  
+  #bed-config-form > div:nth-child(2) {
+    flex: 1 1 auto;
+  }
+  
+  /* Move arrows and action buttons - full width */
+  .app-header-secondary .btn-group {
+    width: 100% !important;
+    display: flex !important;
+  }
+  
+  .app-header-secondary .btn-group .btn {
+    flex: 1;
+  }
+  
+  /* Zone selector - full width */
+  .app-header-secondary > div:last-child {
+    width: 100% !important;
+  }
+}
