@@ -5,7 +5,10 @@ import { PLANTS } from '../data'
 
 function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter, selected, cellSize, isDimmed, showSprawlFallback }) {
   const scale = useMemo(() => cellSize / 68, [cellSize])
-  const fs = (v) => Math.max(7, Math.round(v * scale))
+  // On mobile (smaller cellSize), reduce icon sizes more aggressively to prevent overflow
+  const isMobile = cellSize < 60
+  const mobileScale = isMobile ? 0.85 : 1.0
+  const fs = (v) => Math.max(7, Math.round(v * scale * mobileScale))
   const gapPx = (v) => Math.max(1, Math.round(v * scale))
   const handleClick = (e) => {
     e.stopPropagation() // Prevent click from bubbling to bed container
@@ -512,7 +515,11 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
               const iSpanCols = iMaxC - iMinC + 1
               const iCenterLeft = iMinC * (cellSize + gap) + (iSpanCols * cellSize + (iSpanCols - 1) * gap) / 2
               const iCenterTop = iMinR * (cellSize + gap) + (iSpanRows * cellSize + (iSpanRows - 1) * gap) / 2
-              const iIconSize = Math.min(cellSize * 1.8, Math.max(cellSize * 0.7, Math.sqrt(instanceCells.length) * cellSize * 0.55))
+              // Reduce max icon size and ensure it fits within the bounding box on mobile
+              const isMobile = cellSize < 60
+              const maxIconScale = isMobile ? 1.3 : 1.8
+              const minIconScale = isMobile ? 0.55 : 0.7
+              const iIconSize = Math.min(cellSize * maxIconScale, Math.max(cellSize * minIconScale, Math.sqrt(instanceCells.length) * cellSize * 0.5))
               
               const iBoundingBox = {
                 left: iMinC * (cellSize + gap),
@@ -555,7 +562,11 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
             const iSpanCols = iMaxC - iMinC + 1
             const iCenterLeft = iMinC * (cellSize + gap) + (iSpanCols * cellSize + (iSpanCols - 1) * gap) / 2
             const iCenterTop = iMinR * (cellSize + gap) + (iSpanRows * cellSize + (iSpanRows - 1) * gap) / 2
-            const iIconSize = Math.min(cellSize * 1.8, Math.max(cellSize * 0.7, Math.sqrt(instanceCells.length) * cellSize * 0.55))
+            // Reduce max icon size and ensure it fits within the bounding box on mobile
+            const isMobile = cellSize < 60
+            const maxIconScale = isMobile ? 1.3 : 1.8
+            const minIconScale = isMobile ? 0.55 : 0.7
+            const iIconSize = Math.min(cellSize * maxIconScale, Math.max(cellSize * minIconScale, Math.sqrt(instanceCells.length) * cellSize * 0.5))
             
             const iBoundingBox = {
               left: iMinC * (cellSize + gap),
