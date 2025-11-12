@@ -521,7 +521,7 @@ export default function App() {
                 )}
                 {selectedBedIndex !== null && (
                   <Tip id="editing-beds">
-                    <strong>Editing Beds:</strong> With a bed selected, use the form to rename it, change dimensions, or adjust light level. Click "Update Bed" to save changes, or "Remove" to delete the bed.
+                    <strong>Editing Beds:</strong> With a bed selected, use the form to rename it, change dimensions, or adjust light level. Click "Update Bed" to save changes, "Remove" to delete it, or use the arrows to reorder beds.
                   </Tip>
                 )}
               </TipsStack>
