@@ -26,7 +26,7 @@ Open http://localhost:5173
 npm run deploy
 ```
 This builds the project and deploys to the `gh-pages` branch. The site will be available at:
-`https://<username>.github.io/Workspace/`
+`https://medwards8402-arch.github.io/Workspace/`
 
 ## File Structure
 - `src/data.js` Data constants

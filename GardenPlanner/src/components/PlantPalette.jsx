@@ -25,10 +25,7 @@ export function PlantPalette({ plants }) {
   }
 
   const handleCardClick = (e) => {
-    // Deselect if clicking on card background (not on a plant button)
-    if (e.target === e.currentTarget || e.target.classList.contains('card-header')) {
-      setSelectedPlant(null)
-    }
+    e.stopPropagation() // Prevent propagation to App container
   }
   
   return (

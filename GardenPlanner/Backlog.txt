@@ -2,14 +2,10 @@ PDF betterment:
 * Don't print notes when there aren't any
 * Make it look better
 
-Warnings would be nice: high light in a low light bed.
-
 Publish webpage somewhere
     Better URL
     Collect feedback from people I know
     Post to reddit for more feedback
-
-Drawing pumkins on empty beds is confusing.
 
 Bug: The undo and redo buttons don't appropriately work with the currently selected bed.
 
@@ -26,5 +22,3 @@ I found myself overwriting previous plants because I tried to click on them to v
 Being able to Shift-click to select a whole row/column or even rectangle would be nice. CTRL click as well.
 
 It's not clear to me what the "Update Bed" button does. Tooltip maybe?
-
-Planting dates are a little early.  https://www.johnnyseeds.com/growers-library/seed-planting-schedule-calculator.html?srsltid=AfmBOooVw-Ucxx9P8h7bN6349zMkzFlWZK_CZJPWD52_T6HNz_J198fM

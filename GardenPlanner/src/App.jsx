@@ -19,7 +19,9 @@ export default function App() {
   const { garden, setZone, setName, addBed, removeBed, updateBed, deleteNotes, reorderBed } = useGardenOperations()
   const { undo, redo, canUndo, canRedo } = useHistory()
   const { exportToFile, importFromFile } = useFileOperations()
-  const { clearSelection, setSelectedPlant, setActiveBed } = useSelection()
+  const { clearSelection, setSelectedPlant, setActiveBed, activeBed, selectedPlant } = useSelection()
+  
+  const [lastClickTime, setLastClickTime] = useState(0)
   
   const [activeTab, setActiveTab] = useState(() => {
     // Read from URL hash on mount
@@ -103,11 +105,21 @@ export default function App() {
     setActiveBed(null)
   }
 
-  // Click-away deselection
-  const handleContainerClick = () => {
-    setSelectedPlant(null)
+  // Click-away deselection - triggered by clicks outside beds/palette
+  const handleContainerClick = (e) => {
+    // Debounce rapid clicks to avoid interfering with drag operations
+    // If a click happens within 50ms of the previous one, ignore it
+    const now = Date.now()
+    if (now - lastClickTime < 50) {
+      return
+    }
+    setLastClickTime(now)
+    
+    // Don't interfere with planting operations - only clear when truly clicking whitespace
+    // Let event bubble naturally; beds and palette stop propagation when appropriate
     clearSelection()
-    // Keep activeBed (bed selection) unless user clicks blank area outside main app sections
+    setActiveBed(null)
+    // Don't clear selectedPlant here - let PlantPalette manage it
   }
 
   const handleNameChange = () => {
@@ -139,8 +151,25 @@ export default function App() {
       setNewBedName('')
     }
   }, [selectedBedIndex, garden])
+  
+  // Sync selectedBedIndex with activeBed from reducer (one-way sync)
+  useEffect(() => {
+    if (activeBed !== null && activeBed !== undefined) {
+      // When a bed becomes active, sync the dropdown to show it
+      if (activeBed !== selectedBedIndex) {
+        setSelectedBedIndex(activeBed)
+      }
+    } else if (activeBed === null) {
+      // When activeBed is cleared, reset dropdown to "(New Bed)"
+      if (selectedBedIndex !== null) {
+        setSelectedBedIndex(null)
+      }
+    }
+  }, [activeBed])
+  
   const handleSelectBed = (index) => {
-    setSelectedBedIndex(prev => prev === index ? null : index)
+    // Always select the specified bed (no toggling)
+    setSelectedBedIndex(index)
     setActiveBed(index)
   }
 
@@ -371,6 +400,7 @@ export default function App() {
                         if (val === '') { setSelectedBedIndex(null); setActiveBed(null); setNewBedName(''); return }
                       handleSelectBed(parseInt(val, 10))
                     }}
+                    onClick={(e) => e.stopPropagation()}
                     title="Select a bed to edit"
                     style={{width: 140}}
                   >
@@ -452,6 +482,7 @@ export default function App() {
                       type="submit"
                       form="bed-config-form"
                       className="btn btn-outline-primary d-flex align-items-center"
+                      onClick={(e) => e.stopPropagation()}
                       title={selectedBedIndex === null ? 'Add a new bed' : 'Update selected bed'}
                     >
                       <Icon name={selectedBedIndex === null ? 'plus-square' : 'check-square'} className="me-1" />

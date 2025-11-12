@@ -318,9 +318,12 @@ function gardenReducer(state, action) {
     }
 
     case GARDEN_ACTIONS.SET_SELECTION: {
+      // Selecting bed cells should clear any palette selection and active bed (table) selection
       return {
         ...state,
-        selection: action.payload
+        selection: action.payload,
+        selectedPlant: null,
+        activeBed: null,
       }
     }
 
@@ -332,16 +335,22 @@ function gardenReducer(state, action) {
     }
 
     case GARDEN_ACTIONS.SET_SELECTED_PLANT: {
+      // Selecting a palette crop clears any bed cell selection and table selection
       return {
         ...state,
-        selectedPlant: action.payload
+        selectedPlant: action.payload,
+        selection: { bedIndex: null, cellIndices: new Set() },
+        activeBed: null,
       }
     }
 
     case GARDEN_ACTIONS.SET_ACTIVE_BED: {
+      // Selecting a table clears palette crop selection and any cell selections
       return {
         ...state,
-        activeBed: action.payload
+        activeBed: action.payload,
+        selectedPlant: null,
+        selection: { bedIndex: null, cellIndices: new Set() },
       }
     }
 

@@ -10,7 +10,7 @@ import { PLANTS, USDA_ZONES } from '../data'
  */
 export function PlantInfo() {
   const { garden, updateNotes } = useGardenOperations()
-  const { selection } = useSelection()
+  const { selection, selectedPlant } = useSelection()
   const [noteText, setNoteText] = useState('')
   const [hasMultipleValues, setHasMultipleValues] = useState(false)
 
@@ -42,6 +42,68 @@ export function PlantInfo() {
   }, [selectedIndices, bedIndex, garden])
 
   // Always render the card to prevent layout shifts
+  // Palette plant selected (show read-only info, no notes editor)
+  if (selectedPlant && (selectedIndices.size === 0 || bedIndex === null)) {
+    const plant = PLANTS.find(p => p.code === selectedPlant)
+    if (!plant) {
+      return (
+        <div className="card" style={{ width: '300px' }}>
+          <div className="card-header">
+            <h6 className="card-title m-0">Crop Info</h6>
+          </div>
+          <div className="card-body">
+            <p className="text-muted mb-0">Select a crop from the palette to view details</p>
+          </div>
+        </div>
+      )
+    }
+    return (
+      <div className="card" style={{ width: '300px' }}>
+        <div className="card-header" style={{ backgroundColor: plant.color, color: 'white' }}>
+          <div className="d-flex align-items-center gap-2">
+            <span style={{ fontSize: '1.5em' }}>{plant.icon}</span>
+            <h6 className="card-title m-0">{plant.name}</h6>
+          </div>
+        </div>
+        <div className="card-body">
+          <div className="mb-2">
+            <strong>{plant.startIndoorsWeeks > 0 ? 'Start Indoors:' : 'Direct Sow:'}</strong><br />
+            {plant.startIndoorsWeeks > 0 ? `${plant.startIndoorsWeeks} weeks before last frost` : 'After soil is workable'}
+          </div>
+          <div className="mb-2">
+            <strong>Planting:</strong><br />
+            {plant.plantAfterFrostDays >= 0 ? `${plant.plantAfterFrostDays} days after last frost` : `${Math.abs(plant.plantAfterFrostDays)} days before last frost`}
+          </div>
+          <div className="mb-2">
+            <strong>Harvest:</strong><br />
+            Approx. {plant.harvestWeeks} weeks after planting
+          </div>
+          <div className="mb-2">
+            <strong>Spacing:</strong><br />
+            {plant.cellsRequired && plant.cellsRequired > 1 ? (
+              <>1 plant / {plant.cellsRequired} sq ft <span className="badge bg-warning text-dark ms-1">sprawling</span></>
+            ) : (
+              <>{plant.sqftSpacing} plant{plant.sqftSpacing > 1 ? 's' : ''} / sq ft</>
+            )}
+          </div>
+          <div className="mb-2">
+            <strong>Light:</strong><br />
+            <span className="badge" style={{backgroundColor: plant.lightLevel === 'high' ? '#fbbf24' : '#94a3b8'}}>{plant.lightLevel}</span>
+          </div>
+          {plant.tips && plant.tips.length > 0 && (
+            <div className="mb-2">
+              <strong>Tips:</strong>
+              <ul className="small mb-0">
+                {plant.tips.slice(0,3).map((t,i)=>(<li key={i}>{t}</li>))}
+              </ul>
+            </div>
+          )}
+          <div className="alert alert-info small mb-0">Plant not placed yet — notes available after planting.</div>
+        </div>
+      </div>
+    )
+  }
+
   if (selectedIndices.size === 0 || bedIndex === null) {
     return (
       <div className="card" style={{ width: '300px' }}>

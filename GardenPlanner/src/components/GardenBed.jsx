@@ -146,8 +146,10 @@ function Cell({ plant, onDrop, onClick, onDoubleClick, onMouseDown, onMouseEnter
 
 export function GardenBed({ bedIndex, cellSize = 68 }) {
   const { garden, updateCell, updateCells, clearCells, updateBed, removeBed } = useGardenOperations()
-  const { selectedPlant, selection, setSelection, setActiveBed, activeBed } = useSelection()
+  const { selectedPlant, selection, setSelection, setActiveBed, activeBed, setSelectedPlant } = useSelection()
   const [isDragging, setIsDragging] = useState(false)
+  const [isMouseDown, setIsMouseDown] = useState(false)
+  const [justFinishedDrag, setJustFinishedDrag] = useState(false)
   const gridRef = useRef(null)
 
   const bed = garden.getBed(bedIndex)
@@ -164,21 +166,31 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
   const selectedIndices = isThisBedSelected ? selection.cellIndices : new Set()
 
   const handleClickAt = (i) => {
-    // Only set cell selection; do not change activeBed here
-    setSelection(bedIndex, new Set([i]))
+    // Ignore clicks immediately after drag ends to prevent accidental selection
+    if (justFinishedDrag) {
+      return
+    }
     
-    // If a plant is selected from palette
+    const currentCell = bed.getCell(i)
+    // If a palette plant is selected, plant without selecting the cell
     if (selectedPlant) {
       const currentCell = bed.getCell(i)
-      // If clicking on cell with same plant, just select (don't replace)
       if (currentCell !== selectedPlant) {
-        // Place plant
         updateCell(bedIndex, i, selectedPlant)
       }
+      return
     }
+
+    // Only set cell selection when no palette plant is active
+    setSelection(bedIndex, new Set([i]))
   }
 
   const handleDoubleClickAt = (i) => {
+    // Ignore double-clicks immediately after drag ends
+    if (justFinishedDrag) {
+      return
+    }
+    
     // Do not change activeBed on double-click; only adjust selection
     
     const plantCode = bed.getCell(i)
@@ -193,6 +205,7 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
   }
 
   const handleMouseDownAt = (i) => {
+    setIsMouseDown(true)
     if (selectedPlant) {
       setIsDragging(true)
       updateCell(bedIndex, i, selectedPlant)
@@ -218,10 +231,21 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
 
   // Mouse up handler for drag
   useEffect(() => {
-    const handleMouseUp = () => setIsDragging(false)
+    const handleMouseUp = () => {
+      const wasDragging = isDragging
+      setIsDragging(false)
+      setIsMouseDown(false)
+      
+      // If we were dragging, set a flag to ignore the next click event
+      if (wasDragging) {
+        setJustFinishedDrag(true)
+        // Clear the flag after a short delay (after click event has fired)
+        setTimeout(() => setJustFinishedDrag(false), 10)
+      }
+    }
     window.addEventListener('mouseup', handleMouseUp)
     return () => window.removeEventListener('mouseup', handleMouseUp)
-  }, [])
+  }, [isDragging])
 
   // Delete key listener
   useEffect(() => {
@@ -236,16 +260,34 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
 
   // Click-away deselection
   const handleCardClick = (e) => {
+    // Always stop propagation first to prevent event bubbling
     e.stopPropagation()
+    
+    // Don't handle click events during or immediately after drag operations
+    if (isMouseDown || isDragging || justFinishedDrag) {
+      return
+    }
+    
     if (e.target === e.currentTarget) {
+      // Clicking bed card background clears cell selection and deselects this bed table
       setSelection(bedIndex, new Set())
+      setActiveBed(null)
     }
   }
 
   const handleBedClick = (e) => {
+    // Always stop propagation first to prevent event bubbling
     e.stopPropagation()
+    
+    // Don't handle click events during or immediately after drag operations
+    if (isMouseDown || isDragging || justFinishedDrag) {
+      return
+    }
+    
     if (e.currentTarget === e.target) {
+      // Clicking grid background clears cell selection and deselects this bed table
       setSelection(bedIndex, new Set())
+      setActiveBed(null)
     }
   }
 
@@ -513,7 +555,7 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
   const isSelectedBed = activeBed === bedIndex
 
   return (
-    <div className="d-flex gap-3" onClick={handleCardClick}>
+    <div className="d-flex gap-3">
       <div
         className={`card ${isSelectedBed ? 'bg-primary-subtle border-primary' : ''}`}
         style={{
@@ -525,8 +567,13 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
           transition: 'background-color 0.2s ease, border-color 0.2s ease'
         }}
         data-selected={isSelectedBed ? 'true' : 'false'}
+        onClick={handleCardClick}
       >
-        <div className="card-header d-flex justify-content-between align-items-center" onClick={handleCardClick}>
+        <div className="card-header d-flex justify-content-between align-items-center"
+             onClick={(e) => {
+               e.stopPropagation()
+               setActiveBed(bedIndex)
+             }}>
           <div className="d-flex align-items-center gap-2">
             <span className="fw-semibold">{(bed.name && bed.name.trim()) ? bed.name : `Bed ${bedIndex + 1}`}</span>
             <span aria-label={bed.lightLevel === 'high' ? 'High light' : 'Low light'} title={bed.lightLevel === 'high' ? 'High light' : 'Low light'}>
