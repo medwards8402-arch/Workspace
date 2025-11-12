@@ -150,6 +150,8 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
   const [isDragging, setIsDragging] = useState(false)
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [justFinishedDrag, setJustFinishedDrag] = useState(false)
+  const [dragSelectionStart, setDragSelectionStart] = useState(null)
+  const [dragSelectionCurrent, setDragSelectionCurrent] = useState(new Set())
   const gridRef = useRef(null)
 
   const bed = garden.getBed(bedIndex)
@@ -163,7 +165,10 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
   // Local selection state for this bed
   const isThisBedActive = activeBed === bedIndex
   const isThisBedSelected = selection.bedIndex === bedIndex
-  const selectedIndices = isThisBedSelected ? selection.cellIndices : new Set()
+  // When drag-selecting, show both committed selection and current drag selection
+  const selectedIndices = isThisBedSelected 
+    ? (isDragging && !selectedPlant ? dragSelectionCurrent : selection.cellIndices)
+    : new Set()
 
   const handleClickAt = (i) => {
     // Ignore clicks immediately after drag ends to prevent accidental selection
@@ -207,14 +212,42 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
   const handleMouseDownAt = (i) => {
     setIsMouseDown(true)
     if (selectedPlant) {
+      // Planting mode: start drag-to-plant
       setIsDragging(true)
       updateCell(bedIndex, i, selectedPlant)
+    } else {
+      // Selection mode: start drag-to-select
+      setIsDragging(true)
+      setDragSelectionStart(i)
+      setDragSelectionCurrent(new Set([i]))
+      // Immediately set this bed as the selection target
+      setSelection(bedIndex, new Set([i]))
     }
   }
 
   const handleMouseEnterAt = (i) => {
     if (isDragging && selectedPlant) {
+      // Planting mode: plant on hover
       updateCell(bedIndex, i, selectedPlant)
+    } else if (isDragging && !selectedPlant && dragSelectionStart !== null) {
+      // Selection mode: expand selection rectangle
+      const startRow = Math.floor(dragSelectionStart / bedCols)
+      const startCol = dragSelectionStart % bedCols
+      const currentRow = Math.floor(i / bedCols)
+      const currentCol = i % bedCols
+      
+      const minRow = Math.min(startRow, currentRow)
+      const maxRow = Math.max(startRow, currentRow)
+      const minCol = Math.min(startCol, currentCol)
+      const maxCol = Math.max(startCol, currentCol)
+      
+      const newSelection = new Set()
+      for (let r = minRow; r <= maxRow; r++) {
+        for (let c = minCol; c <= maxCol; c++) {
+          newSelection.add(r * bedCols + c)
+        }
+      }
+      setDragSelectionCurrent(newSelection)
     }
   }
 
@@ -233,8 +266,16 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
   useEffect(() => {
     const handleMouseUp = () => {
       const wasDragging = isDragging
+      
+      // Commit drag selection if we were selecting (not planting)
+      if (wasDragging && !selectedPlant && dragSelectionCurrent.size > 0) {
+        setSelection(bedIndex, dragSelectionCurrent)
+      }
+      
       setIsDragging(false)
       setIsMouseDown(false)
+      setDragSelectionStart(null)
+      setDragSelectionCurrent(new Set())
       
       // If we were dragging, set a flag to ignore the next click event
       if (wasDragging) {
@@ -245,7 +286,7 @@ export function GardenBed({ bedIndex, cellSize = 68 }) {
     }
     window.addEventListener('mouseup', handleMouseUp)
     return () => window.removeEventListener('mouseup', handleMouseUp)
-  }, [isDragging])
+  }, [isDragging, selectedPlant, dragSelectionCurrent, bedIndex, setSelection])
 
   // Delete key listener
   useEffect(() => {
