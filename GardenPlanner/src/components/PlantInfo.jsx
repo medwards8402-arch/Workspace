@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useGardenOperations } from '../hooks/useGardenOperations'
 import { useSelection } from '../hooks/useSelection'
 import { PLANTS, USDA_ZONES } from '../data'
+import { computeSpringSchedule, computeFallSchedule } from '../schedule'
 
 /**
  * PlantInfo component shows details for selected plant(s)
@@ -66,18 +67,68 @@ export function PlantInfo() {
           </div>
         </div>
         <div className="card-body">
+          {plant.startIndoorsWeeks > 0 && (
+            <div className="mb-2">
+              <strong>Start Indoors:</strong><br />
+              {(() => {
+                const zone = garden.zone || '5a'
+                const spring = computeSpringSchedule(plant, zone)
+                if (!spring.indoor) return 'Not applicable'
+                return spring.indoor.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+              })()}
+            </div>
+          )}
           <div className="mb-2">
-            <strong>{plant.startIndoorsWeeks > 0 ? 'Start Indoors:' : 'Direct Sow:'}</strong><br />
-            {plant.startIndoorsWeeks > 0 ? `${plant.startIndoorsWeeks} weeks before last frost` : 'After soil is workable'}
+            <strong>{plant.startIndoorsWeeks > 0 ? 'Transplant Outdoors' : 'Direct Sow Outdoors'}:</strong><br />
+            {(() => {
+              const zone = garden.zone || '5a'
+              const spring = computeSpringSchedule(plant, zone)
+              if (!spring.sow) return 'Zone not set'
+              return spring.sow.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+            })()}
           </div>
-          <div className="mb-2">
-            <strong>Planting:</strong><br />
-            {plant.plantAfterFrostDays >= 0 ? `${plant.plantAfterFrostDays} days after last frost` : `${Math.abs(plant.plantAfterFrostDays)} days before last frost`}
-          </div>
-          <div className="mb-2">
+          <div className="mb-3">
             <strong>Harvest:</strong><br />
-            Approx. {plant.harvestWeeks} weeks after planting
+            {(() => {
+              const zone = garden.zone || '5a'
+              const spring = computeSpringSchedule(plant, zone)
+              if (!spring.harvest) return 'Zone not set'
+              return spring.harvest.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+            })()}
           </div>
+          {plant.supportsFall && plant.fallStartIndoorsWeeks > 0 && (
+            <div className="mb-2">
+              <strong>Start Indoors (Fall):</strong><br />
+              {(() => {
+                const zone = garden.zone || '5a'
+                const fall = computeFallSchedule(plant, zone)
+                if (!fall.indoor) return 'Not applicable'
+                return fall.indoor.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+              })()}
+            </div>
+          )}
+          {plant.supportsFall && (
+            <div className="mb-2">
+              <strong>{plant.fallStartIndoorsWeeks > 0 ? 'Transplant Outdoors (Fall)' : 'Direct Sow Outdoors (Fall)'}:</strong><br />
+              {(() => {
+                const zone = garden.zone || '5a'
+                const fall = computeFallSchedule(plant, zone)
+                if (!fall.sow) return 'Not applicable'
+                return fall.sow.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+              })()}
+            </div>
+          )}
+          {plant.supportsFall && (
+            <div className="mb-3">
+              <strong>Fall Harvest:</strong><br />
+              {(() => {
+                const zone = garden.zone || '5a'
+                const fall = computeFallSchedule(plant, zone)
+                if (!fall.harvest) return 'Not applicable'
+                return fall.harvest.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+              })()}
+            </div>
+          )}
           <div className="mb-2">
             <strong>Spacing:</strong><br />
             {plant.cellsRequired && plant.cellsRequired > 1 ? (
@@ -208,49 +259,28 @@ export function PlantInfo() {
             <strong>Start Indoors:</strong><br />
             {(() => {
               const zone = garden.zone || '5a'
-              const today = new Date()
-              const z = USDA_ZONES[zone]
-              if (!z) return 'Zone not set'
-              let year = today.getFullYear()
-              const lastFrost = new Date(year, z.month - 1, z.day)
-              if (lastFrost < today) lastFrost.setFullYear(year + 1)
-              const indoorDate = new Date(lastFrost)
-              indoorDate.setDate(indoorDate.getDate() - plant.startIndoorsWeeks * 7)
-              return indoorDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+              const spring = computeSpringSchedule(plant, zone)
+              if (!spring.indoor) return 'Not applicable'
+              return spring.indoor.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
             })()}
           </div>
         )}
         <div className="mb-2">
           <strong>{plant.startIndoorsWeeks > 0 ? 'Transplant Outdoors' : 'Direct Sow Outdoors'}:</strong><br />
           {(() => {
-            // Get last frost date from zone
             const zone = garden.zone || '5a'
-            const today = new Date()
-            const z = USDA_ZONES[zone]
-            if (!z) return 'Zone not set'
-            let year = today.getFullYear()
-            const lastFrost = new Date(year, z.month - 1, z.day)
-            if (lastFrost < today) lastFrost.setFullYear(year + 1)
-            const plantDate = new Date(lastFrost)
-            plantDate.setDate(plantDate.getDate() + plant.plantAfterFrostDays)
-            return plantDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+            const spring = computeSpringSchedule(plant, zone)
+            if (!spring.sow) return 'Zone not set'
+            return spring.sow.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
           })()}
         </div>
         <div className="mb-3">
           <strong>Harvest:</strong><br />
           {(() => {
             const zone = garden.zone || '5a'
-            const today = new Date()
-            const z = USDA_ZONES[zone]
-            if (!z) return 'Zone not set'
-            let year = today.getFullYear()
-            const lastFrost = new Date(year, z.month - 1, z.day)
-            if (lastFrost < today) lastFrost.setFullYear(year + 1)
-            const plantDate = new Date(lastFrost)
-            plantDate.setDate(plantDate.getDate() + plant.plantAfterFrostDays)
-            const harvestDate = new Date(plantDate)
-            harvestDate.setDate(harvestDate.getDate() + plant.harvestWeeks * 7)
-            return harvestDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+            const spring = computeSpringSchedule(plant, zone)
+            if (!spring.harvest) return 'Zone not set'
+            return spring.harvest.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
           })()}
         </div>
         {plant.supportsFall && plant.fallStartIndoorsWeeks > 0 && (
@@ -258,16 +288,9 @@ export function PlantInfo() {
             <strong>Start Indoors (Fall):</strong><br />
             {(() => {
               const zone = garden.zone || '5a'
-              const today = new Date()
-              const z = USDA_ZONES[zone]
-              if (!z || !z.firstMonth || !z.firstDay) return 'Not applicable'
-              let year = today.getFullYear()
-              const spring = new Date(year, z.month - 1, z.day)
-              if (spring < today) spring.setFullYear(year + 1)
-              const firstFallFrost = new Date(spring.getFullYear(), z.firstMonth - 1, z.firstDay)
-              const fallIndoor = new Date(firstFallFrost)
-              fallIndoor.setDate(fallIndoor.getDate() - plant.fallStartIndoorsWeeks * 7)
-              return fallIndoor.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+              const fall = computeFallSchedule(plant, zone)
+              if (!fall.indoor) return 'Not applicable'
+              return fall.indoor.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
             })()}
           </div>
         )}
@@ -276,17 +299,9 @@ export function PlantInfo() {
             <strong>{plant.fallStartIndoorsWeeks > 0 ? 'Transplant Outdoors (Fall)' : 'Direct Sow Outdoors (Fall)'}:</strong><br />
             {(() => {
               const zone = garden.zone || '5a'
-              const today = new Date()
-              const z = USDA_ZONES[zone]
-              if (!z || !z.firstMonth || !z.firstDay) return 'Not applicable'
-              let year = today.getFullYear()
-              // Align fall frost year to spring frost year logic for consistency
-              const spring = new Date(year, z.month - 1, z.day)
-              if (spring < today) spring.setFullYear(year + 1)
-              const firstFallFrost = new Date(spring.getFullYear(), z.firstMonth - 1, z.firstDay)
-              const fallPlant = new Date(firstFallFrost)
-              fallPlant.setDate(fallPlant.getDate() - plant.fallPlantBeforeFrostDays)
-              return fallPlant.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+              const fall = computeFallSchedule(plant, zone)
+              if (!fall.sow) return 'Not applicable'
+              return fall.sow.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
             })()}
           </div>
         )}
@@ -295,18 +310,9 @@ export function PlantInfo() {
             <strong>Fall Harvest:</strong><br />
             {(() => {
               const zone = garden.zone || '5a'
-              const today = new Date()
-              const z = USDA_ZONES[zone]
-              if (!z || !z.firstMonth || !z.firstDay) return 'Not applicable'
-              let year = today.getFullYear()
-              const spring = new Date(year, z.month - 1, z.day)
-              if (spring < today) spring.setFullYear(year + 1)
-              const firstFallFrost = new Date(spring.getFullYear(), z.firstMonth - 1, z.firstDay)
-              const fallPlant = new Date(firstFallFrost)
-              fallPlant.setDate(fallPlant.getDate() - plant.fallPlantBeforeFrostDays)
-              const fallHarvest = new Date(fallPlant)
-              fallHarvest.setDate(fallHarvest.getDate() + plant.harvestWeeks * 7)
-              return fallHarvest.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+              const fall = computeFallSchedule(plant, zone)
+              if (!fall.harvest) return 'Not applicable'
+              return fall.harvest.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
             })()}
           </div>
         )}

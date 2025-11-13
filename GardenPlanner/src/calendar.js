@@ -1,4 +1,5 @@
 import { PLANTS } from './data'
+import { makePlantTasksFromDates } from './schedule'
 
 /**
  * Generate calendar tasks for planting and harvesting based on selected plants
@@ -15,38 +16,8 @@ export function makeCalendarTasks(usedCodes, plants, lastFrostDate, firstFallFro
     const plant = plantMap.get(code)
     if (!plant) return
 
-    // SPRING CYCLE
-    if (plant.startIndoorsWeeks > 0) {
-      const d = new Date(lastFrostDate)
-      d.setDate(d.getDate() - plant.startIndoorsWeeks * 7)
-      out.push({ date: d, type: 'indoor', icon: '🌱', plant, label: `Start ${plant.name} indoors` })
-    }
-    const sow = new Date(lastFrostDate)
-    sow.setDate(sow.getDate() + plant.plantAfterFrostDays)
-    out.push({ date: sow, type: 'sow', icon: plant.startIndoorsWeeks>0 ? '🌿' : '🌱', plant, label: plant.startIndoorsWeeks>0 ? `Transplant ${plant.name}` : `Sow ${plant.name}` })
-    const harvest = new Date(sow)
-    harvest.setDate(harvest.getDate() + plant.harvestWeeks * 7)
-    out.push({ date: harvest, type: 'harvest', icon: '🎉', plant, label: `Harvest ${plant.name}` })
-
-    // FALL CYCLE (cool-season repeat crops)
-    if (plant.supportsFall && firstFallFrostDate) {
-      // Compute fall sow/transplant date relative to first fall frost
-      const fallSow = new Date(firstFallFrostDate)
-      fallSow.setDate(fallSow.getDate() - plant.fallPlantBeforeFrostDays)
-
-      // If starting indoors for fall, schedule it relative to the fall sow/transplant date
-      if (plant.fallStartIndoorsWeeks && plant.fallStartIndoorsWeeks > 0) {
-        const fallIndoor = new Date(fallSow)
-        fallIndoor.setDate(fallIndoor.getDate() - plant.fallStartIndoorsWeeks * 7)
-        out.push({ date: fallIndoor, type: 'indoorFall', icon: '🌱', plant, label: `Start ${plant.name} indoors (fall)` })
-      }
-
-      out.push({ date: fallSow, type: 'sowFall', icon: plant.fallStartIndoorsWeeks>0 ? '🌿' : '🌱', plant, label: plant.fallStartIndoorsWeeks>0 ? `Transplant ${plant.name} (fall)` : `Sow ${plant.name} (fall)` })
-
-      const fallHarvest = new Date(fallSow)
-      fallHarvest.setDate(fallHarvest.getDate() + plant.harvestWeeks * 7)
-      out.push({ date: fallHarvest, type: 'harvestFall', icon: '🎉', plant, label: `Harvest ${plant.name} (fall)` })
-    }
+    // Use shared schedule logic to generate tasks consistently
+    makePlantTasksFromDates(plant, lastFrostDate, firstFallFrostDate).forEach(t => out.push(t))
   })
   return out.sort((a,b)=> a.date-b.date)
 }
