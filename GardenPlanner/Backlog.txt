@@ -22,3 +22,7 @@ Luke feedback:
 * Take into account certain plants should not be planted next to each other.
 * Add bed should bring up diaglo that allows inputting paramters.  Remove could be on individual plots
 * One bed as the default instead of 3 and 1
+
+Ben's feedback
+* Liked the autoplanter
+* Change cursor when planting
