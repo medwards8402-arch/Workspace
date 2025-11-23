@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../app_state.dart';
+import '../presentation/providers/garden_provider.dart';
+import '../presentation/providers/settings_provider.dart';
+import '../domain/models/garden_bed.dart';
 import '../models/plant.dart';
 import '../widgets/tip.dart';
 
@@ -8,7 +10,8 @@ class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<AppState>();
+    final gardenProvider = context.watch<GardenProvider>();
+    final settingsProvider = context.watch<SettingsProvider>();
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
@@ -36,10 +39,10 @@ class SettingsScreen extends StatelessWidget {
                 const Text('Sets planting dates for your location', style: TextStyle(fontSize: 12, color: Colors.black54)),
                 const SizedBox(height: 8),
                 DropdownButton<String>(
-                  value: state.zone,
+                  value: settingsProvider.zone,
                   isExpanded: true,
                   items: usdaZones.keys.map((z) => DropdownMenuItem(value: z, child: Text(z))).toList(),
-                  onChanged: (v) => state.setZone(v!),
+                  onChanged: (v) => settingsProvider.setZone(v!),
                 ),
               ],
             ),
@@ -67,13 +70,13 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     IconButton(
                       icon: const Icon(Icons.add_circle),
-                      onPressed: () => _showAddBedDialog(context, state),
+                      onPressed: () => _showAddBedDialog(context, gardenProvider),
                       tooltip: 'Add new bed',
                     ),
                   ],
                 ),
                 const SizedBox(height: 8),
-                ...state.beds.asMap().entries.map((entry) {
+                ...gardenProvider.beds.asMap().entries.map((entry) {
                   final index = entry.key;
                   final bed = entry.value;
                   return Card(
@@ -87,11 +90,11 @@ class SettingsScreen extends StatelessWidget {
                         children: [
                           IconButton(
                             icon: const Icon(Icons.edit, size: 20),
-                            onPressed: () => _showEditBedDialog(context, state, index, bed),
+                            onPressed: () => _showEditBedDialog(context, gardenProvider, index, bed),
                           ),
                           IconButton(
                             icon: const Icon(Icons.delete, size: 20, color: Colors.red),
-                            onPressed: () => _confirmDeleteBed(context, state, index),
+                            onPressed: () => _confirmDeleteBed(context, gardenProvider, index),
                           ),
                         ],
                       ),
@@ -111,11 +114,11 @@ class SettingsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Placed Plants (${state.uniquePlacedPlants().length})', style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text('Placed Plants (${gardenProvider.getUniquePlantedPlants().length})', style: const TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
                 Wrap(
                   spacing: 8,
-                  children: state.uniquePlacedPlants().map((p) => Chip(label: Text(p.name), avatar: Text(p.icon))).toList(),
+                  children: gardenProvider.getUniquePlantedPlants().map((p) => Chip(label: Text(p.name), avatar: Text(p.icon))).toList(),
                 ),
               ],
             ),
@@ -146,8 +149,9 @@ class SettingsScreen extends StatelessWidget {
                             child: const Text('Cancel'),
                           ),
                           TextButton(
-                            onPressed: () {
-                              state.resetToDefaults();
+                            onPressed: () async {
+                              await gardenProvider.resetToDefaults();
+                              await settingsProvider.resetToDefaults();
                               Navigator.pop(ctx);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Garden reset to defaults')),
@@ -182,8 +186,8 @@ class SettingsScreen extends StatelessWidget {
                 Row(
                   children: [
                     OutlinedButton.icon(
-                      onPressed: () {
-                        state.resetAllTips();
+                      onPressed: () async {
+                        await settingsProvider.resetAllTips();
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('All tips have been reset and will be shown again')),
                         );
@@ -193,11 +197,11 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     OutlinedButton.icon(
-                      onPressed: () {
+                      onPressed: () async {
                         // Dismiss all tip IDs
-                        state.dismissTip('settings-getting-started');
-                        state.dismissTip('garden-select-plant');
-                        state.dismissTip('plants-filter-tip');
+                        await settingsProvider.dismissTip('settings-getting-started');
+                        await settingsProvider.dismissTip('garden-select-plant');
+                        await settingsProvider.dismissTip('plants-filter-tip');
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('All tips have been disabled')),
                         );
@@ -215,8 +219,8 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  void _showAddBedDialog(BuildContext context, AppState state) {
-    final nameController = TextEditingController(text: 'Bed ${state.beds.length + 1}');
+  void _showAddBedDialog(BuildContext context, GardenProvider gardenProvider) {
+    final nameController = TextEditingController(text: 'Bed ${gardenProvider.beds.length + 1}');
     final rowsController = TextEditingController(text: '8');
     final colsController = TextEditingController(text: '4');
     
@@ -247,7 +251,7 @@ class SettingsScreen extends StatelessWidget {
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
           TextButton(
             onPressed: () {
-              state.addBed(
+              gardenProvider.addBed(
                 name: nameController.text,
                 rows: int.tryParse(rowsController.text) ?? 8,
                 cols: int.tryParse(colsController.text) ?? 4,
@@ -261,7 +265,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  void _showEditBedDialog(BuildContext context, AppState state, int index, GardenBed bed) {
+  void _showEditBedDialog(BuildContext context, GardenProvider gardenProvider, int index, GardenBed bed) {
     final nameController = TextEditingController(text: bed.name);
     final rowsController = TextEditingController(text: bed.rows.toString());
     final colsController = TextEditingController(text: bed.cols.toString());
@@ -293,7 +297,7 @@ class SettingsScreen extends StatelessWidget {
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
           TextButton(
             onPressed: () {
-              state.updateBed(
+              gardenProvider.updateBed(
                 index,
                 name: nameController.text,
                 rows: int.tryParse(rowsController.text),
@@ -308,7 +312,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  void _confirmDeleteBed(BuildContext context, AppState state, int index) {
+  void _confirmDeleteBed(BuildContext context, GardenProvider gardenProvider, int index) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -318,7 +322,7 @@ class SettingsScreen extends StatelessWidget {
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
           TextButton(
             onPressed: () {
-              state.removeBed(index);
+              gardenProvider.removeBed(index);
               Navigator.pop(context);
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../app_state.dart';
+import '../presentation/providers/settings_provider.dart';
 
 class Tip extends StatelessWidget {
   final String id;
@@ -10,9 +10,9 @@ class Tip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<AppState>();
+    final settingsProvider = context.watch<SettingsProvider>();
     
-    if (state.isTipDismissed(id)) {
+    if (settingsProvider.isTipDismissed(id)) {
       return const SizedBox.shrink();
     }
 
@@ -30,7 +30,7 @@ class Tip extends StatelessWidget {
             child: Text(message, style: const TextStyle(fontSize: 13)),
           ),
           TextButton(
-            onPressed: () => state.dismissTip(id),
+            onPressed: () => settingsProvider.dismissTip(id),
             child: const Text('Dismiss', style: TextStyle(fontSize: 12)),
           ),
         ],

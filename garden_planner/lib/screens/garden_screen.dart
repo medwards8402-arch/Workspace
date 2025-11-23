@@ -1,7 +1,11 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../app_state.dart';
+import '../presentation/providers/garden_provider.dart';
+import '../presentation/providers/plant_notes_provider.dart';
+import '../presentation/providers/plant_selection_provider.dart';
+import '../presentation/providers/settings_provider.dart';
+import '../domain/models/garden_bed.dart';
 import '../models/plant.dart';
 import '../services/schedule_service.dart';
 import '../widgets/tip.dart';
@@ -19,16 +23,19 @@ class _GardenScreenState extends State<GardenScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<AppState>();
+    final gardenProvider = context.watch<GardenProvider>();
+    final selectionProvider = context.watch<PlantSelectionProvider>();
+    final notesProvider = context.watch<PlantNotesProvider>();
+    final settingsProvider = context.watch<SettingsProvider>();
     
     // Track the last selected plant
-    if (state.selectedPlant != null) {
-      _lastSelectedPlant = state.selectedPlant;
+    if (selectionProvider.selectedPlant != null) {
+      _lastSelectedPlant = selectionProvider.selectedPlant;
     }
     
     // Determine if we show the banner
     final showBanner = _lastSelectedPlant != null;
-    final showTip = _lastSelectedPlant == null && !state.isTipDismissed('garden-select-plant');
+    final showTip = _lastSelectedPlant == null && !settingsProvider.isTipDismissed('garden-select-plant');
     
     return Column(
       children: [
@@ -120,7 +127,7 @@ class _GardenScreenState extends State<GardenScreen> {
                                     _isPlantingMode = true;
                                   });
                                   // Select plant in app state
-                                  state.selectPlant(_lastSelectedPlant!.code);
+                                  selectionProvider.selectPlant(_lastSelectedPlant!.code);
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(vertical: 12),
@@ -166,7 +173,7 @@ class _GardenScreenState extends State<GardenScreen> {
                                     _isPlantingMode = false;
                                   });
                                   // Deselect plant in app state
-                                  state.selectPlant(null);
+                                  selectionProvider.selectPlant(null);
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(vertical: 10),
@@ -209,10 +216,10 @@ class _GardenScreenState extends State<GardenScreen> {
           ),
         Expanded(
           child: PageView.builder(
-            itemCount: state.beds.length,
+            itemCount: gardenProvider.beds.length,
             controller: PageController(viewportFraction: 0.95),
             itemBuilder: (context, bedIndex) {
-              final bed = state.beds[bedIndex];
+              final bed = gardenProvider.beds[bedIndex];
               return Card(
                 elevation: 3,
                 child: Column(
@@ -346,17 +353,17 @@ class _GardenScreenState extends State<GardenScreen> {
                                     
                                     return GestureDetector(
                                       onTap: () {
-                                        if (state.selectedPlantCode != null) {
+                                        if (selectionProvider.selectedPlantCode != null) {
                                           // In planting mode: always plant (overwrites existing plants)
-                                          state.placeSelectedPlant(bedIndex, idx);
+                                          gardenProvider.placePlant(bedIndex, idx, selectionProvider.selectedPlantCode!);
                                         } else if (plant != null) {
                                           // Not in planting mode: show plant details
-                                          _showCellSheet(context, state, bedIndex, idx, plant);
+                                          _showCellSheet(context, bedIndex, idx, plant);
                                         }
                                       },
                                       onLongPress: () {
                                         // Long press shows note dialog
-                                        _editNoteDialog(context, state, bedIndex, idx, plant);
+                                        _editNoteDialog(context, bedIndex, idx, plant);
                                       },
                                       child: Stack(
                                         children: [
@@ -372,7 +379,7 @@ class _GardenScreenState extends State<GardenScreen> {
                                               child: _buildCellContent(plant, cellSize, showSprawlFallback, isDimmed),
                                             ),
                                           ),
-                                          if (plant != null && state.plantNotes[plant.code] != null && state.plantNotes[plant.code]!.isNotEmpty)
+                                          if (plant != null && notesProvider.getNote(plant.code) != null && notesProvider.getNote(plant.code)!.isNotEmpty)
                                             Positioned(
                                               right: 2,
                                               bottom: 2,
@@ -433,9 +440,11 @@ class _GardenScreenState extends State<GardenScreen> {
     if (spacing == 1) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(plant.icon, style: TextStyle(fontSize: cellSize * 0.4)),
-          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.12), textAlign: TextAlign.center, maxLines: 1),
+          SizedBox(height: cellSize * 0.02),
+          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.12), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
         ],
       );
     }
@@ -444,6 +453,7 @@ class _GardenScreenState extends State<GardenScreen> {
     if (spacing == 2) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -453,7 +463,8 @@ class _GardenScreenState extends State<GardenScreen> {
               Text(plant.icon, style: TextStyle(fontSize: cellSize * 0.28)),
             ],
           ),
-          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.11), textAlign: TextAlign.center, maxLines: 1),
+          SizedBox(height: cellSize * 0.02),
+          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.11), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
         ],
       );
     }
@@ -462,26 +473,174 @@ class _GardenScreenState extends State<GardenScreen> {
     if (spacing == 4) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: cellSize * 0.02,
-            crossAxisSpacing: cellSize * 0.02,
-            children: List.generate(4, (_) => Center(child: Text(plant.icon, style: TextStyle(fontSize: cellSize * 0.24)))),
+          Flexible(
+            child: GridView.count(
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: cellSize * 0.01,
+              crossAxisSpacing: cellSize * 0.01,
+              childAspectRatio: 1,
+              children: List.generate(4, (_) => Center(child: Text(plant.icon, style: TextStyle(fontSize: cellSize * 0.22)))),
+            ),
           ),
-          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.1), textAlign: TextAlign.center, maxLines: 1),
+          SizedBox(height: cellSize * 0.01),
+          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.09), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
         ],
       );
     }
     
-    // Default
+    // 6 plants per cell - 3x2 grid
+    if (spacing == 6) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: GridView.count(
+              crossAxisCount: 3,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: cellSize * 0.005,
+              crossAxisSpacing: cellSize * 0.005,
+              childAspectRatio: 1,
+              children: List.generate(6, (_) => Center(child: Text(plant.icon, style: TextStyle(fontSize: cellSize * 0.18)))),
+            ),
+          ),
+          SizedBox(height: cellSize * 0.01),
+          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.08), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+        ],
+      );
+    }
+    
+    // 8 plants per cell - 4x2 grid
+    if (spacing == 8) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: GridView.count(
+              crossAxisCount: 4,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: cellSize * 0.005,
+              crossAxisSpacing: cellSize * 0.005,
+              childAspectRatio: 1,
+              children: List.generate(8, (_) => Center(child: Text(plant.icon, style: TextStyle(fontSize: cellSize * 0.16)))),
+            ),
+          ),
+          SizedBox(height: cellSize * 0.01),
+          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.08), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+        ],
+      );
+    }
+    
+    // 9 plants per cell - 3x3 grid
+    if (spacing == 9) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: GridView.count(
+              crossAxisCount: 3,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: cellSize * 0.005,
+              crossAxisSpacing: cellSize * 0.005,
+              childAspectRatio: 1,
+              children: List.generate(9, (_) => Center(child: Text(plant.icon, style: TextStyle(fontSize: cellSize * 0.16)))),
+            ),
+          ),
+          SizedBox(height: cellSize * 0.01),
+          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.07), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+        ],
+      );
+    }
+    
+    // 12 plants per cell - 4x3 grid
+    if (spacing == 12) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: GridView.count(
+              crossAxisCount: 4,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: cellSize * 0.003,
+              crossAxisSpacing: cellSize * 0.003,
+              childAspectRatio: 1,
+              children: List.generate(12, (_) => Center(child: Text(plant.icon, style: TextStyle(fontSize: cellSize * 0.14)))),
+            ),
+          ),
+          SizedBox(height: cellSize * 0.01),
+          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.07), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+        ],
+      );
+    }
+    
+    // 16 plants per cell - 4x4 grid
+    if (spacing == 16) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: GridView.count(
+              crossAxisCount: 4,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: cellSize * 0.003,
+              crossAxisSpacing: cellSize * 0.003,
+              childAspectRatio: 1,
+              children: List.generate(16, (_) => Center(child: Text(plant.icon, style: TextStyle(fontSize: cellSize * 0.12)))),
+            ),
+          ),
+          SizedBox(height: cellSize * 0.005),
+          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.06), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+        ],
+      );
+    }
+    
+    // Default - show as grid based on spacing value
+    final crossAxisCount = spacing >= 16 ? 4 : spacing >= 9 ? 3 : spacing >= 4 ? 2 : 1;
+    final iconSize = spacing >= 16 ? 0.12 : spacing >= 9 ? 0.16 : spacing >= 4 ? 0.20 : 0.3;
+    final nameSize = spacing >= 16 ? 0.06 : spacing >= 9 ? 0.07 : spacing >= 4 ? 0.08 : 0.10;
+    
+    if (spacing > 1) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: GridView.count(
+              crossAxisCount: crossAxisCount,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: cellSize * 0.005,
+              crossAxisSpacing: cellSize * 0.005,
+              childAspectRatio: 1,
+              children: List.generate(spacing, (_) => Center(child: Text(plant.icon, style: TextStyle(fontSize: cellSize * iconSize)))),
+            ),
+          ),
+          SizedBox(height: cellSize * 0.01),
+          Text(plant.name, style: TextStyle(fontSize: cellSize * nameSize), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+        ],
+      );
+    }
+    
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(plant.icon, style: TextStyle(fontSize: cellSize * 0.4)),
-        Text(plant.name, style: TextStyle(fontSize: cellSize * 0.12), textAlign: TextAlign.center, maxLines: 1),
+        SizedBox(height: cellSize * 0.02),
+        Text(plant.name, style: TextStyle(fontSize: cellSize * 0.12), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
       ],
     );
   }
@@ -649,15 +808,19 @@ class _GardenScreenState extends State<GardenScreen> {
     return false;
   }
 
-  void _showCellSheet(BuildContext context, AppState state, int bedIndex, int cellIndex, Plant plant) {
-    final springSchedule = ScheduleService.computeSpringSchedule(plant, state.zone);
+  void _showCellSheet(BuildContext context, int bedIndex, int cellIndex, Plant plant) {
+    final settingsProvider = context.read<SettingsProvider>();
+    final notesProvider = context.read<PlantNotesProvider>();
+    final gardenProvider = context.read<GardenProvider>();
+    
+    final springSchedule = ScheduleService.computeSpringSchedule(plant, settingsProvider.zone);
     
     showModalBottomSheet(
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
       builder: (ctx) {
-        final noteController = TextEditingController(text: state.plantNotes[plant.code] ?? '');
+        final noteController = TextEditingController(text: notesProvider.getNote(plant.code) ?? '');
         return DraggableScrollableSheet(
           initialChildSize: 0.7,
           minChildSize: 0.5,
@@ -792,7 +955,7 @@ class _GardenScreenState extends State<GardenScreen> {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             final v = noteController.text.trim();
-                            state.updatePlantNote(plant.code, v.isEmpty ? null : v);
+                            notesProvider.updateNote(plant.code, v.isEmpty ? null : v);
                             Navigator.pop(ctx);
                           },
                           icon: const Icon(Icons.save),
@@ -807,7 +970,7 @@ class _GardenScreenState extends State<GardenScreen> {
                       Expanded(
                         child: OutlinedButton.icon(
                           onPressed: () {
-                            state.clearCell(bedIndex, cellIndex);
+                            gardenProvider.clearCell(bedIndex, cellIndex);
                             Navigator.pop(ctx);
                           },
                           icon: const Icon(Icons.delete, color: Colors.red),
@@ -848,9 +1011,10 @@ class _GardenScreenState extends State<GardenScreen> {
     return months[month];
   }
 
-  void _editNoteDialog(BuildContext context, AppState state, int bedIndex, int cellIndex, Plant? plant) {
+  void _editNoteDialog(BuildContext context, int bedIndex, int cellIndex, Plant? plant) {
     if (plant == null) return;
-    final controller = TextEditingController(text: state.plantNotes[plant.code] ?? '');
+    final notesProvider = context.read<PlantNotesProvider>();
+    final controller = TextEditingController(text: notesProvider.getNote(plant.code) ?? '');
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -877,7 +1041,7 @@ class _GardenScreenState extends State<GardenScreen> {
           TextButton(
             onPressed: () {
               final v = controller.text.trim();
-              state.updatePlantNote(plant.code, v.isEmpty ? null : v);
+              notesProvider.updateNote(plant.code, v.isEmpty ? null : v);
               Navigator.pop(ctx);
             },
             child: const Text('Save'),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../app_state.dart';
+import '../presentation/providers/plant_selection_provider.dart';
+import '../presentation/providers/settings_provider.dart';
 import '../models/plant.dart';
 import '../services/schedule_service.dart';
 import 'plant_detail_screen.dart';
@@ -11,21 +12,10 @@ class PlantsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<AppState>();
-    final allPlants = state.allPlants;
-    
-    // Apply filters
-    final filteredPlants = allPlants.where((plant) {
-      final typeMatch = state.plantFilterType == 'all' || plant.type == state.plantFilterType;
-      final lightMatch = state.plantFilterLight == 'all' || plant.lightLevel == state.plantFilterLight;
-      final searchMatch = state.plantSearchQuery.isEmpty || 
-        plant.name.toLowerCase().contains(state.plantSearchQuery.toLowerCase());
-      return typeMatch && lightMatch && searchMatch;
-    }).toList();
-    
-    final selectedPlant = state.selectedPlantCode != null
-        ? allPlants.firstWhere((p) => p.code == state.selectedPlantCode, orElse: () => allPlants.first)
-        : null;
+    final selectionProvider = context.watch<PlantSelectionProvider>();
+    final settingsProvider = context.watch<SettingsProvider>();
+    final filteredPlants = selectionProvider.getFilteredPlants();
+    final selectedPlant = selectionProvider.selectedPlant;
 
     return Column(
       children: [
@@ -61,9 +51,9 @@ class PlantsScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
                           ),
                         ),
-                        if (state.plantSearchQuery.isNotEmpty || state.plantFilterType != 'all' || state.plantFilterLight != 'all')
+                        if (selectionProvider.searchQuery.isNotEmpty || selectionProvider.filterType != 'all' || selectionProvider.filterLight != 'all')
                           TextButton.icon(
-                            onPressed: () => state.setPlantFilter(type: 'all', light: 'all', search: ''),
+                            onPressed: () => selectionProvider.clearFilters(),
                             icon: const Icon(Icons.clear, size: 16),
                             label: const Text('Clear'),
                             style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
@@ -81,7 +71,7 @@ class PlantsScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: DropdownButtonFormField<String>(
-                            value: state.plantFilterType,
+                            value: selectionProvider.filterType,
                             decoration: InputDecoration(
                               labelText: 'Type',
                               contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -96,13 +86,13 @@ class PlantsScreen extends StatelessWidget {
                               DropdownMenuItem(value: 'fruit', child: Text('Fruit')),
                               DropdownMenuItem(value: 'herb', child: Text('Herb')),
                             ],
-                            onChanged: (v) => state.setPlantFilter(type: v),
+                            onChanged: (v) => selectionProvider.setFilter(type: v),
                           ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: DropdownButtonFormField<String>(
-                            value: state.plantFilterLight,
+                            value: selectionProvider.filterLight,
                             decoration: InputDecoration(
                               labelText: 'Light',
                               contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -116,7 +106,7 @@ class PlantsScreen extends StatelessWidget {
                               DropdownMenuItem(value: 'high', child: Text('High')),
                               DropdownMenuItem(value: 'low', child: Text('Low')),
                             ],
-                            onChanged: (v) => state.setPlantFilter(light: v),
+                            onChanged: (v) => selectionProvider.setFilter(light: v),
                           ),
                         ),
                       ],
@@ -132,7 +122,7 @@ class PlantsScreen extends StatelessWidget {
                         filled: true,
                         fillColor: Colors.grey.shade50,
                       ),
-                      onChanged: (v) => state.setPlantFilter(search: v),
+                      onChanged: (v) => selectionProvider.setFilter(search: v),
                     ),
                   ],
                 ),
@@ -151,11 +141,11 @@ class PlantsScreen extends StatelessWidget {
                   itemCount: filteredPlants.length,
                   itemBuilder: (context, i) {
                     final plant = filteredPlants[i];
-                    final selected = state.selectedPlantCode == plant.code;
+                    final selected = selectionProvider.selectedPlantCode == plant.code;
                     return InkWell(
                       onTap: () {
                         try {
-                          state.selectPlant(plant.code);
+                          selectionProvider.selectPlant(plant.code);
                         } catch (e) {
                           debugPrint('Error selecting plant: $e');
                         }
@@ -213,7 +203,7 @@ class PlantsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            child: _PlantInfoPanel(plant: selectedPlant, zone: state.zone),
+            child: _PlantInfoPanel(plant: selectedPlant, zone: settingsProvider.zone),
           ),
       ],
     );

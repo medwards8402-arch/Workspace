@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../app_state.dart';
+import '../presentation/providers/garden_provider.dart';
+import '../presentation/providers/settings_provider.dart';
 
 class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<AppState>();
-    final tasks = state.calendarTasks();
+    final gardenProvider = context.watch<GardenProvider>();
+    final settingsProvider = context.watch<SettingsProvider>();
+    final tasks = gardenProvider.calendarTasks(settingsProvider.zone);
     if (tasks.isEmpty) {
       return const Center(child: Text('Place plants in garden to see tasks.'));
     }
