@@ -42,10 +42,9 @@ class RootShell extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = context.watch<AppState>();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_titleForIndex(state.currentNavIndex)),
+      body: SafeArea(
+        child: _screens[state.currentNavIndex],
       ),
-      body: _screens[state.currentNavIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: state.currentNavIndex,
         destinations: const [
@@ -57,20 +56,5 @@ class RootShell extends StatelessWidget {
         onDestinationSelected: state.setNavIndex,
       ),
     );
-  }
-
-  String _titleForIndex(int i) {
-    switch (i) {
-      case 0:
-        return 'Plants';
-      case 1:
-        return 'Garden';
-      case 2:
-        return 'Calendar';
-      case 3:
-        return 'Settings';
-      default:
-        return 'Garden Planner';
-    }
   }
 }

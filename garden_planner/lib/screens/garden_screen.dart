@@ -6,34 +6,189 @@ import '../models/plant.dart';
 import '../services/schedule_service.dart';
 import '../widgets/tip.dart';
 
-class GardenScreen extends StatelessWidget {
+class GardenScreen extends StatefulWidget {
   const GardenScreen({super.key});
+
+  @override
+  State<GardenScreen> createState() => _GardenScreenState();
+}
+
+class _GardenScreenState extends State<GardenScreen> {
+  Plant? _lastSelectedPlant;
+  bool _isPlantingMode = true;
 
   @override
   Widget build(BuildContext context) {
     final state = context.watch<AppState>();
-    final showTip = state.selectedPlant == null && !state.isTipDismissed('garden-select-plant');
+    
+    // Track the last selected plant
+    if (state.selectedPlant != null) {
+      _lastSelectedPlant = state.selectedPlant;
+    }
+    
+    // Determine if we show the banner
+    final showBanner = _lastSelectedPlant != null;
+    final showTip = _lastSelectedPlant == null && !state.isTipDismissed('garden-select-plant');
     
     return Column(
       children: [
-        if (state.selectedPlant != null || showTip)
+        if (showBanner || showTip)
           Container(
-            padding: const EdgeInsets.all(12.0),
-            color: Colors.green.shade50,
-            child: state.selectedPlant != null
-                ? Row(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              gradient: showBanner
+                  ? LinearGradient(
+                      colors: [
+                        _hexColor(_lastSelectedPlant!.color).withOpacity(0.1),
+                        _hexColor(_lastSelectedPlant!.color).withOpacity(0.2),
+                      ],
+                    )
+                  : null,
+              color: !showBanner ? Colors.green.shade50 : null,
+              border: showBanner
+                  ? Border.all(color: _hexColor(_lastSelectedPlant!.color).withOpacity(0.6), width: 2)
+                  : null,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: showBanner
+                  ? [
+                      BoxShadow(
+                        color: _hexColor(_lastSelectedPlant!.color).withOpacity(0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      )
+                    ]
+                  : null,
+            ),
+            margin: showBanner
+                ? const EdgeInsets.symmetric(horizontal: 12, vertical: 8)
+                : EdgeInsets.zero,
+            child: showBanner
+                ? Column(
                     children: [
-                      Text(state.selectedPlant!.icon, style: const TextStyle(fontSize: 24)),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'Planting: ${state.selectedPlant!.name}',
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      if (_isPlantingMode) ...[
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: _hexColor(_lastSelectedPlant!.color), width: 2),
+                              ),
+                              child: Text(
+                                _lastSelectedPlant!.icon,
+                                style: const TextStyle(fontSize: 32),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    _lastSelectedPlant!.name,
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Tap cells to plant • Long press to view',
+                                    style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      TextButton(
-                        onPressed: () => state.selectPlant(null),
-                        child: const Text('Clear'),
+                        const SizedBox(height: 12),
+                      ],
+                      // Mode toggle
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isPlantingMode = true;
+                                  });
+                                  // Select plant in app state
+                                  state.selectPlant(_lastSelectedPlant!.code);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                  decoration: BoxDecoration(
+                                    color: _isPlantingMode ? _hexColor(_lastSelectedPlant!.color) : Colors.white,
+                                    borderRadius: const BorderRadius.horizontal(left: Radius.circular(7)),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.add_circle,
+                                        color: _isPlantingMode ? Colors.white : Colors.grey.shade600,
+                                        size: 18,
+                                      ),
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        'PLANTING',
+                                        style: TextStyle(
+                                          color: _isPlantingMode ? Colors.white : Colors.grey.shade600,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                          letterSpacing: 0.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isPlantingMode = false;
+                                  });
+                                  // Deselect plant in app state
+                                  state.selectPlant(null);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                  decoration: BoxDecoration(
+                                    color: !_isPlantingMode ? _hexColor(_lastSelectedPlant!.color) : Colors.white,
+                                    borderRadius: const BorderRadius.horizontal(right: Radius.circular(7)),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.touch_app,
+                                        color: !_isPlantingMode ? Colors.white : Colors.grey.shade600,
+                                        size: 18,
+                                      ),
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        'SELECTING',
+                                        style: TextStyle(
+                                          color: !_isPlantingMode ? Colors.white : Colors.grey.shade600,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                          letterSpacing: 0.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   )
@@ -181,13 +336,16 @@ class GardenScreen extends StatelessWidget {
                                     
                                     return GestureDetector(
                                       onTap: () {
-                                        if (state.selectedPlantCode != null && cell.plantCode == null) {
+                                        if (state.selectedPlantCode != null) {
+                                          // In planting mode: always plant (overwrites existing plants)
                                           state.placeSelectedPlant(bedIndex, idx);
                                         } else if (plant != null) {
+                                          // Not in planting mode: show plant details
                                           _showCellSheet(context, state, bedIndex, idx, plant);
                                         }
                                       },
                                       onLongPress: () {
+                                        // Long press shows note dialog
                                         _editNoteDialog(context, state, bedIndex, idx, plant);
                                       },
                                       child: Stack(
