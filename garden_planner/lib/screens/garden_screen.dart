@@ -9,6 +9,7 @@ import '../domain/models/garden_bed.dart';
 import '../models/plant.dart';
 import '../services/schedule_service.dart';
 import '../widgets/tip.dart';
+import '../widgets/plant_info_panel.dart';
 
 class GardenScreen extends StatefulWidget {
   const GardenScreen({super.key});
@@ -780,194 +781,95 @@ class _GardenScreenState extends State<GardenScreen> {
       isScrollControlled: true,
       builder: (ctx) {
         final noteController = TextEditingController(text: notesProvider.getNote(plant.code) ?? '');
+        final settingsProvider = context.read<SettingsProvider>();
+        
         return DraggableScrollableSheet(
           initialChildSize: 0.7,
           minChildSize: 0.5,
           maxChildSize: 0.95,
           expand: false,
           builder: (context, scrollController) {
-            return SingleChildScrollView(
-              controller: scrollController,
-              padding: EdgeInsets.only(
-                left: 16,
-                right: 16,
-                top: 16,
-                bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          _hexColor(plant.color).withOpacity(0.7),
-                          _hexColor(plant.color),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: _hexColor(plant.color).withOpacity(0.3),
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
+              height: MediaQuery.of(context).size.height * 0.9,
+              child: PlantInfoPanel(
+                plant: plant,
+                zone: settingsProvider.zone,
+                notesWidget: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.note_add, color: Colors.green.shade700, size: 18),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Notes for All ${plant.name}',
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
+                          ),
                         ),
                       ],
                     ),
-                    child: Row(
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: noteController,
+                      minLines: 3,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        hintText: 'Add notes for all ${plant.name} plants...',
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                        filled: true,
+                        fillColor: Colors.grey.shade50,
+                        contentPadding: const EdgeInsets.all(12),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              final v = noteController.text.trim();
+                              notesProvider.updateNote(plant.code, v.isEmpty ? null : v);
+                              Navigator.pop(ctx);
+                            },
+                            icon: const Icon(Icons.save, size: 18),
+                            label: const Text('Save Note'),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            ),
                           ),
-                          child: Text(plant.icon, style: const TextStyle(fontSize: 28)),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
-                          child: Text(
-                            plant.name,
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                          child: OutlinedButton.icon(
+                            onPressed: () {
+                              gardenProvider.clearCell(bedIndex, cellIndex);
+                              Navigator.pop(ctx);
+                            },
+                            icon: const Icon(Icons.delete, color: Colors.red, size: 18),
+                            label: const Text('Remove Plant', style: TextStyle(color: Colors.red)),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                              side: const BorderSide(color: Colors.red),
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  
-                  // Plant Info
-                  Row(
-                    children: [
-                      Icon(Icons.eco, color: Colors.green.shade700, size: 20),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Plant Information',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  _buildInfoRow('Direct Sow:', springSchedule.sow != null 
-                    ? '${_monthName(springSchedule.sow!.month)} ${springSchedule.sow!.day}'
-                    : 'N/A'),
-                  _buildInfoRow('Harvest:', springSchedule.harvest != null
-                    ? '${_monthName(springSchedule.harvest!.month)} ${springSchedule.harvest!.day}'
-                    : 'N/A'),
-                  _buildInfoRow('Spacing:', (plant.cellsRequired ?? 1) > 1
-                      ? '1 plant / ${plant.cellsRequired} sq ft'
-                      : '${plant.sqftSpacing} plant${plant.sqftSpacing > 1 ? "s" : ""} / sq ft'),
-                  Row(
-                    children: [
-                      const Text('Light: ', style: TextStyle(fontWeight: FontWeight.bold)),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: plant.lightLevel == 'high' ? Colors.orange : Colors.blueGrey,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(plant.lightLevel, style: const TextStyle(color: Colors.white, fontSize: 12)),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  const Divider(),
-                  const SizedBox(height: 20),
-                  
-                  // Plant Notes
-                  Row(
-                    children: [
-                      Icon(Icons.note_add, color: Colors.green.shade700, size: 20),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'Notes for All ${plant.name}',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
-                        ),
-                      ),
-                      Tooltip(
-                        message: 'This note applies to all ${plant.name} plants in your garden',
-                        child: Icon(Icons.info_outline, size: 18, color: Colors.grey.shade600),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  TextField(
-                    controller: noteController,
-                    minLines: 3,
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      hintText: 'Add notes for all ${plant.name} plants...',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                      filled: true,
-                      fillColor: Colors.grey.shade50,
-                      contentPadding: const EdgeInsets.all(12),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            final v = noteController.text.trim();
-                            notesProvider.updateNote(plant.code, v.isEmpty ? null : v);
-                            Navigator.pop(ctx);
-                          },
-                          icon: const Icon(Icons.save),
-                          label: const Text('Save Note'),
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () {
-                            gardenProvider.clearCell(bedIndex, cellIndex);
-                            Navigator.pop(ctx);
-                          },
-                          icon: const Icon(Icons.delete, color: Colors.red),
-                          label: const Text('Remove Plant', style: TextStyle(color: Colors.red)),
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                            side: const BorderSide(color: Colors.red),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },
         );
       },
     );
-  }
-  
-  Widget _buildInfoRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(width: 100, child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold))),
-          Expanded(child: Text(value)),
-        ],
-      ),
-    );
-  }
-  
-  String _monthName(int month) {
-    const months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return months[month];
   }
 
   void _editNoteDialog(BuildContext context, int bedIndex, int cellIndex, Plant? plant) {
