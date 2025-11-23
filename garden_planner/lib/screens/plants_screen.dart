@@ -24,8 +24,8 @@ class PlantsScreen extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                margin: const EdgeInsets.all(12.0),
-                padding: const EdgeInsets.all(16.0),
+                margin: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
@@ -43,12 +43,12 @@ class PlantsScreen extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.filter_list, color: Colors.green.shade700, size: 20),
-                        const SizedBox(width: 8),
+                        Icon(Icons.filter_list, color: Colors.green.shade700, size: 16),
+                        const SizedBox(width: 6),
                         Expanded(
                           child: Text(
                             'Filters (${filteredPlants.length} plants)',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
                           ),
                         ),
                         if (selectionProvider.searchQuery.isNotEmpty || selectionProvider.filterType != 'all' || selectionProvider.filterLight != 'all')
@@ -60,12 +60,12 @@ class PlantsScreen extends StatelessWidget {
                           ),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2),
                     const Tip(
                       id: 'plants-filter-tip',
                       message: 'Use filters below to narrow plant selection by type, light requirements, or search by name.',
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
                     // Filters - First Row
                     Row(
                       children: [
@@ -74,7 +74,7 @@ class PlantsScreen extends StatelessWidget {
                             value: selectionProvider.filterType,
                             decoration: InputDecoration(
                               labelText: 'Type',
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                               filled: true,
                               fillColor: Colors.grey.shade50,
@@ -95,7 +95,7 @@ class PlantsScreen extends StatelessWidget {
                             value: selectionProvider.filterLight,
                             decoration: InputDecoration(
                               labelText: 'Light',
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                               filled: true,
                               fillColor: Colors.grey.shade50,
@@ -111,12 +111,12 @@ class PlantsScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
                     // Search Field - Second Row
                     TextField(
                       decoration: InputDecoration(
                         labelText: 'Search by name',
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                         suffixIcon: const Icon(Icons.search),
                         filled: true,
@@ -189,7 +189,7 @@ class PlantsScreen extends StatelessWidget {
         // Plant info panel at bottom
         if (selectedPlant != null)
           Container(
-            height: 240,
+            height: 280,
             margin: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -236,7 +236,7 @@ class _PlantInfoPanel extends StatelessWidget {
         children: [
           // Header with plant icon and name
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -249,18 +249,18 @@ class _PlantInfoPanel extends StatelessWidget {
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(6),
                   ),
-                  child: Text(plant.icon, style: const TextStyle(fontSize: 24)),
+                  child: Text(plant.icon, style: const TextStyle(fontSize: 18)),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     plant.name,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
               ],
@@ -269,7 +269,7 @@ class _PlantInfoPanel extends StatelessWidget {
           // Scrollable content
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -283,16 +283,16 @@ class _PlantInfoPanel extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Spring:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 3),
                       if (plant.startIndoorsWeeks > 0 && springSchedule.indoor != null) ...[
                         _InfoRow('Start Indoors:', formatDate(springSchedule.indoor)),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 3),
                       ],
                       _InfoRow(
                         plant.startIndoorsWeeks > 0 ? 'Transplant:' : 'Direct Sow:',
                         formatDate(springSchedule.sow),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 3),
                       _InfoRow('Harvest:', formatDate(springSchedule.harvest)),
                     ],
                   ),
@@ -305,27 +305,27 @@ class _PlantInfoPanel extends StatelessWidget {
                     children: [
                       if (fallSchedule != null) ...[
                         const Text('Fall:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 3),
                         if (plant.fallStartIndoorsWeeks > 0 && fallSchedule.indoor != null) ...[
                           _InfoRow('Start Indoors:', formatDate(fallSchedule.indoor)),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 3),
                         ],
                         _InfoRow(
                           plant.fallStartIndoorsWeeks > 0 ? 'Transplant:' : 'Direct Sow:',
                           formatDate(fallSchedule.sow),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 3),
                         _InfoRow('Harvest:', formatDate(fallSchedule.harvest)),
                       ] else ...[
                         const Text('Details:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 3),
                         _InfoRow(
                           'Spacing:',
                           (plant.cellsRequired ?? 1) > 1
                               ? '1 / ${plant.cellsRequired} sq ft'
                               : '${plant.sqftSpacing} / sq ft',
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 3),
                         Row(
                           children: [
                             const Text('Light: ', style: TextStyle(fontSize: 12)),
@@ -345,7 +345,7 @@ class _PlantInfoPanel extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             
             // Spacing info (if not already shown in right column)
             if (fallSchedule != null) ...[
@@ -355,7 +355,7 @@ class _PlantInfoPanel extends StatelessWidget {
                     ? '1 / ${plant.cellsRequired} sq ft'
                     : '${plant.sqftSpacing} / sq ft',
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 3),
               Row(
                 children: [
                   const Text('Light: ', style: TextStyle(fontSize: 12)),
@@ -369,15 +369,15 @@ class _PlantInfoPanel extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
             ],
             
             // Tips
             if (plant.tips.isNotEmpty) ...[
               const Divider(),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               const Text('Tips:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-              const SizedBox(height: 4),
+              const SizedBox(height: 3),
               ...plant.tips.take(3).map((tip) => Padding(
                     padding: const EdgeInsets.only(left: 8, bottom: 4),
                     child: Row(
