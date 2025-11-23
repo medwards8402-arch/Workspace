@@ -32,8 +32,8 @@ class RootShell extends StatelessWidget {
   const RootShell({super.key});
 
   static final List<Widget> _screens = const [
-    GardenScreen(),
     PlantsScreen(),
+    GardenScreen(),
     CalendarScreen(),
     SettingsScreen(),
   ];
@@ -42,13 +42,23 @@ class RootShell extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = context.watch<AppState>();
     return Scaffold(
-      appBar: AppBar(title: Text(_titleForIndex(state.currentNavIndex))),
+      appBar: AppBar(
+        title: Text(_titleForIndex(state.currentNavIndex)),
+        actions: [
+          if (state.currentNavIndex == 1) // Garden screen
+            IconButton(
+              icon: const Icon(Icons.info_outline),
+              tooltip: 'Show plant names',
+              onPressed: () => state.toggleShowPlantNames(),
+            ),
+        ],
+      ),
       body: _screens[state.currentNavIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: state.currentNavIndex,
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.grid_on_outlined), label: 'Garden'),
           NavigationDestination(icon: Icon(Icons.list_alt), label: 'Plants'),
+          NavigationDestination(icon: Icon(Icons.grid_on_outlined), label: 'Garden'),
           NavigationDestination(icon: Icon(Icons.event), label: 'Calendar'),
           NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
         ],
@@ -60,9 +70,9 @@ class RootShell extends StatelessWidget {
   String _titleForIndex(int i) {
     switch (i) {
       case 0:
-        return 'Garden';
-      case 1:
         return 'Plants';
+      case 1:
+        return 'Garden';
       case 2:
         return 'Calendar';
       case 3:

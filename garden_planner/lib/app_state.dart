@@ -10,29 +10,59 @@ class BedCell {
 }
 
 class GardenBed {
+  final String name;
   final int rows;
   final int cols;
   final List<BedCell> cells;
-  GardenBed({required this.rows, required this.cols}) : cells = List.generate(rows * cols, (_) => BedCell());
+  GardenBed({required this.name, required this.rows, required this.cols}) 
+    : cells = List.generate(rows * cols, (_) => BedCell());
+  
+  GardenBed copyWith({String? name, int? rows, int? cols}) {
+    final newRows = rows ?? this.rows;
+    final newCols = cols ?? this.cols;
+    final newBed = GardenBed(name: name ?? this.name, rows: newRows, cols: newCols);
+    // Copy existing cells where possible
+    for (var r = 0; r < newRows && r < this.rows; r++) {
+      for (var c = 0; c < newCols && c < this.cols; c++) {
+        final oldIndex = r * this.cols + c;
+        final newIndex = r * newCols + c;
+        newBed.cells[newIndex] = this.cells[oldIndex];
+      }
+    }
+    return newBed;
+  }
 }
 
 class AppState extends ChangeNotifier {
   String _zone = '5a';
+  String _gardenName = 'My Garden';
   String? _selectedPlantCode;
   int _currentNavIndex = 0;
-  final int bedRows = 8;
-  final int bedCols = 4;
-  final int bedCount = 3;
-  late final List<GardenBed> beds;
+  bool _showPlantNames = true; // Default to true
+  String _plantFilterType = 'all';
+  String _plantFilterLight = 'all';
+  String _plantSearchQuery = '';
+  Set<String> _dismissedTips = {};
+  List<GardenBed> beds = [];
   final Map<String, String> plantNotes = {};
 
   AppState() {
-    beds = List.generate(bedCount, (_) => GardenBed(rows: bedRows, cols: bedCols));
+    // Initialize with default beds
+    beds = [
+      GardenBed(name: 'Bed 1', rows: 8, cols: 4),
+      GardenBed(name: 'Bed 2', rows: 8, cols: 4),
+      GardenBed(name: 'Bed 3', rows: 8, cols: 4),
+    ];
     _loadPrefs();
   }
 
   String get zone => _zone;
+  String get gardenName => _gardenName;
   int get currentNavIndex => _currentNavIndex;
+  bool get showPlantNames => _showPlantNames;
+  String get plantFilterType => _plantFilterType;
+  String get plantFilterLight => _plantFilterLight;
+  String get plantSearchQuery => _plantSearchQuery;
   String? get selectedPlantCode => _selectedPlantCode;
   Plant? get selectedPlant {
     if (_selectedPlantCode == null) return null;
@@ -51,8 +81,63 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setGardenName(String name) {
+    _gardenName = name;
+    _savePrefs();
+    notifyListeners();
+  }
+
+  void addBed({String? name, int rows = 8, int cols = 4}) {
+    final bedName = name ?? 'Bed ${beds.length + 1}';
+    beds.add(GardenBed(name: bedName, rows: rows, cols: cols));
+    _savePrefs();
+    notifyListeners();
+  }
+
+  void removeBed(int index) {
+    if (index >= 0 && index < beds.length) {
+      beds.removeAt(index);
+      _savePrefs();
+      notifyListeners();
+    }
+  }
+
+  void updateBed(int index, {String? name, int? rows, int? cols}) {
+    if (index >= 0 && index < beds.length) {
+      beds[index] = beds[index].copyWith(name: name, rows: rows, cols: cols);
+      _savePrefs();
+      notifyListeners();
+    }
+  }
+
   void selectPlant(String? code) {
     _selectedPlantCode = code;
+    notifyListeners();
+  }
+
+  void toggleShowPlantNames() {
+    _showPlantNames = !_showPlantNames;
+    notifyListeners();
+  }
+
+  void setPlantFilter({String? type, String? light, String? search}) {
+    if (type != null) _plantFilterType = type;
+    if (light != null) _plantFilterLight = light;
+    if (search != null) _plantSearchQuery = search;
+    notifyListeners();
+  }
+
+  void dismissTip(String tipId) {
+    _dismissedTips.add(tipId);
+    _savePrefs();
+    notifyListeners();
+  }
+
+  bool isTipDismissed(String tipId) => _dismissedTips.contains(tipId);
+
+  void resetAllTips() {
+    _dismissedTips.clear();
+    _savePrefs();
     notifyListeners();
   }
 
@@ -115,6 +200,26 @@ class AppState extends ChangeNotifier {
   Future<void> _loadPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     _zone = prefs.getString('zone') ?? _zone;
+    _gardenName = prefs.getString('gardenName') ?? _gardenName;
+    _showPlantNames = prefs.getBool('showPlantNames') ?? _showPlantNames;
+    final dismissedList = prefs.getStringList('dismissedTips') ?? [];
+    _dismissedTips = dismissedList.toSet();
+    
+    // Load bed configurations
+    final bedConfigs = prefs.getStringList('bedConfigs') ?? [];
+    if (bedConfigs.isNotEmpty) {
+      beds.clear();
+      for (final config in bedConfigs) {
+        final parts = config.split('|');
+        if (parts.length == 3) {
+          final name = parts[0];
+          final rows = int.tryParse(parts[1]) ?? 8;
+          final cols = int.tryParse(parts[2]) ?? 4;
+          beds.add(GardenBed(name: name, rows: rows, cols: cols));
+        }
+      }
+    }
+    
     final storedPlantNotes = prefs.getStringList('plantNotes') ?? [];
     for (final entry in storedPlantNotes) {
       final parts = entry.split('|');
@@ -140,6 +245,14 @@ class AppState extends ChangeNotifier {
   Future<void> _savePrefs() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('zone', _zone);
+    prefs.setString('gardenName', _gardenName);
+    prefs.setBool('showPlantNames', _showPlantNames);
+    prefs.setStringList('dismissedTips', _dismissedTips.toList());
+    
+    // Save bed configurations
+    final bedConfigs = beds.map((bed) => '${bed.name}|${bed.rows}|${bed.cols}').toList();
+    prefs.setStringList('bedConfigs', bedConfigs);
+    
     final encoded = plantNotes.entries.map((e) => '${e.key}|${e.value}').toList();
     prefs.setStringList('plantNotes', encoded);
     final bedEncoded = <String>[];
