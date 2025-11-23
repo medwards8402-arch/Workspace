@@ -35,16 +35,16 @@ class CalendarScreen extends StatelessWidget {
             // Month header
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              margin: const EdgeInsets.only(top: 8, bottom: 4),
+              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+              margin: const EdgeInsets.only(top: 4, bottom: 2),
               decoration: BoxDecoration(
                 color: Colors.green.shade700,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
                 '$monthName ${firstDate.year}',
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -52,13 +52,14 @@ class CalendarScreen extends StatelessWidget {
             ),
             // Tasks for this month
             ...monthTasks.map((t) => Card(
-              margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+              margin: const EdgeInsets.symmetric(vertical: 1, horizontal: 4),
               child: ListTile(
                 dense: true,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                leading: Text(t.icon, style: const TextStyle(fontSize: 20)),
-                title: Text(t.label, style: const TextStyle(fontSize: 14)),
-                subtitle: Text(_fmt(t.date), style: const TextStyle(fontSize: 12)),
+                visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                leading: Text(t.icon, style: const TextStyle(fontSize: 16)),
+                title: Text(t.label, style: const TextStyle(fontSize: 12)),
+                subtitle: Text(_fmt(t.date), style: const TextStyle(fontSize: 10)),
               ),
             )),
           ],

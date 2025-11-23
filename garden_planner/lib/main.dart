@@ -44,14 +44,6 @@ class RootShell extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(_titleForIndex(state.currentNavIndex)),
-        actions: [
-          if (state.currentNavIndex == 1) // Garden screen
-            IconButton(
-              icon: const Icon(Icons.info_outline),
-              tooltip: 'Show plant names',
-              onPressed: () => state.toggleShowPlantNames(),
-            ),
-        ],
       ),
       body: _screens[state.currentNavIndex],
       bottomNavigationBar: NavigationBar(

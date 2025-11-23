@@ -149,12 +149,12 @@ class PlantsScreen extends StatelessWidget {
                           color: _hexColor(plant.color).withOpacity(0.15),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(6.0),
+                          padding: const EdgeInsets.all(4.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(plant.icon, style: const TextStyle(fontSize: 24)),
+                              Text(plant.icon, style: const TextStyle(fontSize: 22)),
                               const SizedBox(height: 2),
                               Flexible(
                                 child: Text(
@@ -162,12 +162,9 @@ class PlantsScreen extends StatelessWidget {
                                   textAlign: TextAlign.center, 
                                   maxLines: 2, 
                                   overflow: TextOverflow.ellipsis, 
-                                  style: const TextStyle(fontSize: 12),
+                                  style: const TextStyle(fontSize: 11),
                                 ),
                               ),
-                              const SizedBox(height: 2),
-                              Text('${plant.sqftSpacing}/sqft', style: const TextStyle(fontSize: 10, color: Colors.black54)),
-                              Text(plant.lightLevel, style: TextStyle(fontSize: 10, color: plant.lightLevel == 'high' ? Colors.orange : Colors.blueGrey)),
                             ],
                           ),
                         ),

@@ -35,7 +35,6 @@ class GardenBed {
 
 class AppState extends ChangeNotifier {
   String _zone = '5a';
-  String _gardenName = 'My Garden';
   String? _selectedPlantCode;
   int _currentNavIndex = 0;
   bool _showPlantNames = true; // Default to true
@@ -50,14 +49,11 @@ class AppState extends ChangeNotifier {
     // Initialize with default beds
     beds = [
       GardenBed(name: 'Bed 1', rows: 8, cols: 4),
-      GardenBed(name: 'Bed 2', rows: 8, cols: 4),
-      GardenBed(name: 'Bed 3', rows: 8, cols: 4),
     ];
     _loadPrefs();
   }
 
   String get zone => _zone;
-  String get gardenName => _gardenName;
   int get currentNavIndex => _currentNavIndex;
   bool get showPlantNames => _showPlantNames;
   String get plantFilterType => _plantFilterType;
@@ -77,12 +73,6 @@ class AppState extends ChangeNotifier {
 
   void setZone(String z) {
     _zone = z;
-    _savePrefs();
-    notifyListeners();
-  }
-
-  void setGardenName(String name) {
-    _gardenName = name;
     _savePrefs();
     notifyListeners();
   }
@@ -197,10 +187,27 @@ class AppState extends ChangeNotifier {
     return list;
   }
 
+  Future<void> resetToDefaults() async {
+    _zone = '5a';
+    _selectedPlantCode = null;
+    _currentNavIndex = 0;
+    _showPlantNames = true;
+    _plantFilterType = 'all';
+    _plantFilterLight = 'all';
+    _plantSearchQuery = '';
+    _dismissedTips.clear();
+    beds = [
+      GardenBed(name: 'Bed 1', rows: 8, cols: 4),
+    ];
+    plantNotes.clear();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    notifyListeners();
+  }
+
   Future<void> _loadPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     _zone = prefs.getString('zone') ?? _zone;
-    _gardenName = prefs.getString('gardenName') ?? _gardenName;
     _showPlantNames = prefs.getBool('showPlantNames') ?? _showPlantNames;
     final dismissedList = prefs.getStringList('dismissedTips') ?? [];
     _dismissedTips = dismissedList.toSet();
@@ -245,7 +252,6 @@ class AppState extends ChangeNotifier {
   Future<void> _savePrefs() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('zone', _zone);
-    prefs.setString('gardenName', _gardenName);
     prefs.setBool('showPlantNames', _showPlantNames);
     prefs.setStringList('dismissedTips', _dismissedTips.toList());
     

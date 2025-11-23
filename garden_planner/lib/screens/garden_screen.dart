@@ -11,38 +11,36 @@ class GardenScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<AppState>();
+    final showTip = state.selectedPlant == null && !state.isTipDismissed('garden-select-plant');
+    
     return Column(
       children: [
-        Container(
-          padding: const EdgeInsets.all(12.0),
-          color: Colors.green.shade50,
-          child: Column(
-            children: [
-              if (state.selectedPlant != null)
-                Row(
-                  children: [
-                    Text(state.selectedPlant!.icon, style: const TextStyle(fontSize: 24)),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Planting: ${state.selectedPlant!.name}',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        if (state.selectedPlant != null || showTip)
+          Container(
+            padding: const EdgeInsets.all(12.0),
+            color: Colors.green.shade50,
+            child: state.selectedPlant != null
+                ? Row(
+                    children: [
+                      Text(state.selectedPlant!.icon, style: const TextStyle(fontSize: 24)),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Planting: ${state.selectedPlant!.name}',
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                    TextButton(
-                      onPressed: () => state.selectPlant(null),
-                      child: const Text('Clear'),
-                    ),
-                  ],
-                )
-              else
-                const Tip(
-                  id: 'garden-select-plant',
-                  message: 'Go to Plants tab to select what to plant, then tap cells to place plants in your beds.',
-                ),
-            ],
+                      TextButton(
+                        onPressed: () => state.selectPlant(null),
+                        child: const Text('Clear'),
+                      ),
+                    ],
+                  )
+                : const Tip(
+                    id: 'garden-select-plant',
+                    message: 'Go to Plants tab to select what to plant, then tap cells to place plants in your beds.',
+                  ),
           ),
-        ),
         Expanded(
           child: PageView.builder(
             itemCount: state.beds.length,
@@ -108,7 +106,7 @@ class GardenScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: Center(
-                                      child: state.showPlantNames && plant != null
+                                      child: plant != null
                                           ? Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
@@ -123,7 +121,7 @@ class GardenScreen extends StatelessWidget {
                                                 ),
                                               ],
                                             )
-                                          : Text(plant?.icon ?? '', style: const TextStyle(fontSize: 20)),
+                                          : const SizedBox(),
                                     ),
                                   ),
                                   if (cell.note != null && cell.note!.isNotEmpty)

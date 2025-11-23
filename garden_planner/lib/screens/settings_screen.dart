@@ -24,30 +24,6 @@ class SettingsScreen extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         
-        // Garden name
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Garden Name', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: TextEditingController(text: state.gardenName)..selection = TextSelection.fromPosition(TextPosition(offset: state.gardenName.length)),
-                  onSubmitted: (v) => state.setGardenName(v),
-                  decoration: const InputDecoration(
-                    hintText: 'My Garden',
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-        
         // Zone
         Card(
           child: Padding(
@@ -140,6 +116,52 @@ class SettingsScreen extends StatelessWidget {
                 Wrap(
                   spacing: 8,
                   children: state.uniquePlacedPlants().map((p) => Chip(label: Text(p.name), avatar: Text(p.icon))).toList(),
+                ),
+              ],
+            ),
+          ),
+        ),
+        
+        // New Garden
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('New Garden', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                const SizedBox(height: 8),
+                const Text('Start over with a fresh garden. This will clear all plants, beds, and settings.', style: TextStyle(fontSize: 12, color: Colors.black54)),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: const Text('Start New Garden?'),
+                        content: const Text('This will clear all your plants, beds, notes, and reset all settings. This cannot be undone.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(ctx),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              state.resetToDefaults();
+                              Navigator.pop(ctx);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Garden reset to defaults')),
+                              );
+                            },
+                            style: TextButton.styleFrom(foregroundColor: Colors.red),
+                            child: const Text('Reset Garden'),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.restart_alt, color: Colors.red),
+                  label: const Text('Start New Garden', style: TextStyle(color: Colors.red)),
                 ),
               ],
             ),
