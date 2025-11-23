@@ -19,7 +19,7 @@ class GardenScreen extends StatefulWidget {
 
 class _GardenScreenState extends State<GardenScreen> {
   Plant? _lastSelectedPlant;
-  bool _isPlantingMode = true;
+  String _mode = 'planting'; // 'planting', 'selecting', 'deleting'
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +41,8 @@ class _GardenScreenState extends State<GardenScreen> {
       children: [
         if (showBanner || showTip)
           Container(
-            margin: const EdgeInsets.all(12),
-            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.all(3),
+            padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
@@ -76,15 +76,15 @@ class _GardenScreenState extends State<GardenScreen> {
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    _isPlantingMode = true;
+                                    _mode = 'planting';
                                   });
                                   // Select plant in app state
                                   selectionProvider.selectPlant(_lastSelectedPlant!.code);
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  padding: const EdgeInsets.symmetric(vertical: 8),
                                   decoration: BoxDecoration(
-                                    gradient: _isPlantingMode
+                                    gradient: _mode == 'planting'
                                         ? LinearGradient(
                                             colors: [
                                               _hexColor(_lastSelectedPlant!.color).withOpacity(0.8),
@@ -92,7 +92,7 @@ class _GardenScreenState extends State<GardenScreen> {
                                             ],
                                           )
                                         : null,
-                                    color: !_isPlantingMode ? Colors.grey.shade100 : null,
+                                    color: _mode != 'planting' ? Colors.grey.shade100 : null,
                                     borderRadius: const BorderRadius.horizontal(left: Radius.circular(9)),
                                   ),
                                   child: Row(
@@ -102,14 +102,14 @@ class _GardenScreenState extends State<GardenScreen> {
                                         _lastSelectedPlant!.icon,
                                         style: TextStyle(
                                           fontSize: 18,
-                                          color: _isPlantingMode ? Colors.white : Colors.grey.shade600,
+                                          color: _mode == 'planting' ? Colors.white : Colors.grey.shade600,
                                         ),
                                       ),
                                       const SizedBox(width: 6),
                                       Text(
                                         _lastSelectedPlant!.name.toUpperCase(),
                                         style: TextStyle(
-                                          color: _isPlantingMode ? Colors.white : Colors.grey.shade600,
+                                          color: _mode == 'planting' ? Colors.white : Colors.grey.shade600,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 13,
                                           letterSpacing: 0.5,
@@ -124,30 +124,67 @@ class _GardenScreenState extends State<GardenScreen> {
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    _isPlantingMode = false;
+                                    _mode = 'selecting';
                                   });
                                   // Deselect plant in app state
                                   selectionProvider.selectPlant(null);
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  padding: const EdgeInsets.symmetric(vertical: 8),
                                   decoration: BoxDecoration(
-                                    color: !_isPlantingMode ? _hexColor(_lastSelectedPlant!.color) : Colors.white,
-                                    borderRadius: const BorderRadius.horizontal(right: Radius.circular(9)),
+                                    color: _mode == 'selecting' ? _hexColor(_lastSelectedPlant!.color) : Colors.white,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(
                                         Icons.touch_app,
-                                        color: !_isPlantingMode ? Colors.white : Colors.grey.shade600,
+                                        color: _mode == 'selecting' ? Colors.white : Colors.grey.shade600,
                                         size: 18,
                                       ),
                                       const SizedBox(width: 6),
                                       Text(
                                         'SELECT',
                                         style: TextStyle(
-                                          color: !_isPlantingMode ? Colors.white : Colors.grey.shade600,
+                                          color: _mode == 'selecting' ? Colors.white : Colors.grey.shade600,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                          letterSpacing: 0.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _mode = 'deleting';
+                                  });
+                                  // Deselect plant in app state
+                                  selectionProvider.selectPlant(null);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 8),
+                                  decoration: BoxDecoration(
+                                    color: _mode == 'deleting' ? Colors.red.shade600 : Colors.white,
+                                    borderRadius: const BorderRadius.horizontal(right: Radius.circular(9)),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.delete,
+                                        color: _mode == 'deleting' ? Colors.white : Colors.grey.shade600,
+                                        size: 18,
+                                      ),
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        'DELETE',
+                                        style: TextStyle(
+                                          color: _mode == 'deleting' ? Colors.white : Colors.grey.shade600,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 13,
                                           letterSpacing: 0.5,
@@ -310,11 +347,14 @@ class _GardenScreenState extends State<GardenScreen> {
                                     
                                     return GestureDetector(
                                       onTap: () {
-                                        if (selectionProvider.selectedPlantCode != null) {
+                                        if (_mode == 'deleting' && plant != null) {
+                                          // In deleting mode: remove plant
+                                          gardenProvider.clearCell(bedIndex, idx);
+                                        } else if (selectionProvider.selectedPlantCode != null) {
                                           // In planting mode: always plant (overwrites existing plants)
                                           gardenProvider.placePlant(bedIndex, idx, selectionProvider.selectedPlantCode!);
                                         } else if (plant != null) {
-                                          // Not in planting mode: show plant details
+                                          // In selecting mode: show plant details
                                           _showCellSheet(context, bedIndex, idx, plant);
                                         }
                                       },
@@ -767,7 +807,6 @@ class _GardenScreenState extends State<GardenScreen> {
 
   void _showCellSheet(BuildContext context, int bedIndex, int cellIndex, Plant plant) {
     final notesProvider = context.read<PlantNotesProvider>();
-    final gardenProvider = context.read<GardenProvider>();
     
     showModalBottomSheet(
       context: context,
@@ -835,22 +874,6 @@ class _GardenScreenState extends State<GardenScreen> {
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: () {
-                              gardenProvider.clearCell(bedIndex, cellIndex);
-                              Navigator.pop(ctx);
-                            },
-                            icon: const Icon(Icons.delete, color: Colors.red, size: 18),
-                            label: const Text('Remove Plant', style: TextStyle(color: Colors.red)),
-                            style: OutlinedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                              side: const BorderSide(color: Colors.red),
                             ),
                           ),
                         ),

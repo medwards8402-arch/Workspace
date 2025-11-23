@@ -8,6 +8,13 @@ class PlantSelectionProvider extends ChangeNotifier {
   String _filterLight = 'all';
   String _searchQuery = '';
 
+  PlantSelectionProvider() {
+    // Select first plant on initialization
+    if (plants.isNotEmpty) {
+      _selectedPlantCode = plants.first.code;
+    }
+  }
+
   String? get selectedPlantCode => _selectedPlantCode;
   String get filterType => _filterType;
   String get filterLight => _filterLight;
