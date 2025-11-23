@@ -76,7 +76,10 @@ class RootShell extends StatelessWidget {
     final navState = context.watch<NavigationProvider>();
     return Scaffold(
       body: SafeArea(
-        child: _screens[navState.currentIndex],
+        child: IndexedStack(
+          index: navState.currentIndex,
+          children: _screens,
+        ),
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: navState.currentIndex,

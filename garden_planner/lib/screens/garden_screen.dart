@@ -17,12 +17,23 @@ class GardenScreen extends StatefulWidget {
   State<GardenScreen> createState() => _GardenScreenState();
 }
 
-class _GardenScreenState extends State<GardenScreen> {
+class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClientMixin {
   Plant? _lastSelectedPlant;
   String _mode = 'planting'; // 'planting', 'selecting', 'deleting'
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context); // Required for AutomaticKeepAliveClientMixin
     final gardenProvider = context.watch<GardenProvider>();
     final selectionProvider = context.watch<PlantSelectionProvider>();
     final notesProvider = context.watch<PlantNotesProvider>();
@@ -207,6 +218,7 @@ class _GardenScreenState extends State<GardenScreen> {
           ),
         Expanded(
           child: ListView.builder(
+            controller: _scrollController,
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             itemCount: gardenProvider.beds.length,
             itemBuilder: (context, bedIndex) {
