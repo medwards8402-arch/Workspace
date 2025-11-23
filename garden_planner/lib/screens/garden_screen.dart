@@ -34,34 +34,25 @@ class _GardenScreenState extends State<GardenScreen> {
       children: [
         if (showBanner || showTip)
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            margin: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              gradient: showBanner
-                  ? LinearGradient(
-                      colors: [
-                        _hexColor(_lastSelectedPlant!.color).withOpacity(0.1),
-                        _hexColor(_lastSelectedPlant!.color).withOpacity(0.2),
-                      ],
-                    )
-                  : null,
-              color: !showBanner ? Colors.green.shade50 : null,
-              border: showBanner
-                  ? Border.all(color: _hexColor(_lastSelectedPlant!.color).withOpacity(0.6), width: 2)
-                  : null,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: showBanner
-                  ? [
-                      BoxShadow(
-                        color: _hexColor(_lastSelectedPlant!.color).withOpacity(0.3),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      )
-                    ]
-                  : null,
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: showBanner ? _hexColor(_lastSelectedPlant!.color).withOpacity(0.5) : Colors.grey.shade300,
+                width: showBanner ? 2 : 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: showBanner 
+                      ? _hexColor(_lastSelectedPlant!.color).withOpacity(0.15)
+                      : Colors.black.withOpacity(0.05),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            margin: showBanner
-                ? const EdgeInsets.symmetric(horizontal: 12, vertical: 8)
-                : EdgeInsets.zero,
             child: showBanner
                 ? Column(
                     children: [
@@ -69,11 +60,22 @@ class _GardenScreenState extends State<GardenScreen> {
                         Row(
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: _hexColor(_lastSelectedPlant!.color), width: 2),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    _hexColor(_lastSelectedPlant!.color).withOpacity(0.7),
+                                    _hexColor(_lastSelectedPlant!.color),
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: _hexColor(_lastSelectedPlant!.color).withOpacity(0.3),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
                               ),
                               child: Text(
                                 _lastSelectedPlant!.icon,
@@ -105,8 +107,8 @@ class _GardenScreenState extends State<GardenScreen> {
                       // Mode toggle
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: Colors.grey.shade300),
                         ),
                         child: Row(
@@ -121,10 +123,18 @@ class _GardenScreenState extends State<GardenScreen> {
                                   state.selectPlant(_lastSelectedPlant!.code);
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
                                   decoration: BoxDecoration(
-                                    color: _isPlantingMode ? _hexColor(_lastSelectedPlant!.color) : Colors.white,
-                                    borderRadius: const BorderRadius.horizontal(left: Radius.circular(7)),
+                                    gradient: _isPlantingMode
+                                        ? LinearGradient(
+                                            colors: [
+                                              _hexColor(_lastSelectedPlant!.color).withOpacity(0.8),
+                                              _hexColor(_lastSelectedPlant!.color),
+                                            ],
+                                          )
+                                        : null,
+                                    color: !_isPlantingMode ? Colors.grey.shade100 : null,
+                                    borderRadius: const BorderRadius.horizontal(left: Radius.circular(9)),
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -230,16 +240,17 @@ class _GardenScreenState extends State<GardenScreen> {
                     ),
                     // Grid
                     Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            final cellSize = (constraints.maxWidth - (bed.cols + 1) * 4.0) / bed.cols;
-                            
-                            // GridView's actual cell size calculation
-                            // GridView.builder with SliverGridDelegateWithFixedCrossAxisCount
-                            // divides space as: (width - (cols - 1) * crossAxisSpacing) / cols
-                            final actualCellSize = (constraints.maxWidth - (bed.cols - 1) * 4.0) / bed.cols;
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              final cellSize = (constraints.maxWidth - (bed.cols + 1) * 4.0) / bed.cols;
+                              
+                              // GridView's actual cell size calculation
+                              // GridView.builder with SliverGridDelegateWithFixedCrossAxisCount
+                              // divides space as: (width - (cols - 1) * crossAxisSpacing) / cols
+                              final actualCellSize = (constraints.maxWidth - (bed.cols - 1) * 4.0) / bed.cols;
                             
                             // Calculate sprawling plant groups
                             final sprawlingGroups = _calculateSprawlingGroups(bed);
@@ -311,14 +322,13 @@ class _GardenScreenState extends State<GardenScreen> {
                               }
                             }
                             
-                            return SingleChildScrollView(
-                              child: SizedBox(
-                                width: constraints.maxWidth,
-                                height: bed.rows * (cellSize + 4) - 4,
-                                child: Stack(
-                                  children: [
-                                    GridView.builder(
-                                      physics: const NeverScrollableScrollPhysics(),
+                            return SizedBox(
+                              width: constraints.maxWidth,
+                              height: bed.rows * actualCellSize + (bed.rows - 1) * 4,
+                              child: Stack(
+                                children: [
+                                  GridView.builder(
+                                    physics: const NeverScrollableScrollPhysics(),
                                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: bed.cols,
                                         mainAxisSpacing: 4,
@@ -377,9 +387,9 @@ class _GardenScreenState extends State<GardenScreen> {
                                     ...sprawlingOverlays,
                                   ],
                                 ),
-                              ),
                             );
-                          },
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -668,14 +678,33 @@ class _GardenScreenState extends State<GardenScreen> {
                 children: [
                   // Header
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: _hexColor(plant.color),
-                      borderRadius: BorderRadius.circular(8),
+                      gradient: LinearGradient(
+                        colors: [
+                          _hexColor(plant.color).withOpacity(0.7),
+                          _hexColor(plant.color),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: _hexColor(plant.color).withOpacity(0.3),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Row(
                       children: [
-                        Text(plant.icon, style: const TextStyle(fontSize: 32)),
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(plant.icon, style: const TextStyle(fontSize: 28)),
+                        ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
@@ -686,11 +715,20 @@ class _GardenScreenState extends State<GardenScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   
                   // Plant Info
-                  Text('Plant Information', style: Theme.of(context).textTheme.titleMedium),
-                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Icon(Icons.eco, color: Colors.green.shade700, size: 20),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Plant Information',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
                   _buildInfoRow('Direct Sow:', springSchedule.sow != null 
                     ? '${_monthName(springSchedule.sow!.month)} ${springSchedule.sow!.day}'
                     : 'N/A'),
@@ -713,51 +751,73 @@ class _GardenScreenState extends State<GardenScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   const Divider(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   
                   // Plant Notes
                   Row(
                     children: [
-                      Text('Notes for All ${plant.name}', style: Theme.of(context).textTheme.titleMedium),
+                      Icon(Icons.note_add, color: Colors.green.shade700, size: 20),
                       const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Notes for All ${plant.name}',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
+                        ),
+                      ),
                       Tooltip(
                         message: 'This note applies to all ${plant.name} plants in your garden',
                         child: Icon(Icons.info_outline, size: 18, color: Colors.grey.shade600),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   TextField(
                     controller: noteController,
-                    minLines: 2,
-                    maxLines: 4,
+                    minLines: 3,
+                    maxLines: 5,
                     decoration: InputDecoration(
                       hintText: 'Add notes for all ${plant.name} plants...',
-                      border: const OutlineInputBorder(),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                      filled: true,
+                      fillColor: Colors.grey.shade50,
+                      contentPadding: const EdgeInsets.all(12),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   Row(
                     children: [
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          final v = noteController.text.trim();
-                          state.updatePlantNote(plant.code, v.isEmpty ? null : v);
-                          Navigator.pop(ctx);
-                        },
-                        icon: const Icon(Icons.save),
-                        label: const Text('Save Note'),
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            final v = noteController.text.trim();
+                            state.updatePlantNote(plant.code, v.isEmpty ? null : v);
+                            Navigator.pop(ctx);
+                          },
+                          icon: const Icon(Icons.save),
+                          label: const Text('Save Note'),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          ),
+                        ),
                       ),
-                      const SizedBox(width: 8),
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          state.clearCell(bedIndex, cellIndex);
-                          Navigator.pop(ctx);
-                        },
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                        label: const Text('Remove Plant', style: TextStyle(color: Colors.red)),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            state.clearCell(bedIndex, cellIndex);
+                            Navigator.pop(ctx);
+                          },
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          label: const Text('Remove Plant', style: TextStyle(color: Colors.red)),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            side: const BorderSide(color: Colors.red),
+                          ),
+                        ),
                       ),
                     ],
                   ),

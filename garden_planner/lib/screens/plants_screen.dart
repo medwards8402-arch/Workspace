@@ -34,41 +34,60 @@ class PlantsScreen extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                padding: const EdgeInsets.all(12.0),
-                color: Colors.green.shade50,
+                margin: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.shade300),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      children: [
+                        Icon(Icons.filter_list, color: Colors.green.shade700, size: 20),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Filters (${filteredPlants.length} plants)',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
+                          ),
+                        ),
+                        if (state.plantSearchQuery.isNotEmpty || state.plantFilterType != 'all' || state.plantFilterLight != 'all')
+                          TextButton.icon(
+                            onPressed: () => state.setPlantFilter(type: 'all', light: 'all', search: ''),
+                            icon: const Icon(Icons.clear, size: 16),
+                            label: const Text('Clear'),
+                            style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
                     const Tip(
                       id: 'plants-filter-tip',
                       message: 'Use filters below to narrow plant selection by type, light requirements, or search by name.',
                     ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text('Select a Plant to Add (${filteredPlants.length})', style: Theme.of(context).textTheme.titleMedium),
-                        ),
-                        if (state.plantSearchQuery.isNotEmpty || state.plantFilterType != 'all' || state.plantFilterLight != 'all')
-                          TextButton(
-                            onPressed: () => state.setPlantFilter(type: 'all', light: 'all', search: ''),
-                            child: const Text('Clear Filters'),
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
                     // Filters - First Row
                     Row(
                       children: [
                         Expanded(
                           child: DropdownButtonFormField<String>(
                             value: state.plantFilterType,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               labelText: 'Type',
-                              contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                              border: OutlineInputBorder(),
-                              isDense: true,
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                              filled: true,
+                              fillColor: Colors.grey.shade50,
                             ),
                             isExpanded: true,
                             items: const [
@@ -80,15 +99,16 @@ class PlantsScreen extends StatelessWidget {
                             onChanged: (v) => state.setPlantFilter(type: v),
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 12),
                         Expanded(
                           child: DropdownButtonFormField<String>(
                             value: state.plantFilterLight,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               labelText: 'Light',
-                              contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                              border: OutlineInputBorder(),
-                              isDense: true,
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                              filled: true,
+                              fillColor: Colors.grey.shade50,
                             ),
                             isExpanded: true,
                             items: const [
@@ -101,15 +121,16 @@ class PlantsScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
                     // Search Field - Second Row
                     TextField(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Search by name',
-                        contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        border: OutlineInputBorder(),
-                        suffixIcon: Icon(Icons.search),
-                        isDense: true,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                        suffixIcon: const Icon(Icons.search),
+                        filled: true,
+                        fillColor: Colors.grey.shade50,
                       ),
                       onChanged: (v) => state.setPlantFilter(search: v),
                     ),
@@ -179,9 +200,18 @@ class PlantsScreen extends StatelessWidget {
         if (selectedPlant != null)
           Container(
             height: 240,
+            margin: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              border: Border(top: BorderSide(color: Colors.grey.shade300, width: 2)),
               color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.grey.shade300),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: _PlantInfoPanel(plant: selectedPlant, zone: state.zone),
           ),
@@ -212,15 +242,51 @@ class _PlantInfoPanel extends StatelessWidget {
         return '${_monthName(date.month)} ${date.day}, ${date.year}';
       }
 
-      return SingleChildScrollView(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Two-column layout for info
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      return Column(
+        children: [
+          // Header with plant icon and name
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  _hexColor(plant.color).withOpacity(0.7),
+                  _hexColor(plant.color),
+                ],
+              ),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+            ),
+            child: Row(
               children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(plant.icon, style: const TextStyle(fontSize: 24)),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    plant.name,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Scrollable content
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Two-column layout for info
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                 // Left column - Spring schedule
                 Expanded(
                   child: Column(
@@ -335,7 +401,10 @@ class _PlantInfoPanel extends StatelessWidget {
             ],
           ],
         ),
-      );
+      ),
+    ),
+  ],
+);
     } catch (e) {
       debugPrint('Error building plant info panel: $e');
       return Center(
