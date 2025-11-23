@@ -242,13 +242,13 @@ class SettingsScreen extends StatelessWidget {
             const SizedBox(height: 16),
             TextField(
               controller: rowsController,
-              decoration: const InputDecoration(labelText: 'Rows'),
+              decoration: const InputDecoration(labelText: 'Rows (max 8)'),
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 16),
             TextField(
               controller: colsController,
-              decoration: const InputDecoration(labelText: 'Columns'),
+              decoration: const InputDecoration(labelText: 'Columns (max 8)'),
               keyboardType: TextInputType.number,
             ),
           ],
@@ -257,10 +257,12 @@ class SettingsScreen extends StatelessWidget {
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
           TextButton(
             onPressed: () {
+              final rows = (int.tryParse(rowsController.text) ?? 8).clamp(1, 8);
+              final cols = (int.tryParse(colsController.text) ?? 4).clamp(1, 8);
               gardenProvider.addBed(
                 name: nameController.text,
-                rows: int.tryParse(rowsController.text) ?? 8,
-                cols: int.tryParse(colsController.text) ?? 4,
+                rows: rows,
+                cols: cols,
               );
               Navigator.pop(context);
             },
@@ -290,13 +292,13 @@ class SettingsScreen extends StatelessWidget {
             const SizedBox(height: 16),
             TextField(
               controller: rowsController,
-              decoration: const InputDecoration(labelText: 'Rows'),
+              decoration: const InputDecoration(labelText: 'Rows (max 8)'),
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 16),
             TextField(
               controller: colsController,
-              decoration: const InputDecoration(labelText: 'Columns'),
+              decoration: const InputDecoration(labelText: 'Columns (max 8)'),
               keyboardType: TextInputType.number,
             ),
           ],
@@ -305,11 +307,13 @@ class SettingsScreen extends StatelessWidget {
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
           TextButton(
             onPressed: () {
+              final rows = int.tryParse(rowsController.text);
+              final cols = int.tryParse(colsController.text);
               gardenProvider.updateBed(
                 index,
                 name: nameController.text,
-                rows: int.tryParse(rowsController.text),
-                cols: int.tryParse(colsController.text),
+                rows: rows != null ? rows.clamp(1, 8) : null,
+                cols: cols != null ? cols.clamp(1, 8) : null,
               );
               Navigator.pop(context);
             },
