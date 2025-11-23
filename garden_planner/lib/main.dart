@@ -55,6 +55,7 @@ class GardenPlannerApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Garden Planner',
         theme: AppTheme.lightTheme,
+        debugShowCheckedModeBanner: false,
         home: const RootShell(),
       ),
     );
