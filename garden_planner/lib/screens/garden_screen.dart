@@ -63,55 +63,7 @@ class _GardenScreenState extends State<GardenScreen> {
             child: showBanner
                 ? Column(
                     children: [
-                      if (_isPlantingMode) ...[
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    _hexColor(_lastSelectedPlant!.color).withOpacity(0.7),
-                                    _hexColor(_lastSelectedPlant!.color),
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: _hexColor(_lastSelectedPlant!.color).withOpacity(0.3),
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Text(
-                                _lastSelectedPlant!.icon,
-                                style: const TextStyle(fontSize: 32),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    _lastSelectedPlant!.name,
-                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'Tap cells to plant • Long press to view',
-                                    style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                      ],
-                      // Mode toggle
+                      // Mode toggle only - fixed size header
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.grey.shade100,
@@ -146,14 +98,16 @@ class _GardenScreenState extends State<GardenScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(
-                                        Icons.add_circle,
-                                        color: _isPlantingMode ? Colors.white : Colors.grey.shade600,
-                                        size: 18,
+                                      Text(
+                                        _lastSelectedPlant!.icon,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: _isPlantingMode ? Colors.white : Colors.grey.shade600,
+                                        ),
                                       ),
                                       const SizedBox(width: 6),
                                       Text(
-                                        'PLANTING',
+                                        _lastSelectedPlant!.name.toUpperCase(),
                                         style: TextStyle(
                                           color: _isPlantingMode ? Colors.white : Colors.grey.shade600,
                                           fontWeight: FontWeight.bold,
@@ -176,10 +130,10 @@ class _GardenScreenState extends State<GardenScreen> {
                                   selectionProvider.selectPlant(null);
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
                                   decoration: BoxDecoration(
                                     color: !_isPlantingMode ? _hexColor(_lastSelectedPlant!.color) : Colors.white,
-                                    borderRadius: const BorderRadius.horizontal(right: Radius.circular(7)),
+                                    borderRadius: const BorderRadius.horizontal(right: Radius.circular(9)),
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -191,7 +145,7 @@ class _GardenScreenState extends State<GardenScreen> {
                                       ),
                                       const SizedBox(width: 6),
                                       Text(
-                                        'SELECTING',
+                                        'SELECT',
                                         style: TextStyle(
                                           color: !_isPlantingMode ? Colors.white : Colors.grey.shade600,
                                           fontWeight: FontWeight.bold,
