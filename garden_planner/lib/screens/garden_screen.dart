@@ -206,18 +206,22 @@ class _GardenScreenState extends State<GardenScreen> {
                   ),
           ),
         Expanded(
-          child: PageView.builder(
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             itemCount: gardenProvider.beds.length,
-            controller: PageController(viewportFraction: 0.95),
             itemBuilder: (context, bedIndex) {
               final bed = gardenProvider.beds[bedIndex];
-              return Card(
-                elevation: 3,
-                child: Column(
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Center(
+                  child: Card(
+                    elevation: 3,
+                  child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     // Bed name header
                     Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
                       decoration: BoxDecoration(
                         color: Colors.green.shade700,
                         borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
@@ -237,21 +241,23 @@ class _GardenScreenState extends State<GardenScreen> {
                             tooltip: 'Undo last change',
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
+                            visualDensity: VisualDensity.compact,
                           ),
                         ],
                       ),
                     ),
                     // Grid
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: LayoutBuilder(
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: LayoutBuilder(
                             builder: (context, constraints) {
-                              // GridView's actual cell size calculation
-                              // GridView.builder with SliverGridDelegateWithFixedCrossAxisCount
-                              // divides space as: (width - (cols - 1) * crossAxisSpacing) / cols
-                              final actualCellSize = (constraints.maxWidth - (bed.cols - 1) * 4.0) / bed.cols;
+                              // Fixed cell size: 8 columns should fill the screen width
+                              const double spacing = 4.0;
+                              const int maxCols = 8;
+                              final double actualCellSize = (constraints.maxWidth - (maxCols - 1) * spacing) / maxCols;
+                              final double bedWidth = bed.cols * actualCellSize + (bed.cols - 1) * spacing;
+                              final double bedHeight = bed.rows * actualCellSize + (bed.rows - 1) * spacing;
                             
                             // Calculate sprawling plant groups
                             final sprawlingGroups = _calculateSprawlingGroups(bed);
@@ -283,12 +289,10 @@ class _GardenScreenState extends State<GardenScreen> {
                                   final spanCols = maxCol - minCol + 1;
                                   
                                   // Calculate position and size to match GridView's layout exactly
-                                  // GridView uses actualCellSize, not the cellSize we calculate
-                                  final gap = 4.0;
-                                  final left = minCol * (actualCellSize + gap);
-                                  final top = minRow * (actualCellSize + gap);
-                                  final overlayWidth = spanCols * actualCellSize + (spanCols - 1) * gap;
-                                  final overlayHeight = spanRows * actualCellSize + (spanRows - 1) * gap;
+                                  final left = minCol * (actualCellSize + spacing);
+                                  final top = minRow * (actualCellSize + spacing);
+                                  final overlayWidth = spanCols * actualCellSize + (spanCols - 1) * spacing;
+                                  final overlayHeight = spanRows * actualCellSize + (spanRows - 1) * spacing;
                                   
                                   final iconSize = min(actualCellSize * 1.8, max(actualCellSize * 0.7, sqrt(cells.length.toDouble()) * actualCellSize * 0.5));
                                   
@@ -324,16 +328,16 @@ class _GardenScreenState extends State<GardenScreen> {
                             }
                             
                             return SizedBox(
-                              width: constraints.maxWidth,
-                              height: bed.rows * actualCellSize + (bed.rows - 1) * 4,
+                              width: bedWidth,
+                              height: bedHeight,
                               child: Stack(
                                 children: [
                                   GridView.builder(
                                     physics: const NeverScrollableScrollPhysics(),
                                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: bed.cols,
-                                        mainAxisSpacing: 4,
-                                        crossAxisSpacing: 4,
+                                        mainAxisSpacing: spacing,
+                                        crossAxisSpacing: spacing,
                                       ),
                                       itemCount: bed.rows * bed.cols,
                                       itemBuilder: (context, idx) {
@@ -395,10 +399,11 @@ class _GardenScreenState extends State<GardenScreen> {
                             },
                           ),
                         ),
-                      ),
                     ),
                   ],
                 ),
+              ),
+              ),
               );
             },
           ),

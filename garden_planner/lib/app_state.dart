@@ -48,7 +48,10 @@ class AppState extends ChangeNotifier {
   AppState() {
     // Initialize with default beds
     beds = [
-      GardenBed(name: 'Bed 1', rows: 8, cols: 4),
+      GardenBed(name: 'Bed 1', rows: 4, cols: 8),
+      GardenBed(name: 'Bed 2', rows: 4, cols: 8),
+      GardenBed(name: 'Bed 3', rows: 4, cols: 8),
+      GardenBed(name: 'Herb Garden', rows: 2, cols: 4),
     ];
     _loadPrefs();
   }
