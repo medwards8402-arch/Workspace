@@ -7,7 +7,6 @@ import '../presentation/providers/plant_selection_provider.dart';
 import '../presentation/providers/settings_provider.dart';
 import '../domain/models/garden_bed.dart';
 import '../models/plant.dart';
-import '../services/schedule_service.dart';
 import '../widgets/tip.dart';
 import '../widgets/plant_info_panel.dart';
 
@@ -166,7 +165,7 @@ class _GardenScreenState extends State<GardenScreen> {
                   )
                 : const Tip(
                     id: 'garden-select-plant',
-                    message: 'Go to Plants tab to select what to plant, then tap cells to place plants in your beds.',
+                    message: 'Select a plant from the Plants tab, then tap grid cells to place. Tap placed plants to add notes or remove them. Use the undo button to reverse changes. Check Calendar tab for your personalized planting dates!',
                   ),
           ),
         Expanded(
@@ -212,8 +211,6 @@ class _GardenScreenState extends State<GardenScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: LayoutBuilder(
                             builder: (context, constraints) {
-                              final cellSize = (constraints.maxWidth - (bed.cols + 1) * 4.0) / bed.cols;
-                              
                               // GridView's actual cell size calculation
                               // GridView.builder with SliverGridDelegateWithFixedCrossAxisCount
                               // divides space as: (width - (cols - 1) * crossAxisSpacing) / cols
@@ -336,7 +333,7 @@ class _GardenScreenState extends State<GardenScreen> {
                                               borderRadius: BorderRadius.circular(4),
                                             ),
                                             child: Center(
-                                              child: _buildCellContent(plant, cellSize, showSprawlFallback, isDimmed),
+                                              child: _buildCellContent(plant, actualCellSize, showSprawlFallback, isDimmed),
                                             ),
                                           ),
                                           if (plant != null && notesProvider.getNote(plant.code) != null && notesProvider.getNote(plant.code)!.isNotEmpty)
@@ -769,11 +766,8 @@ class _GardenScreenState extends State<GardenScreen> {
   }
 
   void _showCellSheet(BuildContext context, int bedIndex, int cellIndex, Plant plant) {
-    final settingsProvider = context.read<SettingsProvider>();
     final notesProvider = context.read<PlantNotesProvider>();
     final gardenProvider = context.read<GardenProvider>();
-    
-    final springSchedule = ScheduleService.computeSpringSchedule(plant, settingsProvider.zone);
     
     showModalBottomSheet(
       context: context,

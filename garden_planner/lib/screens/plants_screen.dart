@@ -62,7 +62,7 @@ class PlantsScreen extends StatelessWidget {
                     const SizedBox(height: 2),
                     const Tip(
                       id: 'plants-filter-tip',
-                      message: 'Use filters below to narrow plant selection by type, light requirements, or search by name.',
+                      message: 'Filter by type (vegetable/fruit/herb), light level (low/high), or search by name. Tap a plant to see spacing, planting schedules, and tips. Some plants support fall planting!',
                     ),
                     const SizedBox(height: 8),
                     // Filters - First Row

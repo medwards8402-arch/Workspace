@@ -19,11 +19,7 @@ class SettingsScreen extends StatelessWidget {
         const SizedBox(height: 8),
         const Tip(
           id: 'settings-getting-started',
-          message: '1. Set your garden name and zone below\n'
-                  '2. Configure your raised beds (add, edit, or remove)\n'
-                  '3. Go to Plants tab to select plants\n'
-                  '4. Go to Garden tab to place plants in beds\n'
-                  '5. View Calendar tab to see your planting schedule',
+          message: 'Set your USDA zone to calculate planting dates for your location. Add raised beds with custom dimensions (rows × columns). Use arrow buttons to reorder beds, or clear/delete beds as needed.',
         ),
         const SizedBox(height: 16),
         
