@@ -238,9 +238,14 @@ class _GardenScreenState extends State<GardenScreen> {
                             bed.name,
                             style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
                           ),
-                          Text(
-                            '${bed.rows}×${bed.cols}',
-                            style: const TextStyle(color: Colors.white70, fontSize: 12),
+                          IconButton(
+                            icon: const Icon(Icons.undo, size: 18, color: Colors.white),
+                            onPressed: gardenProvider.canUndo(bedIndex) 
+                              ? () => gardenProvider.undoBed(bedIndex)
+                              : null,
+                            tooltip: 'Undo last change',
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
                           ),
                         ],
                       ),

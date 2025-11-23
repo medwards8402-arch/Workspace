@@ -9,6 +9,10 @@ class GardenProvider extends ChangeNotifier {
   final GardenRepository _repository;
   List<GardenBed> _beds = [];
   bool _isLoading = false;
+  
+  // Undo history: Map of bedIndex to list of previous states
+  final Map<int, List<GardenBed>> _undoHistory = {};
+  static const int _maxUndoSteps = 20;
 
   GardenProvider(this._repository) {
     _loadBeds();
@@ -17,6 +21,10 @@ class GardenProvider extends ChangeNotifier {
   List<GardenBed> get beds => List.unmodifiable(_beds);
   bool get isLoading => _isLoading;
   int get bedCount => _beds.length;
+  
+  bool canUndo(int bedIndex) {
+    return _undoHistory[bedIndex]?.isNotEmpty ?? false;
+  }
 
   Future<void> _loadBeds() async {
     _isLoading = true;
@@ -59,6 +67,31 @@ class GardenProvider extends ChangeNotifier {
     }
   }
 
+  /// Reorder beds
+  Future<void> reorderBed(int oldIndex, int newIndex) async {
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+    final bed = _beds.removeAt(oldIndex);
+    _beds.insert(newIndex, bed);
+    await _saveBeds();
+    notifyListeners();
+  }
+
+  /// Clear all plants from a bed
+  Future<void> clearBedCells(int bedIndex) async {
+    if (bedIndex >= 0 && bedIndex < _beds.length) {
+      final bed = _beds[bedIndex];
+      final clearedCells = List.generate(
+        bed.rows * bed.cols,
+        (i) => BedCell.empty(),
+      );
+      _beds[bedIndex] = bed.copyWith(cells: clearedCells);
+      await _saveBeds();
+      notifyListeners();
+    }
+  }
+
   /// Update bed properties
   Future<void> updateBed(int index, {String? name, int? rows, int? cols}) async {
     if (index >= 0 && index < _beds.length) {
@@ -71,6 +104,9 @@ class GardenProvider extends ChangeNotifier {
   /// Place a plant in a cell
   Future<void> placePlant(int bedIndex, int cellIndex, String plantCode) async {
     if (bedIndex >= 0 && bedIndex < _beds.length) {
+      // Save current state for undo
+      _saveUndoState(bedIndex);
+      
       final bed = _beds[bedIndex];
       final updatedCell = bed.cellAt(cellIndex).copyWith(
         plantCode: () => plantCode,
@@ -84,10 +120,37 @@ class GardenProvider extends ChangeNotifier {
   /// Clear a cell
   Future<void> clearCell(int bedIndex, int cellIndex) async {
     if (bedIndex >= 0 && bedIndex < _beds.length) {
+      // Save current state for undo
+      _saveUndoState(bedIndex);
+      
       _beds[bedIndex] = _beds[bedIndex].clearCell(cellIndex);
       await _saveBeds();
       notifyListeners();
     }
+  }
+  
+  /// Save current bed state to undo history
+  void _saveUndoState(int bedIndex) {
+    if (bedIndex < 0 || bedIndex >= _beds.length) return;
+    
+    _undoHistory[bedIndex] ??= [];
+    _undoHistory[bedIndex]!.add(_beds[bedIndex]);
+    
+    // Limit undo history size
+    if (_undoHistory[bedIndex]!.length > _maxUndoSteps) {
+      _undoHistory[bedIndex]!.removeAt(0);
+    }
+  }
+  
+  /// Undo the last planting operation for a bed
+  Future<void> undoBed(int bedIndex) async {
+    if (!canUndo(bedIndex)) return;
+    
+    final previousState = _undoHistory[bedIndex]!.removeLast();
+    _beds[bedIndex] = previousState;
+    
+    await _saveBeds();
+    notifyListeners();
   }
 
   /// Update cell note

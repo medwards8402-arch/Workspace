@@ -79,22 +79,48 @@ class SettingsScreen extends StatelessWidget {
                 ...gardenProvider.beds.asMap().entries.map((entry) {
                   final index = entry.key;
                   final bed = entry.value;
+                  final isFirst = index == 0;
+                  final isLast = index == gardenProvider.beds.length - 1;
                   return Card(
                     color: Colors.grey.shade50,
                     margin: const EdgeInsets.only(bottom: 8),
                     child: ListTile(
+                      leading: SizedBox(
+                        width: 32,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: isFirst ? null : () => gardenProvider.reorderBed(index, index - 1),
+                              child: Icon(Icons.arrow_upward, size: 18, color: isFirst ? Colors.grey.shade300 : Colors.grey.shade700),
+                            ),
+                            const SizedBox(height: 4),
+                            InkWell(
+                              onTap: isLast ? null : () => gardenProvider.reorderBed(index, index + 2),
+                              child: Icon(Icons.arrow_downward, size: 18, color: isLast ? Colors.grey.shade300 : Colors.grey.shade700),
+                            ),
+                          ],
+                        ),
+                      ),
                       title: Text(bed.name),
-                      subtitle: Text('${bed.rows} rows × ${bed.cols} cols'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
+                            icon: const Icon(Icons.backspace_outlined, size: 20, color: Colors.orange),
+                            onPressed: () => _confirmClearBed(context, gardenProvider, index),
+                            tooltip: 'Clear all plants',
+                          ),
+                          IconButton(
                             icon: const Icon(Icons.edit, size: 20),
                             onPressed: () => _showEditBedDialog(context, gardenProvider, index, bed),
+                            tooltip: 'Edit bed',
                           ),
                           IconButton(
                             icon: const Icon(Icons.delete, size: 20, color: Colors.red),
                             onPressed: () => _confirmDeleteBed(context, gardenProvider, index),
+                            tooltip: 'Delete bed',
                           ),
                         ],
                       ),
@@ -106,24 +132,6 @@ class SettingsScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        
-        // Placed plants
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Placed Plants (${gardenProvider.getUniquePlantedPlants().length})', style: const TextStyle(fontWeight: FontWeight.bold)),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 8,
-                  children: gardenProvider.getUniquePlantedPlants().map((p) => Chip(label: Text(p.name), avatar: Text(p.icon))).toList(),
-                ),
-              ],
-            ),
-          ),
-        ),
         
         // New Garden
         Card(
@@ -235,11 +243,13 @@ class SettingsScreen extends StatelessWidget {
               controller: nameController,
               decoration: const InputDecoration(labelText: 'Name'),
             ),
+            const SizedBox(height: 16),
             TextField(
               controller: rowsController,
               decoration: const InputDecoration(labelText: 'Rows'),
               keyboardType: TextInputType.number,
             ),
+            const SizedBox(height: 16),
             TextField(
               controller: colsController,
               decoration: const InputDecoration(labelText: 'Columns'),
@@ -281,11 +291,13 @@ class SettingsScreen extends StatelessWidget {
               controller: nameController,
               decoration: const InputDecoration(labelText: 'Name'),
             ),
+            const SizedBox(height: 16),
             TextField(
               controller: rowsController,
               decoration: const InputDecoration(labelText: 'Rows'),
               keyboardType: TextInputType.number,
             ),
+            const SizedBox(height: 16),
             TextField(
               controller: colsController,
               decoration: const InputDecoration(labelText: 'Columns'),
@@ -327,6 +339,31 @@ class SettingsScreen extends StatelessWidget {
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),
             child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _confirmClearBed(BuildContext context, GardenProvider gardenProvider, int index) {
+    final bedName = gardenProvider.beds[index].name;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Clear Bed'),
+        content: Text('Remove all plants from $bedName? This will clear all planted cells but keep the bed.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () {
+              gardenProvider.clearBedCells(index);
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('$bedName cleared')),
+              );
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.orange),
+            child: const Text('Clear'),
           ),
         ],
       ),
