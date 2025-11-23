@@ -362,7 +362,7 @@ class _GardenScreenState extends State<GardenScreen> {
                                               child: _buildCellContent(plant, cellSize, showSprawlFallback, isDimmed),
                                             ),
                                           ),
-                                          if (cell.note != null && cell.note!.isNotEmpty)
+                                          if (plant != null && state.plantNotes[plant.code] != null && state.plantNotes[plant.code]!.isNotEmpty)
                                             Positioned(
                                               right: 2,
                                               bottom: 2,
@@ -640,7 +640,6 @@ class _GardenScreenState extends State<GardenScreen> {
   }
 
   void _showCellSheet(BuildContext context, AppState state, int bedIndex, int cellIndex, Plant plant) {
-    final cell = state.beds[bedIndex].cells[cellIndex];
     final springSchedule = ScheduleService.computeSpringSchedule(plant, state.zone);
     
     showModalBottomSheet(
@@ -648,7 +647,7 @@ class _GardenScreenState extends State<GardenScreen> {
       showDragHandle: true,
       isScrollControlled: true,
       builder: (ctx) {
-        final noteController = TextEditingController(text: cell.note ?? '');
+        final noteController = TextEditingController(text: state.plantNotes[plant.code] ?? '');
         return DraggableScrollableSheet(
           initialChildSize: 0.7,
           minChildSize: 0.5,
@@ -718,16 +717,25 @@ class _GardenScreenState extends State<GardenScreen> {
                   const Divider(),
                   const SizedBox(height: 16),
                   
-                  // Cell Note
-                  Text('Cell Note', style: Theme.of(context).textTheme.titleMedium),
+                  // Plant Notes
+                  Row(
+                    children: [
+                      Text('Notes for All ${plant.name}', style: Theme.of(context).textTheme.titleMedium),
+                      const SizedBox(width: 8),
+                      Tooltip(
+                        message: 'This note applies to all ${plant.name} plants in your garden',
+                        child: Icon(Icons.info_outline, size: 18, color: Colors.grey.shade600),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 8),
                   TextField(
                     controller: noteController,
                     minLines: 2,
                     maxLines: 4,
-                    decoration: const InputDecoration(
-                      hintText: 'Add a note for this cell...',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      hintText: 'Add notes for all ${plant.name} plants...',
+                      border: const OutlineInputBorder(),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -736,7 +744,7 @@ class _GardenScreenState extends State<GardenScreen> {
                       ElevatedButton.icon(
                         onPressed: () {
                           final v = noteController.text.trim();
-                          state.updateCellNote(bedIndex, cellIndex, v.isEmpty ? null : v);
+                          state.updatePlantNote(plant.code, v.isEmpty ? null : v);
                           Navigator.pop(ctx);
                         },
                         icon: const Icon(Icons.save),
@@ -781,24 +789,35 @@ class _GardenScreenState extends State<GardenScreen> {
   }
 
   void _editNoteDialog(BuildContext context, AppState state, int bedIndex, int cellIndex, Plant? plant) {
-    final cell = state.beds[bedIndex].cells[cellIndex];
-    final controller = TextEditingController(text: cell.note ?? '');
+    if (plant == null) return;
+    final controller = TextEditingController(text: state.plantNotes[plant.code] ?? '');
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('Cell Note ${plant != null ? '(${plant.name})' : ''}'),
-        content: TextField(
-          controller: controller,
-          minLines: 2,
-          maxLines: 5,
-          decoration: const InputDecoration(border: OutlineInputBorder(), hintText: 'Enter note'),
+        title: Text('Notes for All ${plant.name}'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'This note applies to all ${plant.name} plants in your garden.',
+              style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: controller,
+              minLines: 2,
+              maxLines: 5,
+              decoration: const InputDecoration(border: OutlineInputBorder(), hintText: 'Enter note'),
+            ),
+          ],
         ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
           TextButton(
             onPressed: () {
               final v = controller.text.trim();
-              state.updateCellNote(bedIndex, cellIndex, v.isEmpty ? null : v);
+              state.updatePlantNote(plant.code, v.isEmpty ? null : v);
               Navigator.pop(ctx);
             },
             child: const Text('Save'),

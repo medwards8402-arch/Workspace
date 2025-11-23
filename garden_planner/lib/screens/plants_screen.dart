@@ -27,11 +27,10 @@ class PlantsScreen extends StatelessWidget {
         ? allPlants.firstWhere((p) => p.code == state.selectedPlantCode, orElse: () => allPlants.first)
         : null;
 
-    return Row(
+    return Column(
       children: [
         // Plant grid
         Expanded(
-          flex: 2,
           child: Column(
             children: [
               Container(
@@ -123,8 +122,8 @@ class PlantsScreen extends StatelessWidget {
                     : GridView.builder(
                   padding: const EdgeInsets.all(8),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    childAspectRatio: 0.75,
+                    crossAxisCount: 6,
+                    childAspectRatio: 0.8,
                     crossAxisSpacing: 6,
                     mainAxisSpacing: 6,
                   ),
@@ -176,17 +175,15 @@ class PlantsScreen extends StatelessWidget {
             ],
           ),
         ),
-        // Plant info panel
+        // Plant info panel at bottom
         if (selectedPlant != null)
-          Expanded(
-            flex: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border(left: BorderSide(color: Colors.grey.shade300)),
-                color: Colors.white,
-              ),
-              child: _PlantInfoPanel(plant: selectedPlant, zone: state.zone),
+          Container(
+            height: 240,
+            decoration: BoxDecoration(
+              border: Border(top: BorderSide(color: Colors.grey.shade300, width: 2)),
+              color: Colors.white,
             ),
+            child: _PlantInfoPanel(plant: selectedPlant, zone: state.zone),
           ),
       ],
     );
@@ -215,105 +212,129 @@ class _PlantInfoPanel extends StatelessWidget {
         return '${_monthName(date.month)} ${date.day}, ${date.year}';
       }
 
-      return ListView(
-      padding: const EdgeInsets.all(12),
-      children: [
-        // Header with plant name and icon
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: _hexColor(plant.color),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(
-            children: [
-              Text(plant.icon, style: const TextStyle(fontSize: 32)),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  plant.name,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-        
-        // Spring schedule
-        if (plant.startIndoorsWeeks > 0 && springSchedule.indoor != null) ...[
-          _InfoRow('Start Indoors:', formatDate(springSchedule.indoor)),
-          const SizedBox(height: 8),
-        ],
-        _InfoRow(
-          plant.startIndoorsWeeks > 0 ? 'Transplant Outdoors:' : 'Direct Sow:',
-          formatDate(springSchedule.sow),
-        ),
-        const SizedBox(height: 8),
-        _InfoRow('Harvest:', formatDate(springSchedule.harvest)),
-        const SizedBox(height: 16),
-        
-        // Fall schedule
-        if (fallSchedule != null) ...[
-          const Divider(),
-          const SizedBox(height: 8),
-          if (plant.fallStartIndoorsWeeks > 0 && fallSchedule.indoor != null) ...[
-            _InfoRow('Start Indoors (Fall):', formatDate(fallSchedule.indoor)),
-            const SizedBox(height: 8),
-          ],
-          _InfoRow(
-            plant.fallStartIndoorsWeeks > 0 ? 'Transplant Outdoors (Fall):' : 'Direct Sow (Fall):',
-            formatDate(fallSchedule.sow),
-          ),
-          const SizedBox(height: 8),
-          _InfoRow('Fall Harvest:', formatDate(fallSchedule.harvest)),
-          const SizedBox(height: 16),
-        ],
-        
-        const Divider(),
-        const SizedBox(height: 8),
-        
-        // Spacing
-        _InfoRow(
-          'Spacing:',
-          (plant.cellsRequired ?? 1) > 1
-              ? '1 plant / ${plant.cellsRequired} sq ft'
-              : '${plant.sqftSpacing} plant${plant.sqftSpacing > 1 ? "s" : ""} / sq ft',
-        ),
-        const SizedBox(height: 8),
-        
-        // Light level
-        Row(
+      return SingleChildScrollView(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Light: ', style: TextStyle(fontWeight: FontWeight.bold)),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: BoxDecoration(
-                color: plant.lightLevel == 'high' ? Colors.orange : Colors.blueGrey,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Text(plant.lightLevel, style: const TextStyle(color: Colors.white, fontSize: 12)),
+            // Two-column layout for info
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Left column - Spring schedule
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Spring:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                      const SizedBox(height: 4),
+                      if (plant.startIndoorsWeeks > 0 && springSchedule.indoor != null) ...[
+                        _InfoRow('Start Indoors:', formatDate(springSchedule.indoor)),
+                        const SizedBox(height: 4),
+                      ],
+                      _InfoRow(
+                        plant.startIndoorsWeeks > 0 ? 'Transplant:' : 'Direct Sow:',
+                        formatDate(springSchedule.sow),
+                      ),
+                      const SizedBox(height: 4),
+                      _InfoRow('Harvest:', formatDate(springSchedule.harvest)),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 16),
+                // Right column - Fall schedule or spacing info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (fallSchedule != null) ...[
+                        const Text('Fall:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                        const SizedBox(height: 4),
+                        if (plant.fallStartIndoorsWeeks > 0 && fallSchedule.indoor != null) ...[
+                          _InfoRow('Start Indoors:', formatDate(fallSchedule.indoor)),
+                          const SizedBox(height: 4),
+                        ],
+                        _InfoRow(
+                          plant.fallStartIndoorsWeeks > 0 ? 'Transplant:' : 'Direct Sow:',
+                          formatDate(fallSchedule.sow),
+                        ),
+                        const SizedBox(height: 4),
+                        _InfoRow('Harvest:', formatDate(fallSchedule.harvest)),
+                      ] else ...[
+                        const Text('Details:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                        const SizedBox(height: 4),
+                        _InfoRow(
+                          'Spacing:',
+                          (plant.cellsRequired ?? 1) > 1
+                              ? '1 / ${plant.cellsRequired} sq ft'
+                              : '${plant.sqftSpacing} / sq ft',
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            const Text('Light: ', style: TextStyle(fontSize: 12)),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: plant.lightLevel == 'high' ? Colors.orange : Colors.blueGrey,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(plant.lightLevel, style: const TextStyle(color: Colors.white, fontSize: 11)),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
             ),
+            const SizedBox(height: 12),
+            
+            // Spacing info (if not already shown in right column)
+            if (fallSchedule != null) ...[
+              _InfoRow(
+                'Spacing:',
+                (plant.cellsRequired ?? 1) > 1
+                    ? '1 / ${plant.cellsRequired} sq ft'
+                    : '${plant.sqftSpacing} / sq ft',
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  const Text('Light: ', style: TextStyle(fontSize: 12)),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: plant.lightLevel == 'high' ? Colors.orange : Colors.blueGrey,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(plant.lightLevel, style: const TextStyle(color: Colors.white, fontSize: 11)),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+            ],
+            
+            // Tips
+            if (plant.tips.isNotEmpty) ...[
+              const Divider(),
+              const SizedBox(height: 8),
+              const Text('Tips:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+              const SizedBox(height: 4),
+              ...plant.tips.take(3).map((tip) => Padding(
+                    padding: const EdgeInsets.only(left: 8, bottom: 4),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('• ', style: TextStyle(fontSize: 12)),
+                        Expanded(child: Text(tip, style: const TextStyle(fontSize: 12))),
+                      ],
+                    ),
+                  )),
+            ],
           ],
         ),
-        const SizedBox(height: 16),
-        
-        // Tips
-        if (plant.tips.isNotEmpty) ...[
-          const Text('Tips:', style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 4),
-          ...plant.tips.take(3).map((tip) => Padding(
-                padding: const EdgeInsets.only(left: 8, bottom: 4),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('• ', style: TextStyle(fontSize: 12)),
-                    Expanded(child: Text(tip, style: const TextStyle(fontSize: 12))),
-                  ],
-                ),
-              )),
-        ],
-      ],
       );
     } catch (e) {
       debugPrint('Error building plant info panel: $e');
