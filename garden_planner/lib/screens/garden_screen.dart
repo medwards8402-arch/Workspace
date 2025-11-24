@@ -318,16 +318,25 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
                                         child: Center(
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text(
-                                                plantInGroup.icon,
-                                                style: TextStyle(fontSize: iconSize, height: 1),
+                                              Flexible(
+                                                flex: 0,
+                                                child: Text(
+                                                  plantInGroup.icon,
+                                                  style: TextStyle(fontSize: iconSize, height: 1),
+                                                ),
                                               ),
                                               const SizedBox(height: 2),
-                                              Text(
-                                                plantInGroup.name,
-                                                style: TextStyle(fontSize: iconSize * 0.15, height: 1.1),
-                                                textAlign: TextAlign.center,
+                                              Flexible(
+                                                fit: FlexFit.loose,
+                                                child: Text(
+                                                  plantInGroup.name,
+                                                  style: TextStyle(fontSize: _getReadableFontSize(actualCellSize, 0.18, minSize: 10.0), height: 1.1, fontWeight: FontWeight.w500),
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -429,6 +438,11 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
     return Color(int.parse('FF$h', radix: 16));
   }
   
+  // Helper to ensure readable font size on small screens
+  double _getReadableFontSize(double cellSize, double ratio, {double minSize = 11.0}) {
+    return max(minSize, cellSize * ratio);
+  }
+  
   Widget _buildCellContent(Plant? plant, double cellSize, bool showSprawlFallback, bool isDimmed) {
     if (plant == null) return const SizedBox();
     
@@ -440,7 +454,7 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(plant.icon, style: TextStyle(fontSize: cellSize * 0.4)),
-            Text(plant.name, style: TextStyle(fontSize: cellSize * 0.12), textAlign: TextAlign.center, maxLines: 1),
+            Text(plant.name, style: TextStyle(fontSize: _getReadableFontSize(cellSize, 0.18, minSize: 10.0), fontWeight: FontWeight.w500), textAlign: TextAlign.center, maxLines: 1),
           ],
         ),
       );
@@ -458,7 +472,10 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
         children: [
           Text(plant.icon, style: TextStyle(fontSize: cellSize * 0.4)),
           SizedBox(height: cellSize * 0.02),
-          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.12), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+          Flexible(
+            fit: FlexFit.loose,
+            child: Text(plant.name, style: TextStyle(fontSize: _getReadableFontSize(cellSize, 0.18, minSize: 10.0), fontWeight: FontWeight.w500), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+          ),
         ],
       );
     }
@@ -478,7 +495,10 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
             ],
           ),
           SizedBox(height: cellSize * 0.02),
-          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.11), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+          Flexible(
+            fit: FlexFit.loose,
+            child: Text(plant.name, style: TextStyle(fontSize: _getReadableFontSize(cellSize, 0.16, minSize: 9.0), fontWeight: FontWeight.w500), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+          ),
         ],
       );
     }
@@ -501,7 +521,7 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
             ),
           ),
           SizedBox(height: cellSize * 0.01),
-          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.09), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+          Text(plant.name, style: TextStyle(fontSize: _getReadableFontSize(cellSize, 0.14, minSize: 8.0), fontWeight: FontWeight.w500), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
         ],
       );
     }
@@ -524,7 +544,7 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
             ),
           ),
           SizedBox(height: cellSize * 0.01),
-          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.08), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+          Text(plant.name, style: TextStyle(fontSize: _getReadableFontSize(cellSize, 0.12, minSize: 8.0), fontWeight: FontWeight.w500), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
         ],
       );
     }
@@ -547,7 +567,7 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
             ),
           ),
           SizedBox(height: cellSize * 0.01),
-          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.08), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+          Text(plant.name, style: TextStyle(fontSize: _getReadableFontSize(cellSize, 0.12, minSize: 8.0), fontWeight: FontWeight.w500), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
         ],
       );
     }
@@ -570,7 +590,7 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
             ),
           ),
           SizedBox(height: cellSize * 0.01),
-          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.07), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+          Text(plant.name, style: TextStyle(fontSize: _getReadableFontSize(cellSize, 0.11, minSize: 8.0), fontWeight: FontWeight.w500), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
         ],
       );
     }
@@ -593,7 +613,7 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
             ),
           ),
           SizedBox(height: cellSize * 0.01),
-          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.07), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+          Text(plant.name, style: TextStyle(fontSize: _getReadableFontSize(cellSize, 0.11, minSize: 8.0), fontWeight: FontWeight.w500), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
         ],
       );
     }
@@ -616,7 +636,7 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
             ),
           ),
           SizedBox(height: cellSize * 0.005),
-          Text(plant.name, style: TextStyle(fontSize: cellSize * 0.06), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+          Text(plant.name, style: TextStyle(fontSize: _getReadableFontSize(cellSize, 0.10, minSize: 8.0), fontWeight: FontWeight.w500), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
         ],
       );
     }
@@ -624,7 +644,7 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
     // Default - show as grid based on spacing value
     final crossAxisCount = spacing >= 16 ? 4 : spacing >= 9 ? 3 : spacing >= 4 ? 2 : 1;
     final iconSize = spacing >= 16 ? 0.12 : spacing >= 9 ? 0.16 : spacing >= 4 ? 0.20 : 0.3;
-    final nameSize = spacing >= 16 ? 0.06 : spacing >= 9 ? 0.07 : spacing >= 4 ? 0.08 : 0.10;
+    final nameSize = spacing >= 16 ? 0.10 : spacing >= 9 ? 0.11 : spacing >= 4 ? 0.12 : 0.16;
     
     if (spacing > 1) {
       return Column(
@@ -643,7 +663,7 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
             ),
           ),
           SizedBox(height: cellSize * 0.01),
-          Text(plant.name, style: TextStyle(fontSize: cellSize * nameSize), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+          Text(plant.name, style: TextStyle(fontSize: _getReadableFontSize(cellSize, nameSize, minSize: 8.0), fontWeight: FontWeight.w500), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
         ],
       );
     }
@@ -654,7 +674,7 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
       children: [
         Text(plant.icon, style: TextStyle(fontSize: cellSize * 0.4)),
         SizedBox(height: cellSize * 0.02),
-        Text(plant.name, style: TextStyle(fontSize: cellSize * 0.12), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+        Text(plant.name, style: TextStyle(fontSize: _getReadableFontSize(cellSize, 0.18, minSize: 10.0), fontWeight: FontWeight.w500), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
       ],
     );
   }
