@@ -1,2 +1,38 @@
 // To start android phone emulator
 "C:/Users/medwa/AppData/Local/Android/Sdk/emulator/emulator.exe" -avd Pixel_7 -gpu swiftshader_indirect
+
+// Build and deploy to device using bundletool
+
+// Using Android Studio's Java 21 runtime (required for bundletool)
+
+// Note: Replace "C:/Users/medwa/Path/bundletool.jar" with the actual full path to bundletool.jar
+
+// OPTION 1: Simple APK build (easiest, no signing hassle)
+flutter build apk --debug
+"C:/Users/medwa/AppData/Local/Android/Sdk/platform-tools/adb.exe" install build/app/outputs/flutter-apk/app-debug.apk
+
+// OPTION 2: Using bundletool with debug keystore (auto-signed)
+
+// 1. Build the app bundle (AAB)
+flutter build appbundle --release
+
+// 2. Generate APKs from the bundle (uses debug keystore automatically)
+"C:/Program Files/Android/Android Studio/jbr/bin/java" -jar "C:/Users/medwa/Path/bundletool.jar" build-apks --bundle=build/app/outputs/bundle/release/app-release.aab --output=build/app/outputs/bundle/release/app.apks --ks=C:/Users/medwa/.android/debug.keystore --ks-pass=pass:android --ks-key-alias=androiddebugkey --key-pass=pass:android
+
+// 3. Install to connected device (will automatically select appropriate APKs)
+"C:/Program Files/Android/Android Studio/jbr/bin/java" -jar "C:/Users/medwa/Path/bundletool.jar" install-apks --apks=build/app/outputs/bundle/release/app.apks --adb="C:/Users/medwa/AppData/Local/Android/Sdk/platform-tools/adb.exe"
+
+// Note: Device must be connected via ADB and USB debugging enabled
+// Check connected devices: "C:/Users/medwa/AppData/Local/Android/Sdk/platform-tools/adb.exe" devices
+
+// How to connect device via ADB:
+// 1. On your Android device:
+//    - Go to Settings > About Phone
+//    - Tap "Build Number" 7 times to enable Developer Options
+//    - Go to Settings > Developer Options
+//    - Enable "USB Debugging"
+// 2. Connect device to computer via USB cable
+// 3. On device, approve the "Allow USB debugging?" popup (check "Always allow from this computer")
+// 4. Verify connection: "C:/Users/medwa/AppData/Local/Android/Sdk/platform-tools/adb.exe" devices
+//    Should show your device with "device" status (not "unauthorized")
+
