@@ -1,0 +1,31 @@
+Make sure USDA zone shows up well on mobile.
+
+Fix icon display for planted plants (16 is a problem.)
+
+PDF betterment:
+    * Don't print notes when there aren't any
+    * Make it look better
+
+Publish webpage somewhere
+    Better URL
+    Collect feedback from people I know
+    Post to reddit for more feedback
+
+Aaron Feedback:
+* I found myself overwriting previous plants because I tried to click on them to view the details, but had something selected in the left column, maybe there is no such thing as overwriting, plants only get placed into empty spaces and you have to use the delete button to remove
+
+Luke feedback:
+* Control click to select disparate plants
+* Take into account certain plants should not be planted next to each other.
+* Add bed should bring up diaglo that allows inputting paramters.  Remove could be on individual plots
+* One bed as the default instead of 3 and 1
+
+Ben's feedback
+* Liked the autoplanter
+* Change cursor when planting
+
+Ideas from Mark:
+development tools I'd recommend for app dev (including web apps):
+Flutter - a Google product and the most popular cross platform development tool out there right now. You can target Android, iOS and web very easily. Because its so popular, there are a ton of great examples, documentation, how-tos and third party packages.
+Cursor with the Claude Sonnet 4.5 model.
+This is what I used to create a new mobile app that I've already published on both iOS and Android. Went from concept to publish in less than 7 days (around 20 hours of work). If you want to check it out, just hit this link from your phone:

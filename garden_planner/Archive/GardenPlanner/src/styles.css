@@ -1,0 +1,248 @@
+/* Garden daytime theme - softer, muted natural tones */
+:root { 
+  --bs-body-bg: #e8ebe5;
+  --bs-body-color: #3a4a3a;
+  --bs-primary: #6b8e6b;
+  --bs-secondary: #8b7d6b;
+  --bs-success: #7a9e5e;
+  --bs-warning: #d89558;
+  --bs-danger: #b85d50;
+  --bs-info: #7a9fc2;
+  --cell-bg: #f5f6f2;
+  --card-bg: #fafbf8;
+  --card-header-bg: #e8ede5;
+  --border-color: #d0d8cc;
+}
+
+body { 
+  background: linear-gradient(180deg, #e8ebe5 0%, #dfe3dc 100%);
+  color: var(--bs-body-color);
+  min-height: 100vh;
+}
+
+/* Header polish */
+.app-header .nav .nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.6rem;
+}
+
+.app-header .btn-group .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.app-header-secondary {
+  color: #536553;
+  font-size: 0.95rem;
+}
+
+.garden-name-btn {
+  max-width: 40vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive adjustments for plan layout: ensure beds don't overlap palette */
+@media (max-width: 1300px) {
+  .plan-layout { flex-direction: column; }
+  .plan-layout .plan-palette, .plan-layout .plan-beds, .plan-layout .plan-info { width: 100% !important; max-width: 100% !important; }
+  .plan-layout .plan-info { position: static !important; top: auto !important; }
+  .plan-layout .plan-beds { order: 2; }
+  .plan-layout .plan-palette { order: 1; }
+  .plan-layout .plan-info { order: 3; }
+}
+
+.card { 
+  background: var(--card-bg); 
+  border-color: var(--border-color);
+  box-shadow: 0 2px 4px rgba(90, 120, 90, 0.06);
+}
+
+.card-header { 
+  background: var(--card-header-bg); 
+  border-bottom-color: var(--border-color);
+  color: #3a4a3a;
+  font-weight: 600;
+}
+
+.list-group-item { 
+  background: var(--card-bg); 
+  border-color: var(--border-color);
+  color: var(--bs-body-color);
+}
+
+.list-group-item:hover {
+  background: #f0f3ec;
+}
+
+.list-group-item.active {
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  color: #ffffff !important;
+}
+
+.list-group-item.active .text-secondary {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.nav-link {
+  color: #6b8e6b;
+}
+
+.nav-link:hover {
+  color: #5a7a5a;
+}
+
+.nav-link.active {
+  background-color: var(--bs-primary) !important;
+}
+
+.form-control, .form-select {
+  border-color: var(--border-color);
+  background-color: #fafbf8;
+  color: var(--bs-body-color);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.25rem rgba(107, 142, 107, 0.12);
+}
+
+.input-group-text {
+  background-color: var(--card-header-bg);
+  border-color: var(--border-color);
+  color: #3a4a3a;
+}
+
+.btn-danger {
+  background-color: var(--bs-danger);
+  border-color: var(--bs-danger);
+}
+
+.btn-danger:hover {
+  background-color: #a04d42;
+  border-color: #a04d42;
+}
+
+.text-secondary {
+  color: #7a8a7a !important;
+}
+
+/* Consistent tight spacing for stacked tips across pages */
+.tips-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Beds area: prevent overlap by containing wide beds and enabling horizontal scroll */
+.beds-scroll {
+  max-width: 100%;
+  overflow-x: hidden; /* avoid horizontal scrollbar */
+  overflow-y: hidden;
+}
+
+/* no horizontal scrollbar styling needed when hidden */
+
+/* Mobile optimization for header - smartphones and small devices */
+@media (max-width: 768px) {
+  /* Level 1: Title and Navigation */
+  .app-header > div:first-child {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center;
+    gap: 1rem !important;
+  }
+  
+  .garden-name-btn {
+    max-width: 90vw;
+    font-size: 1.25rem !important;
+  }
+  
+  /* Stack nav pills on mobile - all on one line */
+  .app-header .nav {
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+  
+  /* Remove auto-margin on About nav item for mobile */
+  .app-header .nav .nav-item.ms-auto {
+    margin-left: 0 !important;
+  }
+  
+  /* Hide button text on mobile, keep only icons */
+  .app-header .btn-group .btn span:not(.me-1):not(.ms-1) {
+    display: none;
+  }
+  
+  /* Make action buttons in level 1 more compact */
+  .app-header > div:first-child > div:last-child {
+    width: 100%;
+    justify-content: center !important;
+    flex-wrap: wrap;
+  }
+  
+  /* Level 2: Bed Controls */
+  .app-header-secondary {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+  
+  /* Bed controls container */
+  .app-header-secondary > div:first-child {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.5rem !important;
+  }
+  
+  /* Bed dropdown - full width, but not zone selector */
+  .app-header-secondary > div:first-child .form-select {
+    width: 100% !important;
+  }
+  
+  /* Zone selector - keep inputs compact, allow inline styles to override */
+  .app-header-secondary > div:last-child .form-select,
+  .app-header-secondary > div:last-child .form-control {
+    width: auto;
+  }
+  
+  /* Bed config form - full width, wrap internally */
+  #bed-config-form {
+    width: 100% !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+  }
+  
+  #bed-config-form > div:first-child {
+    flex: 1 1 100%;
+  }
+  
+  #bed-config-form input[type="text"] {
+    width: 100% !important;
+  }
+  
+  #bed-config-form > div:nth-child(2) {
+    flex: 1 1 auto;
+  }
+  
+  /* Move arrows and action buttons - full width */
+  .app-header-secondary .btn-group {
+    width: 100% !important;
+    display: flex !important;
+  }
+  
+  .app-header-secondary .btn-group .btn {
+    flex: 1;
+  }
+  
+  /* Zone selector - keep compact, don't stretch to full width */
+  .app-header-secondary > div:last-child {
+    width: auto !important;
+  }
+}
