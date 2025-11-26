@@ -12,6 +12,7 @@ import 'presentation/providers/settings_provider.dart';
 import 'screens/garden_screen.dart';
 import 'screens/plants_screen.dart';
 import 'screens/calendar_screen.dart';
+import 'screens/library_screen.dart';
 import 'screens/settings_screen.dart';
 
 void main() async {
@@ -69,6 +70,7 @@ class RootShell extends StatelessWidget {
     PlantsScreen(),
     GardenScreen(),
     CalendarScreen(),
+    LibraryScreen(),
     SettingsScreen(),
   ];
 
@@ -88,6 +90,7 @@ class RootShell extends StatelessWidget {
           NavigationDestination(icon: Icon(Icons.list_alt), label: 'Plants'),
           NavigationDestination(icon: Icon(Icons.grid_on_outlined), label: 'Garden'),
           NavigationDestination(icon: Icon(Icons.event), label: 'Calendar'),
+          NavigationDestination(icon: Icon(Icons.menu_book), label: 'Library'),
           NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
         ],
         onDestinationSelected: navState.setIndex,

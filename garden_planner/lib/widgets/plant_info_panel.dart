@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/plant.dart';
 import '../services/schedule_service.dart';
+import '../screens/library_screen.dart';
 
 class PlantInfoPanel extends StatelessWidget {
   final Plant plant;
@@ -55,6 +56,21 @@ class PlantInfoPanel extends StatelessWidget {
                     plant.name,
                     style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.info_outline, color: Colors.white),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => LibraryScreen(initialPlant: plant),
+                      ),
+                    );
+                  },
+                  tooltip: 'View in Library',
+                  iconSize: 20,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
                 ),
               ],
             ),

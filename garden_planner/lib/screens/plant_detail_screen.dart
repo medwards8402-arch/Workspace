@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/plant.dart';
 import '../services/schedule_service.dart';
 import '../app_state.dart';
+import 'library_screen.dart';
 
 class PlantDetailScreen extends StatelessWidget {
   final Plant plant;
@@ -14,7 +15,23 @@ class PlantDetailScreen extends StatelessWidget {
     final spring = ScheduleService.computeSpringSchedule(plant, state.zone);
     final fall = ScheduleService.computeFallSchedule(plant, state.zone);
     return Scaffold(
-      appBar: AppBar(title: Text(plant.name)),
+      appBar: AppBar(
+        title: Text(plant.name),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu_book),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => LibraryScreen(initialPlant: plant),
+                ),
+              );
+            },
+            tooltip: 'View in Library',
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
