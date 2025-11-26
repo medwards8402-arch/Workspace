@@ -4,6 +4,7 @@ import '../models/plant.dart';
 import '../services/schedule_service.dart';
 import '../app_state.dart';
 import '../presentation/providers/navigation_provider.dart';
+import '../presentation/providers/library_navigation_provider.dart';
 
 class PlantDetailScreen extends StatelessWidget {
   final Plant plant;
@@ -21,7 +22,10 @@ class PlantDetailScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.menu_book),
             onPressed: () {
-              // Navigate to library tab using navigation provider
+              // Set the plant in library navigation provider
+              final libraryNav = context.read<LibraryNavigationProvider>();
+              libraryNav.navigateToPlant(plant);
+              // Navigate to library tab
               final navProvider = context.read<NavigationProvider>();
               navProvider.setIndex(3); // Library is at index 3
             },

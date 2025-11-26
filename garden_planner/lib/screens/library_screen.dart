@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:provider/provider.dart';
 import '../models/plant.dart';
 import '../models/gardening_term.dart';
+import '../presentation/providers/library_navigation_provider.dart';
 
 class LibraryScreen extends StatefulWidget {
   final Plant? initialPlant;
@@ -143,6 +145,26 @@ class _LibraryScreenState extends State<LibraryScreen> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
+    // Check for navigation requests from provider
+    final libraryNav = context.watch<LibraryNavigationProvider>();
+    
+    // Handle navigation if there's a pending request
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (libraryNav.selectedPlant != null) {
+        final plant = libraryNav.selectedPlant!;
+        libraryNav.clearSelection();
+        setState(() {
+          _tabController.index = 0;
+          selectedPlant = plant;
+          _addToHistory();
+        });
+      } else if (libraryNav.selectedTerm != null) {
+        final term = libraryNav.selectedTerm!;
+        libraryNav.clearSelection();
+        _navigateToTerm(term);
+      }
+    });
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Plant Library'),

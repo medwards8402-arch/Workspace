@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/plant.dart';
 import '../services/schedule_service.dart';
 import '../presentation/providers/navigation_provider.dart';
+import '../presentation/providers/library_navigation_provider.dart';
 
 class PlantInfoPanel extends StatelessWidget {
   final Plant plant;
@@ -61,7 +62,12 @@ class PlantInfoPanel extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.info_outline, color: Colors.white),
                   onPressed: () {
-                    // Navigate to library tab using navigation provider
+                    // Close the bottom sheet first
+                    Navigator.pop(context);
+                    // Set the plant in library navigation provider
+                    final libraryNav = context.read<LibraryNavigationProvider>();
+                    libraryNav.navigateToPlant(plant);
+                    // Navigate to library tab
                     final navProvider = context.read<NavigationProvider>();
                     navProvider.setIndex(3); // Library is at index 3
                   },
