@@ -6,7 +6,6 @@ import 'data/sources/local_storage.dart';
 import 'domain/repositories/garden_repository.dart';
 import 'presentation/providers/garden_provider.dart';
 import 'presentation/providers/navigation_provider.dart';
-import 'presentation/providers/library_navigation_provider.dart';
 import 'presentation/providers/plant_notes_provider.dart';
 import 'presentation/providers/plant_selection_provider.dart';
 import 'presentation/providers/settings_provider.dart';
@@ -53,7 +52,6 @@ class GardenPlannerApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(create: (_) => PlantSelectionProvider()),
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
-        ChangeNotifierProvider(create: (_) => LibraryNavigationProvider()),
       ],
       child: MaterialApp(
         title: 'Garden Planner',
@@ -68,12 +66,14 @@ class GardenPlannerApp extends StatelessWidget {
 class RootShell extends StatelessWidget {
   const RootShell({super.key});
 
-  static final List<Widget> _screens = const [
-    PlantsScreen(),
-    GardenScreen(),
-    CalendarScreen(),
-    LibraryScreen(),
-    SettingsScreen(),
+  static final GlobalKey<LibraryScreenState> libraryKey = GlobalKey<LibraryScreenState>();
+
+  static final List<Widget> _screens = [
+    const PlantsScreen(),
+    const GardenScreen(),
+    const CalendarScreen(),
+    LibraryScreen(key: libraryKey),
+    const SettingsScreen(),
   ];
 
   @override

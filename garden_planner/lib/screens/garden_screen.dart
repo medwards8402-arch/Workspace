@@ -5,6 +5,7 @@ import '../presentation/providers/garden_provider.dart';
 import '../presentation/providers/plant_notes_provider.dart';
 import '../presentation/providers/plant_selection_provider.dart';
 import '../presentation/providers/settings_provider.dart';
+import '../presentation/providers/navigation_provider.dart';
 import '../domain/models/garden_bed.dart';
 import '../models/plant.dart';
 import '../widgets/tip.dart';
@@ -19,8 +20,11 @@ class GardenScreen extends StatefulWidget {
 
 class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClientMixin {
   Plant? _lastSelectedPlant;
-  String _mode = 'planting'; // 'planting', 'selecting', 'deleting'
+  String _mode = 'selecting'; // 'planting', 'selecting', 'deleting' - default to selecting
   final ScrollController _scrollController = ScrollController();
+  int? _previousTabIndex;
+  bool _hasProcessedTabChange = false;
+  String? _lastSelectedPlantCode; // Track last plant code to detect changes
 
   @override
   bool get wantKeepAlive => true;
@@ -38,6 +42,31 @@ class _GardenScreenState extends State<GardenScreen> with AutomaticKeepAliveClie
     final selectionProvider = context.watch<PlantSelectionProvider>();
     final notesProvider = context.watch<PlantNotesProvider>();
     final settingsProvider = context.watch<SettingsProvider>();
+    final navigationProvider = context.watch<NavigationProvider>();
+    
+    // Detect if we just navigated to the garden tab (index 1) from plants tab (index 0)
+    final currentTab = navigationProvider.currentIndex;
+    final currentPlantCode = selectionProvider.selectedPlantCode;
+    
+    // Switch to planting mode only if:
+    // 1. We're coming from plants tab (0) to garden tab (1)
+    // 2. A plant is selected
+    // 3. The plant selection changed (user clicked a new plant)
+    // 4. We haven't already processed this change
+    if (_previousTabIndex == 0 && currentTab == 1 && 
+        currentPlantCode != null && 
+        currentPlantCode != _lastSelectedPlantCode && 
+        !_hasProcessedTabChange) {
+      _hasProcessedTabChange = true;
+      _mode = 'planting';
+      _lastSelectedPlantCode = currentPlantCode; // Update after processing
+    }
+    
+    // Reset flag when tab changes
+    if (_previousTabIndex != currentTab) {
+      _hasProcessedTabChange = false;
+      _previousTabIndex = currentTab;
+    }
     
     // Track the last selected plant
     if (selectionProvider.selectedPlant != null) {

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/plant.dart';
 import '../services/schedule_service.dart';
 import '../presentation/providers/navigation_provider.dart';
-import '../presentation/providers/library_navigation_provider.dart';
+import '../main.dart';
 
 class PlantInfoPanel extends StatelessWidget {
   final Plant plant;
@@ -62,14 +62,16 @@ class PlantInfoPanel extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.info_outline, color: Colors.white),
                   onPressed: () {
-                    // Close the bottom sheet first
-                    Navigator.pop(context);
-                    // Set the plant in library navigation provider
-                    final libraryNav = context.read<LibraryNavigationProvider>();
-                    libraryNav.navigateToPlant(plant);
+                    // Close the bottom sheet if we're in a modal context (from garden)
+                    // Check if we can pop before attempting
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                    }
                     // Navigate to library tab
                     final navProvider = context.read<NavigationProvider>();
                     navProvider.setIndex(3); // Library is at index 3
+                    // Navigate to the plant using GlobalKey
+                    RootShell.libraryKey.currentState?.navigateToPlant(plant);
                   },
                   tooltip: 'View in Library',
                   iconSize: 20,
