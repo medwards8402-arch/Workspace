@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/plant.dart';
 import '../services/schedule_service.dart';
 import '../app_state.dart';
-import 'library_screen.dart';
+import '../presentation/providers/navigation_provider.dart';
 
 class PlantDetailScreen extends StatelessWidget {
   final Plant plant;
@@ -21,12 +21,9 @@ class PlantDetailScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.menu_book),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => LibraryScreen(initialPlant: plant),
-                ),
-              );
+              // Navigate to library tab using navigation provider
+              final navProvider = context.read<NavigationProvider>();
+              navProvider.setIndex(3); // Library is at index 3
             },
             tooltip: 'View in Library',
           ),

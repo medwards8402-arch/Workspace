@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/plant.dart';
 import '../services/schedule_service.dart';
-import '../screens/library_screen.dart';
+import '../presentation/providers/navigation_provider.dart';
 
 class PlantInfoPanel extends StatelessWidget {
   final Plant plant;
@@ -60,12 +61,9 @@ class PlantInfoPanel extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.info_outline, color: Colors.white),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => LibraryScreen(initialPlant: plant),
-                      ),
-                    );
+                    // Navigate to library tab using navigation provider
+                    final navProvider = context.read<NavigationProvider>();
+                    navProvider.setIndex(3); // Library is at index 3
                   },
                   tooltip: 'View in Library',
                   iconSize: 20,

@@ -15,6 +15,15 @@ class LibraryScreen extends StatefulWidget {
 
 enum LibraryMode { plants, terms }
 
+// History entry to track navigation
+class _HistoryEntry {
+  final int tabIndex;
+  final Plant? plant;
+  final GardeningTerm? term;
+  
+  _HistoryEntry({required this.tabIndex, this.plant, this.term});
+}
+
 class _LibraryScreenState extends State<LibraryScreen> with SingleTickerProviderStateMixin {
   late Plant selectedPlant;
   GardeningTerm? selectedTerm;
@@ -22,6 +31,10 @@ class _LibraryScreenState extends State<LibraryScreen> with SingleTickerProvider
   
   // Build clickable terms list dynamically from gardening terms data
   late final List<String> clickableTerms;
+  
+  // Navigation history with max depth of 20
+  final List<_HistoryEntry> _history = [];
+  static const int _maxHistoryDepth = 20;
 
   @override
   void initState() {
@@ -50,6 +63,44 @@ class _LibraryScreenState extends State<LibraryScreen> with SingleTickerProvider
     } else {
       selectedPlant = plants.first;
     }
+    
+    // Add initial state to history
+    _addToHistory();
+  }
+  
+  void _addToHistory() {
+    final entry = _HistoryEntry(
+      tabIndex: _tabController.index,
+      plant: _tabController.index == 0 ? selectedPlant : null,
+      term: _tabController.index == 1 ? selectedTerm : null,
+    );
+    
+    _history.add(entry);
+    
+    // Keep history at reasonable depth
+    if (_history.length > _maxHistoryDepth) {
+      _history.removeAt(0);
+    }
+  }
+  
+  void _navigateBack() {
+    if (_history.length > 1) {
+      // Remove current state
+      _history.removeLast();
+      
+      // Get previous state
+      final previous = _history.last;
+      
+      setState(() {
+        _tabController.index = previous.tabIndex;
+        if (previous.plant != null) {
+          selectedPlant = previous.plant!;
+        }
+        if (previous.term != null) {
+          selectedTerm = previous.term;
+        }
+      });
+    }
   }
 
   @override
@@ -72,6 +123,21 @@ class _LibraryScreenState extends State<LibraryScreen> with SingleTickerProvider
     setState(() {
       _tabController.index = 1;
       selectedTerm = termData;
+      _addToHistory();
+    });
+  }
+  
+  void _selectPlant(Plant plant) {
+    setState(() {
+      selectedPlant = plant;
+      _addToHistory();
+    });
+  }
+  
+  void _selectTerm(GardeningTerm term) {
+    setState(() {
+      selectedTerm = term;
+      _addToHistory();
     });
   }
 
@@ -82,6 +148,16 @@ class _LibraryScreenState extends State<LibraryScreen> with SingleTickerProvider
         title: const Text('Plant Library'),
         backgroundColor: Colors.green.shade700,
         foregroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        actions: _history.length > 1
+          ? [
+              IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: _navigateBack,
+                tooltip: 'Previous Page',
+              ),
+            ]
+          : null,
         bottom: TabBar(
           controller: _tabController,
           tabs: const [
@@ -148,9 +224,7 @@ class _LibraryScreenState extends State<LibraryScreen> with SingleTickerProvider
                   }).toList(),
                   onChanged: (Plant? newPlant) {
                     if (newPlant != null) {
-                      setState(() {
-                        selectedPlant = newPlant;
-                      });
+                      _selectPlant(newPlant);
                     }
                   },
                 ),
@@ -361,9 +435,7 @@ class _LibraryScreenState extends State<LibraryScreen> with SingleTickerProvider
                   }).toList(),
                   onChanged: (GardeningTerm? newTerm) {
                     if (newTerm != null) {
-                      setState(() {
-                        selectedTerm = newTerm;
-                      });
+                      _selectTerm(newTerm);
                     }
                   },
                 ),
@@ -436,9 +508,7 @@ class _LibraryScreenState extends State<LibraryScreen> with SingleTickerProvider
                             return InkWell(
                               onTap: () {
                                 if (termData != null) {
-                                  setState(() {
-                                    selectedTerm = termData;
-                                  });
+                                  _selectTerm(termData);
                                 }
                               },
                               child: Container(
