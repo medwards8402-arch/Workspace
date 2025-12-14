@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../domain/models/exercise.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/constants/enums.dart';
 
 /// Widget for displaying an exercise in grid or list view
 class ExerciseTile extends StatelessWidget {

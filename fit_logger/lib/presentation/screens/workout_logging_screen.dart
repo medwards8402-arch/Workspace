@@ -56,7 +56,7 @@ class _WorkoutLoggingScreenState extends State<WorkoutLoggingScreen> {
   Widget build(BuildContext context) {
     final workoutProvider = context.watch<WorkoutProvider>();
     final exercises = widget.session.exerciseIds
-        .map((id) => workoutProvider._workoutService._repository.getExercise(id))
+        .map((id) => workoutProvider.workoutService.repository.getExercise(id))
         .where((e) => e != null)
         .cast<Exercise>()
         .toList();
@@ -289,7 +289,9 @@ class _WorkoutLoggingScreenState extends State<WorkoutLoggingScreen> {
 
     if (log != null) {
       setState(() {
-        _exerciseLogs[exercise.id] = log.copyWith(id: _uuid.v4()) as ExerciseLog;
+        // Update log ID and store
+        final updatedLog = _updateLogId(log!, _uuid.v4());
+        _exerciseLogs[exercise.id] = updatedLog;
       });
     }
   }
@@ -344,5 +346,55 @@ class _WorkoutLoggingScreenState extends State<WorkoutLoggingScreen> {
       return '${hours}h ${minutes}m';
     }
     return '${minutes}m';
+  }
+
+  ExerciseLog _updateLogId(ExerciseLog log, String newId) {
+    return switch (log) {
+      RepsOnlyLog() => RepsOnlyLog(
+          id: newId,
+          exerciseId: log.exerciseId,
+          exerciseName: log.exerciseName,
+          difficulty: log.difficulty,
+          notes: log.notes,
+          timestamp: log.timestamp,
+          sets: log.sets,
+          repsPerSet: log.repsPerSet,
+        ),
+      RepsWeightLog() => RepsWeightLog(
+          id: newId,
+          exerciseId: log.exerciseId,
+          exerciseName: log.exerciseName,
+          difficulty: log.difficulty,
+          notes: log.notes,
+          timestamp: log.timestamp,
+          sets: log.sets,
+          repsPerSet: log.repsPerSet,
+          weightsPerSet: log.weightsPerSet,
+        ),
+      TimeDistanceLog() => TimeDistanceLog(
+          id: newId,
+          exerciseId: log.exerciseId,
+          exerciseName: log.exerciseName,
+          difficulty: log.difficulty,
+          notes: log.notes,
+          timestamp: log.timestamp,
+          duration: log.duration,
+          distance: log.distance,
+          speed: log.speed,
+        ),
+      IntervalsLog() => IntervalsLog(
+          id: newId,
+          exerciseId: log.exerciseId,
+          exerciseName: log.exerciseName,
+          difficulty: log.difficulty,
+          notes: log.notes,
+          timestamp: log.timestamp,
+          intervalCount: log.intervalCount,
+          runDurations: log.runDurations,
+          walkDurations: log.walkDurations,
+          speeds: log.speeds,
+        ),
+      _ => throw ArgumentError('Unknown log type: ${log.runtimeType}'),
+    };
   }
 }

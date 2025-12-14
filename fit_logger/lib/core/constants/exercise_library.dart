@@ -335,7 +335,7 @@ class ExerciseLibrary {
     ),
     Exercise(
       id: 'cardio_run_interval',
-      name: 'Interval Run',
+      name: 'Tempo Run',
       category: ExerciseCategory.cardio,
       measurementType: MeasurementType.intervals,
       icon: Icons.speed,

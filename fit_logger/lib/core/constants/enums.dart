@@ -17,6 +17,22 @@ enum MeasurementType {
   intervals,     // Interval training (HIIT, run/walk combos)
 }
 
+/// Extension methods for MeasurementType
+extension MeasurementTypeExtension on MeasurementType {
+  String get displayName {
+    switch (this) {
+      case MeasurementType.repsOnly:
+        return 'Reps Only';
+      case MeasurementType.repsWeight:
+        return 'Reps & Weight';
+      case MeasurementType.timeDistance:
+        return 'Time & Distance';
+      case MeasurementType.intervals:
+        return 'Intervals';
+    }
+  }
+}
+
 /// Difficulty rating for progressive overload tracking
 enum Difficulty {
   easy,

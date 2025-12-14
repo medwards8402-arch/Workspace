@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../../domain/models/workout_session.dart';
 import '../../core/constants/app_constants.dart';
 import '../providers/workout_provider.dart';
-import 'session_form_screen.dart';
+import '../screens/session_form_screen.dart';
 import '../screens/workout_logging_screen.dart';
 
 /// Card widget displaying session information with completion checkbox
@@ -16,7 +16,7 @@ class SessionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final workoutProvider = context.watch<WorkoutProvider>();
     final exercises = session.exerciseIds
-        .map((id) => workoutProvider._workoutService._repository.getExercise(id))
+        .map((id) => workoutProvider.workoutService.repository.getExercise(id))
         .where((e) => e != null)
         .toList();
 

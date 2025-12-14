@@ -32,6 +32,12 @@ abstract class WorkoutRepository {
   
   /// Get all workout logs
   Future<List<WorkoutLog>> getAllLogs();
+
+  /// Delete a workout log
+  Future<void> deleteLog(String logId);
+
+  /// Get logs by session ID
+  Future<List<WorkoutLog>> getLogsBySession(String sessionId);
   
   /// Get workout logs within a date range
   Future<List<WorkoutLog>> getWorkoutLogs({

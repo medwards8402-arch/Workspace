@@ -35,6 +35,7 @@ class WorkoutProvider with ChangeNotifier {
   List<WorkoutLog> get filteredLogs => _filteredLogs;
   bool get isLoading => _isLoading;
   String? get error => _error;
+  WorkoutService get workoutService => _workoutService;
 
   // ========== INITIALIZATION ==========
 
@@ -69,7 +70,7 @@ class WorkoutProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      _sessions = await _workoutService._repository.getAllSessions();
+      _sessions = await _workoutService.repository.getAllSessions();
     } catch (e) {
       _error = 'Failed to load sessions: $e';
     } finally {

@@ -5,6 +5,7 @@ import '../../core/constants/enums.dart';
 import '../../core/constants/app_constants.dart';
 import '../providers/workout_provider.dart';
 import '../widgets/exercise_picker_widget.dart';
+import '../widgets/common_widgets.dart';
 
 /// Screen for creating or editing workout sessions
 class SessionFormScreen extends StatefulWidget {
@@ -183,7 +184,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                         itemBuilder: (context, index) {
                           final exerciseId = _selectedExerciseIds[index];
                           final workoutProvider = context.read<WorkoutProvider>();
-                          final exercise = workoutProvider._workoutService._repository
+                          final exercise = workoutProvider.workoutService.repository
                               .getExercise(exerciseId);
 
                           return ListTile(

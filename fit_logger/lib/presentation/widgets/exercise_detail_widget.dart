@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../domain/models/exercise.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/constants/enums.dart';
 import '../providers/workout_provider.dart';
 
 /// Bottom sheet showing detailed exercise information
@@ -268,7 +269,7 @@ class ExerciseDetail extends StatelessWidget {
 
   Future<Map<String, dynamic>> _getExerciseStats(BuildContext context) async {
     final workoutProvider = context.read<WorkoutProvider>();
-    final allLogs = await workoutProvider._workoutService._repository.getAllLogs();
+    final allLogs = await workoutProvider.workoutService.repository.getAllLogs();
 
     int count = 0;
     DateTime? lastDate;

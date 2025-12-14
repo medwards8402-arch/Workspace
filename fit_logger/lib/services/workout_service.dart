@@ -13,6 +13,9 @@ class WorkoutService {
 
   WorkoutService(this._repository);
 
+  // Public getter for repository access
+  WorkoutRepository get repository => _repository;
+
   // ========== SESSION MANAGEMENT ==========
 
   /// Create a new workout session

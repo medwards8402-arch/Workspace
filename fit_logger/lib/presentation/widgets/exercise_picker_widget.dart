@@ -34,7 +34,7 @@ class _ExercisePickerState extends State<ExercisePicker> {
   @override
   Widget build(BuildContext context) {
     final workoutProvider = context.read<WorkoutProvider>();
-    final allExercises = workoutProvider._workoutService._repository.getAllExercises();
+    final allExercises = workoutProvider.workoutService.repository.getAllExercises();
 
     // Filter exercises
     var filteredExercises = allExercises;

@@ -1,0 +1,164 @@
+IMPROVEMENTS PLAN FOR FIT LOGGER APP
+=====================================
+
+ISSUE 1: Exercise Naming - Tempo Runs vs Walk/Run Intervals
+------------------------------------------------------------
+Current State:
+- "Interval Run" (cardio_run_interval) - uses MeasurementType.intervals
+- "Walk/Run Intervals" (cardio_walk_run) - uses MeasurementType.intervals
+
+Desired State:
+- "Tempo Run" - Fast run with warmup/cooldown walks (MeasurementType.intervals)
+- "Walk/Run Intervals" - Alternating walks and almost-sprints (MeasurementType.intervals)
+
+Implementation Plan:
+1. Update exercise_library.dart:
+   - Rename "Interval Run" to "Tempo Run"
+   - Keep ID as cardio_run_interval (or update to cardio_tempo_run)
+   - Update icon and description to clarify purpose
+   - Keep "Walk/Run Intervals" name but clarify it's for interval training
+
+Files to Modify:
+- lib/core/constants/exercise_library.dart (lines ~338-352)
+
+Estimated Complexity: LOW (Simple rename)
+
+
+ISSUE 2: Exercise Library Grid - Show More Cards Per Screen
+------------------------------------------------------------
+Current State:
+- Grid uses crossAxisCount: 2 (2 columns)
+- childAspectRatio: 0.85
+
+Desired State:
+- Increase to 3 columns on larger screens
+- Use responsive design to show more cards while maintaining usability
+
+Implementation Plan:
+1. Update exercises_screen.dart:
+   - Change crossAxisCount from 2 to 3
+   - Adjust childAspectRatio to maintain card readability (try 0.75-0.80)
+   - Consider making it responsive based on screen width using MediaQuery
+
+2. Optional Enhancement:
+   - Add breakpoints: 2 columns on small screens, 3 on medium, 4 on large
+   - Use SliverGridDelegateWithMaxCrossAxisExtent for responsive columns
+
+Files to Modify:
+- lib/presentation/screens/exercises_screen.dart (lines ~256-260)
+
+Estimated Complexity: LOW-MEDIUM (Simple change with optional responsive enhancement)
+
+
+ISSUE 3: HiveError - Duration Type Not Registered
+--------------------------------------------------
+Current State:
+- Hive adapters registered for all custom types
+- Duration is a built-in Dart type but Hive doesn't support it by default
+- Error occurs when trying to save workout logs with Duration fields
+
+Root Cause:
+- TimeDistanceLogHive has Duration field (line 162 in exercise_log_hive.dart)
+- IntervalsLogHive has List<Duration> fields (runDurations, walkDurations)
+- WorkoutLogHive has Duration? field (totalDuration)
+- Hive requires explicit adapter for Duration type
+
+Implementation Plan:
+1. Create Duration adapter:
+   - Create lib/data/models/duration_adapter.dart
+   - Implement TypeAdapter<Duration> with read/write methods
+   - Convert Duration to/from milliseconds for storage
+
+2. Register adapter in main.dart:
+   - Add Hive.registerAdapter(DurationAdapter()) before other adapters
+
+3. Alternative approach (simpler):
+   - Convert Duration to int (milliseconds) in Hive models
+   - Store as int and reconstruct Duration when reading
+   - Update .g.dart files or model converters
+
+Files to Create:
+- lib/data/models/duration_adapter.dart (NEW)
+
+Files to Modify:
+- lib/main.dart (add registerAdapter call)
+- Potentially regenerate Hive adapters with: flutter pub run build_runner build --delete-conflicting-outputs
+
+Estimated Complexity: MEDIUM (Need to create adapter and test thoroughly)
+
+
+ISSUE 4: Session Planning - Add Planned Exercise Details
+---------------------------------------------------------
+Current State:
+- WorkoutSession only stores exerciseIds (List<String>)
+- No way to plan sets, reps, weights, or other details
+- During workout, user must enter all details from scratch
+
+Desired State:
+- Store planned exercise details (sets, reps, weight, distance, time, etc.)
+- Display planned details during workout logging
+- Pre-populate logging forms with planned values
+- Allow users to adjust actual values vs planned
+
+Implementation Plan:
+1. Create new model: PlannedExerciseDetails
+   - Store exercise ID
+   - Store planned values based on measurement type:
+     * repsOnly: plannedSets, plannedReps per set
+     * repsWeight: plannedSets, plannedReps, plannedWeight per set
+     * timeDistance: plannedDuration, plannedDistance
+     * intervals: plannedIntervals with durations
+
+2. Update WorkoutSession model:
+   - Add: Map<String, PlannedExerciseDetails> plannedDetails
+   - Update copyWith, serialization methods
+   - Maintain backward compatibility
+
+3. Create Hive adapter for PlannedExerciseDetails:
+   - Define TypeAdapter
+   - Register in main.dart
+
+4. Update Session Form UI:
+   - Add "Plan Exercise Details" button/section after adding exercise
+   - Show form based on exercise measurement type
+   - Allow editing planned details
+
+5. Update Workout Logging Screen:
+   - Load planned details from session
+   - Pre-populate form fields with planned values
+   - Show "Planned vs Actual" comparison
+   - Highlight when actual differs from planned
+
+6. Update Session Card Display:
+   - Show summary of planned details (e.g., "3x10 @ 135 lbs")
+   - Visual indicator when exercises have planned details
+
+Files to Create:
+- lib/domain/models/planned_exercise_details.dart (NEW)
+- lib/data/models/planned_exercise_details_hive.dart (NEW)
+- lib/presentation/widgets/planned_details_form_widget.dart (NEW)
+
+Files to Modify:
+- lib/domain/models/workout_session.dart (add plannedDetails field)
+- lib/data/models/workout_session_hive.dart (add field and conversion)
+- lib/presentation/screens/session_form_screen.dart (add planning UI)
+- lib/presentation/screens/workout_logging_screen.dart (pre-populate from plan)
+- lib/presentation/widgets/session_card_widget.dart (show planned details)
+- lib/main.dart (register new adapter)
+
+Estimated Complexity: HIGH (Major feature addition with multiple touchpoints)
+
+
+IMPLEMENTATION PRIORITY
+========================
+1. CRITICAL - Issue 3 (Duration Adapter): Fixes blocking bug
+2. QUICK WIN - Issue 1 (Rename Exercises): Fast, improves clarity
+3. QUICK WIN - Issue 2 (Grid Layout): Fast, improves UX
+4. FEATURE - Issue 4 (Session Planning): Large feature, plan for future sprint
+
+NEXT STEPS
+==========
+1. Start with Issue 3 (Duration bug) - prevents app usage
+2. Implement Issues 1 & 2 together (both quick)
+3. Design detailed spec for Issue 4 before implementation
+4. Create tests for all changes

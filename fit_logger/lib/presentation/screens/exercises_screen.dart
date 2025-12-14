@@ -24,7 +24,7 @@ class _ExercisesScreenState extends State<ExercisesScreen> {
   @override
   Widget build(BuildContext context) {
     final workoutProvider = context.watch<WorkoutProvider>();
-    final allExercises = workoutProvider._workoutService._repository.getAllExercises();
+    final allExercises = workoutProvider.workoutService.repository.getAllExercises();
 
     // Apply filters
     var filteredExercises = _applyFilters(allExercises);
@@ -254,8 +254,8 @@ class _ExercisesScreenState extends State<ExercisesScreen> {
     return GridView.builder(
       padding: const EdgeInsets.all(AppConstants.defaultPadding),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.85,
+        crossAxisCount: 3,
+        childAspectRatio: 0.75,
         crossAxisSpacing: AppConstants.defaultPadding,
         mainAxisSpacing: AppConstants.defaultPadding,
       ),

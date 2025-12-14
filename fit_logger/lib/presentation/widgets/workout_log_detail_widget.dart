@@ -126,7 +126,7 @@ class WorkoutLogDetail extends StatelessWidget {
                   itemCount: log.exerciseLogs.length,
                   itemBuilder: (context, index) {
                     final exerciseLog = log.exerciseLogs[index];
-                    final exercise = workoutProvider._workoutService._repository.getExercise(exerciseLog.exerciseId);
+                    final exercise = workoutProvider.workoutService.repository.getExercise(exerciseLog.exerciseId);
                     return _buildExerciseLogCard(context, exerciseLog, exercise);
                   },
                 ),
@@ -207,16 +207,13 @@ class WorkoutLogDetail extends StatelessWidget {
   Widget _buildPerformanceDetails(BuildContext context, ExerciseLog log) {
     final settings = context.watch<SettingsProvider>();
     
-    switch (log) {
-      case RepsOnlyLog():
-        return _buildRepsOnlyDetails(context, log);
-      case RepsWeightLog():
-        return _buildRepsWeightDetails(context, log, settings);
-      case TimeDistanceLog():
-        return _buildTimeDistanceDetails(context, log, settings);
-      case IntervalsLog():
-        return _buildIntervalsDetails(context, log, settings);
-    }
+    return switch (log) {
+      RepsOnlyLog() => _buildRepsOnlyDetails(context, log),
+      RepsWeightLog() => _buildRepsWeightDetails(context, log, settings),
+      TimeDistanceLog() => _buildTimeDistanceDetails(context, log, settings),
+      IntervalsLog() => _buildIntervalsDetails(context, log, settings),
+      _ => const SizedBox.shrink(),
+    };
   }
 
   Widget _buildRepsOnlyDetails(BuildContext context, RepsOnlyLog log) {

@@ -219,6 +219,23 @@ class HiveWorkoutRepository implements WorkoutRepository {
     }
   }
 
+  @override
+  Future<void> deleteLog(String logId) async {
+    await deleteWorkoutLog(logId);
+  }
+
+  @override
+  Future<List<WorkoutLog>> getLogsBySession(String sessionId) async {
+    _ensureInitialized();
+    
+    final logs = _logsBox!.values
+        .where((log) => log.sessionId == sessionId)
+        .map((log) => log.toDomain())
+        .toList();
+    
+    return logs;
+  }
+
   // ========== EXERCISE OPERATIONS (Read-Only from Library) ==========
 
   @override

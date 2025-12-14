@@ -248,79 +248,89 @@ class _ExerciseLogComparisonState extends State<ExerciseLogComparison> {
   Widget _buildLogDetails(ExerciseLog log) {
     final settings = context.watch<SettingsProvider>();
     
-    switch (log) {
-      case RepsOnlyLog():
-        final totalReps = log.repsPerSet.fold<int>(0, (sum, reps) => sum + reps);
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('${log.repsPerSet.length} sets • $totalReps total reps'),
-            const SizedBox(height: 4),
-            Text(
-              log.repsPerSet.join(' - '),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey[600],
-                  ),
-            ),
-          ],
-        );
-        
-      case RepsWeightLog():
-        final totalReps = log.repsPerSet.fold<int>(0, (sum, reps) => sum + reps);
-        final avgWeight = log.weightsPerSet.reduce((a, b) => a + b) / log.weightsPerSet.length;
-        final displayWeight = settings.convertWeightFromKg(avgWeight);
-        
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('${log.repsPerSet.length} sets • $totalReps total reps'),
-            Text('Avg weight: ${displayWeight.toStringAsFixed(1)} ${settings.weightUnitLabel}'),
-            const SizedBox(height: 4),
-            Wrap(
-              spacing: 4,
-              children: List.generate(log.repsPerSet.length, (i) {
-                final displayWeight = settings.convertWeightFromKg(log.weightsPerSet[i]);
-                return Text(
-                  '${log.repsPerSet[i]}×${displayWeight.toStringAsFixed(1)}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey[600],
-                      ),
-                );
-              }),
-            ),
-          ],
-        );
-        
-      case TimeDistanceLog():
-        final displayDistance = settings.convertDistanceFromKm(log.distance);
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('${_formatDuration(log.duration)} • ${displayDistance.toStringAsFixed(2)} ${settings.distanceUnitLabel}'),
-            if (log.pace != null)
-              Text(
-                'Pace: ${log.pace!.toStringAsFixed(2)} min/${settings.distanceUnitLabel}',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[600],
-                    ),
+    return switch (log) {
+      RepsOnlyLog() => _buildRepsOnlyLogDetails(log),
+      RepsWeightLog() => _buildRepsWeightLogDetails(log, settings),
+      TimeDistanceLog() => _buildTimeDistanceLogDetails(log, settings),
+      IntervalsLog() => _buildIntervalsLogDetails(log),
+      _ => const SizedBox.shrink(),
+    };
+  }
+
+  Widget _buildRepsOnlyLogDetails(RepsOnlyLog log) {
+    final totalReps = log.repsPerSet.fold<int>(0, (sum, reps) => sum + reps);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('${log.repsPerSet.length} sets • $totalReps total reps'),
+        const SizedBox(height: 4),
+        Text(
+          log.repsPerSet.join(' - '),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Colors.grey[600],
               ),
-          ],
-        );
-        
-      case IntervalsLog():
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('${log.intervalCount} intervals'),
-            Text(
-              'Total: ${_formatDuration(log.totalDuration)}',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRepsWeightLogDetails(RepsWeightLog log, SettingsProvider settings) {
+    final totalReps = log.repsPerSet.fold<int>(0, (sum, reps) => sum + reps);
+    final avgWeight = log.weightsPerSet.reduce((a, b) => a + b) / log.weightsPerSet.length;
+    final displayWeight = settings.convertWeightFromKg(avgWeight);
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('${log.repsPerSet.length} sets • $totalReps total reps'),
+        Text('Avg weight: ${displayWeight.toStringAsFixed(1)} ${settings.weightUnitLabel}'),
+        const SizedBox(height: 4),
+        Wrap(
+          spacing: 4,
+          children: List.generate(log.repsPerSet.length, (i) {
+            final displayWeight = settings.convertWeightFromKg(log.weightsPerSet[i]);
+            return Text(
+              '${log.repsPerSet[i]}×${displayWeight.toStringAsFixed(1)}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Colors.grey[600],
                   ),
-            ),
-          ],
-        );
-    }
+            );
+          }),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTimeDistanceLogDetails(TimeDistanceLog log, SettingsProvider settings) {
+    final displayDistance = settings.convertDistanceFromKm(log.distance);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('${_formatDuration(log.duration)} • ${displayDistance.toStringAsFixed(2)} ${settings.distanceUnitLabel}'),
+        if (log.pace != null)
+          Text(
+            'Pace: ${log.pace!.toStringAsFixed(2)} min/${settings.distanceUnitLabel}',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.grey[600],
+                ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildIntervalsLogDetails(IntervalsLog log) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('${log.intervalCount} intervals'),
+        Text(
+          'Total: ${_formatDuration(log.totalDuration)}',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Colors.grey[600],
+              ),
+        ),
+      ],
+    );
   }
 
   Widget _buildComparisonBadge(int comparison) {
