@@ -1,0 +1,388 @@
+Flutter Workout Tracker - Project Specification
+===============================================
+
+TARGET PLATFORMS: Web, Android
+
+CORE FEATURES:
+=============
+
+1. EXERCISE LIBRARY (Hardcoded)
+   - Comprehensive exercise types with multiple measurement capabilities:
+   
+   BODYWEIGHT:
+     * Push-ups (standard, wide, diamond)
+     * Pull-ups
+     * Chin-ups
+     * Dips
+     * Bodyweight squats
+     * Lunges
+     * Planks
+     * Dead hangs
+     * Burpees
+   
+   WEIGHTED EXERCISES:
+     * Barbell: Bench press, Squats, Deadlifts, RDLs, Overhead press, Bent-over rows
+     * Dumbbell: Chest press, Shoulder press, Rows, Curls, Tricep extensions, Goblet squats
+     * Kettlebell: Swings, Turkish get-ups, Goblet squats, Cleans
+     * Medicine ball: Slams, Wall balls, Russian twists
+     * Resistance bands: Chest fly, Rows, Bicep curls, Lateral raises
+   
+   CARDIO:
+     * Long distance runs
+     * Interval runs
+     * Walk/run intervals
+     * Swimming
+     * Biking
+   
+   Measurement Types (Enum):
+   - REPS_ONLY (pushups, pullups)
+   - REPS_WEIGHT (squats, RDLs)
+   - TIME_DISTANCE (long runs, swimming, biking)
+   - INTERVALS (interval runs, walk/run combos - configurable walk time)
+
+2. WORKOUT SESSIONS (Weekly Checklist)
+   - Define session templates containing multiple exercises
+   - Example: "Push Day" = pushups + pullups
+   - Sessions form a weekly checklist
+   - Assign sessions to specific days of the week (Mon-Sun)
+   - Checking off a session = "complete once this week"
+   - Sessions reset weekly
+   - Mark sessions as active/inactive
+   - Filter exercises by category when building sessions
+
+3. WORKOUT JOURNAL
+   - Log completed workouts with timestamp
+   - Smart pre-filling: Next week's workout pre-populated with current week's data
+   - Per exercise tracking:
+     * Reps & sets (for strength exercises)
+     * Weights (for weighted exercises)
+     * Time & distance (for cardio)
+     * Intervals & speeds (for interval work)
+   - Walk intervals configurable for running
+   - Difficulty rating (Easy/Medium/Hard) to guide progressive overload
+   - Personal notes per exercise for week-to-week tips
+   - Assume ~60s rest between sets (not tracked)
+   - Historical view of past workouts with difficulty indicators
+
+
+PROPOSED ARCHITECTURE:
+=====================
+
+CLEAN ARCHITECTURE LAYERS:
+-------------------------
+Following Flutter best practices with separation of concerns for extensibility:
+
+/lib
+  /core
+    /constants      - App-wide constants, enums
+    /errors         - Custom exceptions
+    /utils          - Helper functions, extensions
+  
+  /domain
+    /models         - Pure Dart business entities
+      - exercise.dart
+      - workout_session.dart
+      - workout_log.dart
+      - exercise_log.dart
+    /repositories   - Abstract repository interfaces
+      - workout_repository.dart
+  
+  /data
+    /models         - Data transfer objects (Hive adapters)
+    /repositories   - Repository implementations
+    /datasources    - Local data source (Hive)
+  
+  /presentation
+    /providers      - State management (Provider/ChangeNotifier)
+      - session_provider.dart
+      - workout_log_provider.dart
+      - settings_provider.dart
+    /screens        - Full screen widgets
+      - home_screen.dart (sessions checklist)
+      - exercises_screen.dart
+      - journal_screen.dart
+    /widgets        - Reusable UI components
+      - exercise_card.dart
+      - workout_form.dart
+      - session_tile.dart
+  
+  /services
+    - workout_service.dart    - Business logic
+    - week_reset_service.dart - Weekly reset logic
+    - prefill_service.dart    - Smart pre-filling logic
+  
+  main.dart - App entry, provider setup, routing
+
+ENUMS & CONSTANTS:
+-----------------
+- ExerciseCategory: BODYWEIGHT, BARBELL, DUMBBELL, KETTLEBELL, BAND, MEDICINE_BALL, CARDIO
+- MeasurementType: REPS_ONLY, REPS_WEIGHT, TIME_DISTANCE, INTERVALS
+- Difficulty: EASY, MEDIUM, HARD
+- WeekDay: MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY (for session planning)
+
+DATA MODELS (Domain Layer):
+---------------------------
+DATA MODELS (Domain Layer):
+---------------------------
+1. Exercise (Immutable)
+   - id (String, UUID)
+   - name (String)
+   - category (ExerciseCategory enum)
+   - measurementType (MeasurementType enum)
+   - icon (String, emoji)
+   - equipment (List<String>) - For future filtering
+   - muscleGroups (List<String>) - For future analytics
+   
+   Methods:
+   - copyWith()
+   - toJson()/fromJson()
+   - Equality overrides
+
+2. WorkoutSession (Mutable via Provider)
+   - id (String, UUID)
+   - name (String)
+   - exerciseIds (List<String>) - Reference to exercises
+   - plannedDay (WeekDay?) - Optional: Mon-Sun or null for any day
+   - isActive (bool)
+   - completedThisWeek (bool)
+   - weekStartDate (DateTime) - For reset tracking
+   - lastCompletedDate (DateTime?)
+   - createdAt (DateTime)
+   
+   Methods:
+   - copyWith()
+   - addExercise()/removeExercise()
+   - markComplete()/reset()
+
+3. WorkoutLog (Immutable)
+   - id (String, UUID)
+   - sessionId (String)
+   - sessionName (String) - Denormalized for display
+   - timestamp (DateTime)
+   - exerciseLogs (List<ExerciseLog>)
+   - totalDuration (Duration?) - Optional future feature
+   - notes (String?) - Optional workout notes
+   
+   Methods:
+   - copyWith()
+   - getDifficultySummary() - Count easy/medium/hard
+
+4. ExerciseLog (Polymorphic base class)
+   - id (String, UUID)
+   - exerciseId (String)
+   - exerciseName (String) - Denormalized
+   - difficulty (Difficulty enum)
+   - notes (String?) - Personal tips/observations for next week
+   - timestamp (DateTime)
+   
+   Subclasses:
+   - RepsOnlyLog: sets, repsPerSet[]
+   - RepsWeightLog: sets, repsPerSet[], weightsPerSet[]
+   - TimeDistanceLog: duration, distance, pace (calculated)
+   - IntervalsLog: intervalCount, runDurations[], walkDurations[], speeds[]
+   
+   Each has:
+   - copyWith()
+   - getSummary() - Human readable summary
+   - compareTo(ExerciseLog other) - For progress tracking
+
+REPOSITORY PATTERN:
+------------------
+Abstract repository interface for testability and future extensions:
+
+```dart
+abstract class WorkoutRepository {
+  // Sessions
+  Future<List<WorkoutSession>> getAllSessions();
+  Future<WorkoutSession?> getSession(String id);
+  Future<void> saveSession(WorkoutSession session);
+  Future<void> deleteSession(String id);
+  
+  // Logs
+  Future<List<WorkoutLog>> getWorkoutLogs({DateTime? startDate, DateTime? endDate});
+  Future<WorkoutLog?> getLastLogForSession(String sessionId);
+  Future<void> saveWorkoutLog(WorkoutLog log);
+  Future<void> deleteWorkoutLog(String id);
+  
+  // Exercises (read-only, hardcoded)
+  List<Exercise> getAllExercises();
+  Exercise? getExercise(String id);
+  List<Exercise> getExercisesByCategory(ExerciseCategory category);
+}
+```
+
+Implementation: HiveWorkoutRepository
+- Type adapters for all models
+- Box management
+- Migration support for schema changes
+
+SERVICES LAYER:
+--------------
+Business logic separated from UI:
+
+1. WorkoutService
+   - createWorkoutLog(sessionId, exerciseLogs)
+   - getLastWorkoutForSession(sessionId)
+   - calculateSuggestedWeights(exerciseLog) - Future: ML suggestions
+   
+2. PrefillService
+   - prefillWorkoutData(sessionId) -> Returns suggested values
+   - Logic: Get last log for session, return its data as starting point
+   
+3. WeekResetService
+   - checkAndResetWeek() -> Called on app start
+   - resetSessionCheckmarks() -> Resets completedThisWeek flags
+   - Uses weekStartDate to determine if reset needed
+
+PROVIDERS (State Management):
+-----------------------------
+Using Provider package for reactive UI:
+
+1. SessionProvider extends ChangeNotifier
+   - List<WorkoutSession> sessions
+   - loadSessions(), saveSession(), deleteSession()
+   - toggleActive(), markComplete()
+   - Notifies listeners on changes
+
+2. WorkoutLogProvider extends ChangeNotifier
+   - List<WorkoutLog> recentLogs (cached)
+   - loadLogs(dateRange), saveLog(), deleteLog()
+   - getPrefillData(sessionId)
+
+3. SettingsProvider extends ChangeNotifier
+   - weekStartDay (for reset logic)
+   - theme preferences (future)
+   - units (kg/lb, km/miles)
+
+4. ExerciseProvider (read-only, no ChangeNotifier needed)
+   - Singleton providing access to hardcoded exercise list
+
+APP STRUCTURE (Bottom Navigation):
+----------------------------------
+1. Home/Sessions Tab
+   - Weekly calendar view with sessions organized by planned day
+   - Checkbox to mark complete
+   - Quick log button to record workout
+   - Add/edit session templates with exercise filtering by category
+   - Assign session to specific day (or leave unscheduled)
+   - Visual indicator: incomplete/complete/easy/medium/hard
+
+2. Exercises Tab
+   - Browse exercise library (GroupedListView by category)
+   - Search/filter by category, equipment, muscle group
+   - View exercise details (modal or detail screen)
+   - Tag favorites for quick access (future)
+
+3. Journal Tab
+   - Timeline of completed workouts (ListView with date headers)
+   - View/edit past workout logs
+   - Filter by date range, session, difficulty
+   - Swipe to delete with confirmation
+   - Tap to view full details
+
+EXTENSIBILITY CONSIDERATIONS:
+-----------------------------
+- Use abstract repositories for easy data source swapping (local -> cloud sync)
+- Polymorphic ExerciseLog allows adding new measurement types
+- Service layer decouples business logic from UI (easier testing)
+- Provider pattern allows adding complex state (undo/redo, offline sync queue)
+- Hardcoded exercises in separate const file for easy additions
+- Equipment & muscle group fields ready for future filtering features
+- Notes field for future AI workout suggestions
+- Theme provider structure ready for customization
+
+FUTURE FEATURE HOOKS:
+---------------------
+- Cloud sync: Add RemoteDataSource, merge logic in repository
+- Social features: Add user_id to models, sharing methods
+- AI suggestions: Use historical difficulty + compareTo() for smart recommendations
+- Custom exercises: Add CRUD to ExerciseProvider
+- Workout templates: Add template marketplace with import/export
+- Rest timer: Add to WorkoutSession, integrate with logging flow
+- Progress charts: Use WorkoutLog.compareTo() and aggregation queries
+
+STATE MANAGEMENT:
+----------------
+- Provider for state management
+- Hive for local data persistence (works on web + mobile)
+
+DEVELOPMENT PHASES:
+------------------
+Phase 1: Core Setup & Infrastructure
+- Flutter project scaffolding (flutter create --platforms=web,android)
+- Folder structure (domain/data/presentation/services)
+- Core enums and constants
+- Hive setup with type adapters
+- Provider setup in main.dart
+- Bottom navigation shell
+- README.md with deployment instructions
+
+Phase 2: Domain & Data Layer
+- Define all domain models with full methods
+- Create repository interface
+- Implement HiveWorkoutRepository
+- Hardcode exercise library (30+ exercises)
+- Unit tests for models
+
+Phase 3: Services Layer
+- Implement WorkoutService
+- Implement PrefillService
+- Implement WeekResetService
+- Unit tests for services
+
+Phase 4: Session Management UI
+- SessionProvider implementation
+- Home screen with session checklist
+- Create/edit session dialog
+- Active/inactive toggle
+- Mark complete functionality
+
+Phase 5: Exercise Library UI
+- Exercises screen with grouped list
+- Category filtering
+- Search functionality
+- Exercise detail view
+
+Phase 6: Workout Logging
+- Dynamic workout form based on exercise types
+- Pre-fill with previous data
+- Difficulty rating selector
+- Save workout log
+- Input validation
+
+Phase 7: Journal/History
+- Journal screen with timeline
+- View workout details
+- Edit/delete logs
+- Date range filtering
+- Weekly reset integration
+
+Phase 8: Polish & Testing
+- Error handling
+- Loading states
+- Empty states
+- Form validation
+- Integration tests
+- Web responsiveness
+- Android optimization
+
+DEPLOYMENT NOTES:
+----------------
+Create README.md (~50 lines) covering:
+- Prerequisites (Flutter SDK, Android SDK)
+- Development setup (flutter pub get)
+- Web deployment (flutter build web, hosting on Firebase/Netlify)
+- Android deployment (flutter build apk, adb install, or Play Store)
+- Reference garden_planner deployment process
+
+IMPLEMENTATION DECISIONS:
+------------------------
+- App Name: "Fit Logger"
+- Weekly reset: Mondays
+- TIME_DISTANCE: Duration + distance (pace calculated), plus speed field for running
+- Default sets: 3 sets for weighted exercises, pre-filled in forms
+- Icons: Material Icons (more variety)
+- Intervals: Each interval has individual run/walk speeds
+- Units: Default to kg/km (configurable in settings)
+
+Ready to begin implementation!
