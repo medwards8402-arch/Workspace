@@ -1,0 +1,128 @@
+# Araumi of the Dead Tide - Budget Deck ($27.55)
+
+1x Araumi of the Dead Tide *CMDR*
+
+# Lands (37)
+12x Island
+11x Swamp
+1x Command Tower
+1x Dimir Aqueduct
+1x Dismal Backwater
+1x Jwar Isle Refuge
+1x Submerged Boneyard
+1x Dimir Guildgate
+1x Evolving Wilds
+1x Terramorphic Expanse
+1x Lonely Sandbar
+1x Barren Moor
+1x Ash Barrens
+
+# Ramp (10)
+1x Sol Ring
+1x Arcane Signet
+1x Dimir Signet
+1x Mind Stone
+1x Wayfarer's Bauble
+1x Charcoal Diamond
+1x Sky Diamond
+1x Commander's Sphere
+1x Prismatic Lens
+1x Coldsteel Heart
+
+# Card Draw (4)
+1x Night's Whisper
+1x Deep Analysis
+1x Read the Bones
+1x Brainstorm
+
+# Removal (10)
+1x Counterspell
+1x Victim of Night
+1x Murder
+1x Tragic Slip
+1x Disfigure
+1x Feed the Swarm
+1x Strangling Soot
+1x Geth's Verdict
+1x Diabolic Edict
+1x Doom Blade
+
+# Self-Mill Engine (12)
+1x Thought Scour
+1x Mental Note
+1x Dream Twist
+1x Merfolk Secretkeeper
+1x Drowned Secrets
+1x Perpetual Timepiece
+1x Selhoff Occultist
+1x Ghoulcaller's Bell
+1x Funeral Rites
+1x Taigam's Scheming
+1x Corpse Churn
+1x Millikin
+
+# ETB Creatures - Draw (5)
+1x Mulldrifter
+1x Sea Gate Oracle
+1x Phyrexian Rager
+1x Dusk Legion Zealot
+1x Pilgrim's Eye
+
+# ETB Creatures - Recursion (3)
+1x Archaeomancer
+1x Mnemonic Wall
+1x Cadaver Imp
+
+# ETB Creatures - Removal (4)
+1x Fleshbag Marauder
+1x Plaguecrafter
+1x Ravenous Chupacabra
+1x Man-o'-War
+
+# ETB Creatures - Utility (8)
+1x Burnished Hart
+1x Gonti, Lord of Luxury
+1x Peregrine Drake
+1x Cloud of Faeries
+1x Woe Strider
+1x Mire Triton
+1x Stitcher's Supplier
+1x Shriekmaw
+
+# Win Conditions (2)
+1x Gray Merchant of Asphodel
+1x Vindictive Vampire
+
+# Protection (2)
+1x Swiftfoot Boots
+1x Kaya's Ghostform
+
+# Unique/Fun (5)
+1x Clone
+1x Sanitarium Skeleton
+1x Dire Fleet Ravager
+1x Hostage Taker
+1x Dread Return
+
+# Budget Swaps from Main Deck:
+# Lightning Greaves → Swiftfoot Boots
+# Kokusho → Vindictive Vampire
+# Spark Double → Clone
+# Gravecrawler → Sanitarium Skeleton
+# Altar of Dementia → Selhoff Occultist + Ghoulcaller's Bell
+# Baleful Strix → Pilgrim's Eye
+# Mesmeric Orb → Millikin
+# Solemn Simulacrum → Burnished Hart
+# Possessed Skaab → Cadaver Imp
+# In Garruk's Wake → Diabolic Edict + Doom Blade
+# Go for the Throat → Murder
+# Talisman → Coldsteel Heart
+# Fellwar Stone → Prismatic Lens
+# Darkslick Shores/Sunken Ruins/Bojuka Bog → Basics + Ash Barrens
+# Sidisi → Mire Triton
+# Oblivion Stone → kept basic removal suite
+# Spark Double/Gravecrawler → Clone/Sanitarium Skeleton
+# Dire Fleet Ravager/Hostage Taker → kept as unique cards
+
+# Strategy: Same as main deck, ~85% power, 1-2 turns slower
+# Turn 6-7 average win, Power Level 6-7/10

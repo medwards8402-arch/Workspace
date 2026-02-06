@@ -1,0 +1,106 @@
+# Zimone and Dina - Main Deck (~$42)
+
+1x Zimone and Dina *CMDR*
+
+# Lands (36)
+10x Forest
+8x Island
+8x Swamp
+1x Command Tower
+1x Exotic Orchard
+1x Opulent Palace
+1x Jungle Hollow
+1x Dismal Backwater
+1x Thornwood Falls
+1x Evolving Wilds
+1x Terramorphic Expanse
+1x Guildless Commons
+1x Bojuka Bog
+
+# Ramp (12)
+1x Sol Ring
+1x Arcane Signet
+1x Simic Signet
+1x Golgari Signet
+1x Dimir Signet
+1x Cultivate
+1x Kodama's Reach
+1x Rampant Growth
+1x Farseek
+1x Sakura-Tribe Elder
+1x Farhaven Elf
+1x Wood Elves
+
+# Draw Engine - Second Card Triggers (12)
+1x Brainstorm
+1x Temple Bell
+1x Howling Mine
+1x Dictate of Kruphix
+1x Curse of Verbosity
+1x Horn of Greed
+1x Phyrexian Arena
+1x Heartwood Storyteller
+1x Secrets of the Dead
+1x Notion Thief
+1x Monastery Siege
+1x Kumena's Awakening
+
+# Sacrifice Fodder/Token Generators (10)
+1x Reassembling Skeleton
+1x Persistent Specimen
+1x Awakening Zone
+1x From Beyond
+1x Jadar, Ghoulcaller of Nephalia
+1x Tireless Provisioner
+1x Blight Mound
+1x Shambling Ghast
+1x Sanitarium Skeleton
+1x Squirrel Nest
+
+# Sacrifice Payoffs (6)
+1x Blood Artist
+1x Zulaport Cutthroat
+1x Grim Haruspex
+1x Midnight Reaper
+1x Pitiless Plunderer
+1x Morbid Opportunist
+
+# Landfall Synergy (5)
+1x Tatyova, Benthic Druid
+1x Retreat to Hagra
+1x Avenger of Zendikar
+1x Rampaging Baloths
+1x Tireless Tracker
+
+# Win Conditions (5)
+1x Gray Merchant of Asphodel
+1x Exsanguinate
+1x Profane Command
+1x Ob Nixilis, the Fallen
+1x Syr Konrad, the Grim
+
+# Removal (6)
+1x Beast Within
+1x Nature's Claim
+1x Putrefy
+1x Assassin's Trophy
+1x Counterspell
+1x Negate
+
+# Protection (3)
+1x Lightning Greaves
+1x Swiftfoot Boots
+1x Snakeskin Veil
+
+# Unique/Fun (4)
+1x Villainous Wealth
+1x The Gitrog Monster
+1x Muldrotha, the Gravetide
+1x Ramunap Excavator
+
+# Strategy: Drain opponents by triggering "draw second card" each turn
+# Primary Win: Zimone and Dina triggers (2 life drain per trigger) + aristocrats
+# Secondary Win: Exsanguinate/Profane Command finishers with massive mana
+# Sacrifice tokens to Zimone to draw + ramp, triggering drain and aristocrats
+# 8+ lands doubles draw/ramp ability, landfall creatures add extra value
+# Turn 6-8 average win, Power Level 6/10

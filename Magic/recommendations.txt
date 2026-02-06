@@ -1,0 +1,226 @@
+=== EDH COMMANDER RECOMMENDATIONS ===
+
+Your existing commanders:
+- Heliod, the Radiant Dawn
+- Vannifar: Creature toolbox with pod chains
+- Xaxara: X-spells and hydra tokens
+- Sygg: ETB value engine
+- Vivi Ornitier (Izzet)
+- Balthor the Defiled: ETB red/black
+- Narset, Enlightened Master
+
+Friends have: Marchesa the Black Rose, Talrand Sky Summoner, Kadena, Slinking Sorcerer
+
+Requirements:
+- Budget: Commander <$5, main deck ~$60, budget deck ~$30
+- Tricky with lots of options and replayability
+- Must differ from existing decks
+- 4-player 1-hour games (fast wins, minimal removal)
+- Green/white is my least favorite color combination - avoid G/W stereotypes
+- Prefer multicolor commanders unless the commander is very interesting/versatile
+- Prefer commanders that are powerful with budget builds and in four player games
+- Avoid commanders with partner unless they're particularly potent
+- Avoid coin flip commanders
+
+Uninteresting commanders (avoid):
+* 
+
+Ranked by power/budget ratio (best value first):
+
+---
+
+1. KARDUR, DOOMSCOURGE {2}{B}{R} - ~$0.50
+   Rakdos (Black/Red) | 4/3 | Uncommon
+   
+   ABILITY: When Kardur enters, until your next turn, creatures your opponents 
+   control attack each combat if able and attack a player other than you if able.
+   Whenever an attacking creature dies, each opponent loses 1 life and you gain 1 life.
+   
+   WHY IT FITS:
+   ✓ Forces opponents to fight each other (perfect for 4-player, ends games fast)
+   ✓ Extremely budget-friendly commander and staples
+   ✓ Built-in protection (opponents can't attack you for a turn)
+   ✓ Triggers on ANY attacking creature dying (yours or opponents')
+   ✓ Blink/reanimation effects let you re-trigger the goad effect
+   ✓ Multiplayer powerhouse - scales with more players
+   ✓ Tricky political gameplay with lots of decisions
+   
+   STRATEGY: Goad tribal with blink effects. Force combat, drain life passively.
+   DIFFERS FROM: No overlap with existing decks (no ETB value, no X-spells)
+   BUDGET ESTIMATE: $40-55 for full deck
+
+---
+
+2. GRENZO, DUNGEON WARDEN {X}{B}{R} - ~$0.35
+   Rakdos (Black/Red) | 2/2 base | Rare
+   
+   ABILITY: Grenzo enters with X +1/+1 counters on it.
+   {2}: Put the bottom card of your library into your graveyard. If it's a 
+   creature card with power less than or equal to Grenzo's power, put it onto 
+   the battlefield.
+   
+   WHY IT FITS:
+   ✓ Extremely unique gameplay (library manipulation matters!)
+   ✓ Cheap creatures = budget-friendly (low power = cheap to buy)
+   ✓ Repeatable creature cheating at instant speed
+   ✓ Every activation is a mini-game of chance
+   ✓ Scales with mana - can be cast as 2-drop or 6-drop
+   ✓ ETB creatures shine (Goblin Matron, Solemn Simulacrum)
+   ✓ High replayability - games play out differently
+   
+   STRATEGY: Pack deck with 2-power creatures with strong ETBs. Manipulate 
+   bottom of library (Reito Lantern, Crystal Ball). Combo with Ashnod's Altar.
+   DIFFERS FROM: Bottom-of-library matters is completely unique
+   BUDGET ESTIMATE: $45-60 for full deck
+   NOTE: You have a Grenzo folder already - may want to build this!
+
+---
+
+3. FEATHER, THE REDEEMED {R}{W}{W} - ~$0.60
+   Boros (Red/White) | 3/4 Flying | Rare
+   
+   ABILITY: Whenever you cast an instant or sorcery spell that targets a 
+   creature you control, exile that card instead of putting it into your 
+   graveyard as it resolves. If you do, return it to your hand at the 
+   beginning of the next end step.
+   
+   WHY IT FITS:
+   ✓ Boros spellslinger - breaks the "Boros = combat only" stereotype
+   ✓ Cheap cantrips become repeatable card advantage
+   ✓ Extremely budget-friendly (1-mana spells are bulk commons)
+   ✓ Fast wins through commander damage or pump spells
+   ✓ Lots of decision-making each turn (spell sequencing)
+   ✓ Flying 3/4 for 3 mana is efficient
+   ✓ Heroic creatures love repeated targeting
+   
+   STRATEGY: Cantrip tribal (Defiant Strike, Expedite). Target your creatures,
+   draw cards, pump for lethal. Heroic creatures (Akroan Crusader) for value.
+   DIFFERS FROM: Spellslinger in non-blue, no ETB focus
+   BUDGET ESTIMATE: $35-50 for full deck (bulk cantrips are pennies)
+
+---
+
+4. SATORU UMEZAWA {1}{U}{B} - ~$0.39
+   Dimir (Blue/Black) | 2/4 | Rare
+   
+   ABILITY: Whenever you activate a ninjutsu ability, look at the top three 
+   cards of your library. Put one into your hand, rest on bottom.
+   Each creature card in your hand has ninjutsu {2}{U}{B}.
+   
+   WHY IT FITS:
+   ✓ Cheat big creatures into play for 4 mana (ANY creature gets ninjutsu!)
+   ✓ Evasive attackers + fatties = huge surprise damage
+   ✓ Card selection on every ninjutsu activation
+   ✓ Budget fatties work great (Void Winnower, Archon of Cruelty alternatives)
+   ✓ Plays differently each game based on hand
+   ✓ Combat tricks and mind games with opponents
+   ✓ Fast wins with big unblockable threats
+   
+   STRATEGY: Small evasive creatures (Slither Blade, Changeling Outcast) + 
+   big ETB creatures. Ninjutsu in fatties, bounce them, repeat.
+   DIFFERS FROM: Creature cheating via combat, not pod chains
+   BUDGET ESTIMATE: $45-60 for full deck
+
+---
+
+5. SYR KONRAD, THE GRIM {3}{B}{B} - ~$0.41
+   Mono-Black | 5/4 | Uncommon
+   
+   ABILITY: Whenever another creature dies, or a creature card is put into a 
+   graveyard from anywhere other than the battlefield, or a creature card 
+   leaves your graveyard, Syr Konrad deals 1 damage to each opponent.
+   {1}{B}: Each player mills a card.
+   
+   WHY IT FITS:
+   ✓ Mono-black but with unique mill/graveyard angle
+   ✓ Triggers on EVERYTHING (death, mill, reanimate, exile from GY)
+   ✓ Multiplayer scaling - damages ALL opponents at once
+   ✓ Self-mill is a win condition (Altar of Dementia)
+   ✓ Extremely budget staples (mill cards are cheap)
+   ✓ Can win without attacking (perfect for 4-player pod)
+   ✓ Built-in mill ability for incremental damage
+   
+   STRATEGY: Mill yourself + opponents, trigger Konrad repeatedly. 
+   Reanimate creatures to trigger again. Altar of Dementia combos.
+   DIFFERS FROM: Mill-based wincon vs ETB value or combat
+   BUDGET ESTIMATE: $40-55 for full deck (mono-color mana base cheap)
+
+---
+
+6. WILLOWDUSK, ESSENCE SEER {1}{B}{G} - ~$0.60
+   Golgari (Black/Green) | 3/3 | Mythic Rare
+   
+   ABILITY: {1}, {T}: Choose another target creature. Put a number of +1/+1 
+   counters on it equal to the amount of life you gained this turn or the 
+   amount of life you lost this turn, whichever is greater. Activate only 
+   as a sorcery.
+   
+   WHY IT FITS:
+   ✓ Life manipulation = big counters (pay 10 life, get 10 counters)
+   ✓ Voltron + lifegain/lifeloss hybrid strategy
+   ✓ Budget lifeloss cards are plentiful (Treasonous Ogre, painlands)
+   ✓ One-shot potential with trample creatures
+   ✓ Political - can buff other players' creatures
+   ✓ Interesting math puzzle each turn
+   ✓ Not typical Golgari graveyard - fresh take on colors
+   
+   STRATEGY: Lose life aggressively (Necropotence-like effects, K'rrik), 
+   pump a trampler, swing for lethal. Phyrexian mana spells work great.
+   DIFFERS FROM: Life manipulation, not creature ETB or pod chains
+   BUDGET ESTIMATE: $50-65 for full deck
+
+---
+
+7. YAROK, THE DESECRATED {2}{B}{G}{U} - ~$3.22
+   Sultai (Black/Green/Blue) | 3/5 Deathtouch Lifelink | Mythic Rare
+   
+   ABILITY: If a permanent entering causes a triggered ability of a permanent 
+   you control to trigger, that ability triggers an additional time.
+   
+   WHY IT FITS:
+   ✓ Double ETB triggers = massive value
+   ✓ Sultai colors with great removal options
+   ✓ Budget ETB creatures are incredibly effective
+   ✓ Can build around landfall OR creatures OR artifacts
+   ✓ Deathtouch + lifelink makes blocking awkward
+   ✓ High replayability - many build paths
+   ✓ Powerful even with budget cards (doubling is free value)
+   
+   STRATEGY: ETB creature pile. Solemn Simulacrum draws 2, ramps 2. 
+   Ravenous Chupacabra kills 2 creatures. Agent of Treachery steals 2 things.
+   DIFFERS FROM: Similar to Sygg/Vannifar but Sultai and doubling focus
+   CAUTION: ~$3 commander, slightly above budget preference
+   BUDGET ESTIMATE: $55-70 for full deck
+
+---
+
+HONORABLE MENTIONS (consider later):
+
+• Old Stickfingers {X}{B}{G} - $0.33 - Golgari graveyard self-mill, tutors 
+  creatures to GY, power/toughness = creatures in graveyard
+
+• Pramikon, Sky Rampart {U}{R}{W} - $2.82 - Jeskai politics, forces attacks 
+  in one direction only, creates chaos in 4-player
+
+• Karador, Ghost Chieftain {5}{W}{B}{G} - $0.22 - Abzan reanimator, costs 
+  less for each creature in GY, casts one creature from GY per turn
+  (Note: Has white/green but plays like value engine, not G/W stereotypes)
+
+---
+
+SUMMARY BY ARCHETYPE:
+
+Combat Manipulation: Kardur (goad), Pramikon (directional attacks)
+Library Tricks: Grenzo (bottom), Satoru (top 3)
+Spellslinger: Feather (repeatable instants/sorceries)
+Graveyard/Mill: Syr Konrad (damage), Old Stickfingers (self-mill)
+Value Engines: Yarok (double ETB), Karador (reanimator)
+Life Manipulation: Willowdusk (life to counters)
+
+---
+
+RECOMMENDED FIRST BUILD: Kardur, Doomscourge
+- Cheapest deck to build (~$40-50)
+- Perfect for your 1-hour 4-player meta (forces fast games)
+- Minimal removal needed (opponents kill each other)
+- High replayability through political gameplay

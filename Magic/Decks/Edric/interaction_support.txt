@@ -1,0 +1,362 @@
+EDRIC, SPYMASTER OF TREST - INTERACTION & SUPPORT PACKAGES
+==========================================================
+
+PHASE 6: INTERACTION PACKAGE
+=============================
+
+REMOVAL SUITE - Target: 4-6 cards (fast multiplayer meta)
+==========================================================
+Goal: Answer key threats, especially flyers/reach blockers
+
+Single-Target Removal (Creatures/Permanents): 4 cards
+------------------------------------------------------
+1. Beast Within (2G) - $0.50 - Destroy any permanent, create 3/3 Beast token
+   - Versatile (hits anything!)
+   - Green's best removal
+   
+2. Nature's Claim (G) - $0.10 - Destroy target artifact or enchantment
+   - Cheap answer to Propaganda, Ghostly Prison
+   
+3. Pongify (U) - $0.25 - Destroy creature, create 3/3 Ape token
+   - Cheap creature removal
+   
+4. Rapid Hybridization (U) - $0.25 - Destroy creature, create 3/3 Frog Lizard token
+   - Similar to Pongify
+
+Bounce (Tempo Removal): 2 cards
+--------------------------------
+5. Blink of an Eye (1U) - $0.10 - Bounce permanent, kicker 1U: draw card
+   - Flexible, cantrips
+   
+6. Into the Roil (1U) - $0.10 - Bounce permanent, kicker 1U: draw card
+   - Similar to Blink
+
+REVISED REMOVAL (6 cards):
+1. Beast Within - $0.50
+2. Nature's Claim - $0.10
+3. Pongify - $0.25
+4. Rapid Hybridization - $0.25
+5. Blink of an Eye - $0.10
+6. Into the Roil - $0.10
+
+Removal Subtotal: $1.30
+
+Note: NO BOARD WIPES
+- Board wipes kill our creatures
+- Need creatures for Edric triggers
+- Tempo removal better (bounce, destroy single targets)
+
+PHASE 7: SUPPORT PACKAGE
+=========================
+
+CARD DRAW - Target: 3-5 cards
+==============================
+Goal: Backup card draw if Edric removed
+
+Note: Edric provides most card draw (5-10 cards per turn)
+Need minimal redundancy
+
+Tier 1 - Cantrips:
+1. Brainstorm (U) - $0.50
+2. Ponder (U) - $0.50
+3. Preordain (U) - $0.25
+4. Opt (U) - $0.10
+
+Tier 2 - One-Shot:
+5. Harmonize (2GG) - $0.25 - Draw 3
+6. Concentrate (2UU) - $0.25 - Draw 3
+
+Tier 3 - Repeatable:
+7. Mystic Remora (U) - $5-8 - TOO EXPENSIVE
+8. Rhystic Study (2U) - $20+ - TOO EXPENSIVE
+9. Coastal Piracy (2UU) - $0.25 - TOO ON THE NOSE (repeats Edric)
+
+REVISED CARD DRAW (4 cards):
+1. Brainstorm - $0.50
+2. Ponder - $0.50
+3. Harmonize - $0.25
+4. Opt - $0.10
+
+Card Draw Subtotal: $1.35
+
+RAMP - Target: 8-10 cards
+=========================
+Goal: Accelerate to Edric turn 3-4, enable mass pump turn 6-7
+
+Tier 1 - Creature Ramp (1 CMC):
+1. Llanowar Elves (G) - $0.10
+2. Elvish Mystic (G) - $0.10
+3. Fyndhorn Elves (G) - $0.10
+4. Arbor Elf (G) - $0.10
+5. Birds of Paradise (G) - $3-5 - TOO EXPENSIVE
+
+Tier 2 - Artifact Ramp:
+6. Sol Ring (1) - $1.50
+7. Arcane Signet (2) - $0.50
+8. Simic Signet (2) - $0.50
+9. Mind Stone (2) - $0.50
+10. Fellwar Stone (2) - $0.50
+11. Talisman of Curiosity (2) - $1.00
+
+Tier 3 - Land Ramp:
+12. Rampant Growth (1G) - $0.10
+13. Farseek (1G) - $0.25
+14. Nature's Lore (1G) - $0.25
+15. Three Visits (1G) - $15+ - TOO EXPENSIVE
+16. Cultivate (2G) - $0.25
+17. Kodama's Reach (2G) - $0.25
+
+Tier 4 - Utility Ramp:
+18. Quirion Ranger (G) - $0.75 - Return forest: untap creature
+    - Can untap mana dorks for extra mana
+    - Has evasion (already in creature list)
+19. Sakura-Tribe Elder (1G) - $0.50 - Sacrifice: search basic land
+20. Wayfarer's Bauble (1) - $0.25
+
+REVISED RAMP (10 cards):
+1. Llanowar Elves - $0.10
+2. Elvish Mystic - $0.10
+3. Fyndhorn Elves - $0.10
+4. Arbor Elf - $0.10
+5. Sol Ring - $1.50
+6. Arcane Signet - $0.50
+7. Simic Signet - $0.50
+8. Rampant Growth - $0.10
+9. Nature's Lore - $0.25
+10. Sakura-Tribe Elder - $0.50
+
+Ramp Subtotal: $3.75
+
+LANDS - Target: 35-36 cards
+============================
+Goal: Low curve deck, need reliable UG mana
+
+Tier 1 - Essential:
+1. Command Tower (0) - $0.50
+
+Tier 2 - Budget UG Duals:
+2. Simic Growth Chamber (0) - $0.25 - Bounce land: ETB return land, {T}: Add {U}{G}
+3. Simic Guildgate (0) - $0.10 - ETB tapped, {T}: Add {U} or {G}
+4. Temple of Mystery (0) - $0.50 - ETB tapped, scry 1, {T}: Add {U} or {G}
+5. Thornwood Falls (0) - $0.10 - ETB tapped, gain 1 life, {T}: Add {U} or {G}
+6. Woodland Stream (0) - $0.10 - ETB tapped, {T}: Add {U} or {G}
+7. Evolving Wilds (0) - $0.10 - Sac: Search basic land
+8. Terramorphic Expanse (0) - $0.10 - Sac: Search basic land
+9. Exotic Orchard (0) - $0.75 - {T}: Add one mana of any color opponent can produce
+
+Tier 3 - Utility:
+10. Reliquary Tower (0) - $1.00 - No max hand size
+    - IMPORTANT with Edric (draw 10+ cards per turn)
+11. Lonely Sandbar (0) - $0.10 - Cycling 2, {T}: Add {U}
+12. Tranquil Thicket (0) - $0.10 - Cycling 2, {T}: Add {G}
+
+Tier 4 - Basics:
+13-22. Island x10
+23-35. Forest x13
+
+REVISED LANDS (35 cards):
+1. Command Tower - $0.50
+2. Simic Growth Chamber - $0.25
+3. Simic Guildgate - $0.10
+4. Temple of Mystery - $0.50
+5. Thornwood Falls - $0.10
+6. Woodland Stream - $0.10
+7. Evolving Wilds - $0.10
+8. Terramorphic Expanse - $0.10
+9. Exotic Orchard - $0.75
+10. Reliquary Tower - $1.00
+11. Lonely Sandbar - $0.10
+12. Tranquil Thicket - $0.10
+13-22. Island x10
+23-35. Forest x13
+
+Lands Subtotal: $3.70
+
+SUPPORT PACKAGE SUMMARY
+========================
+Removal: 6 cards - $1.30
+Card Draw: 4 cards - $1.35
+Ramp: 10 cards - $3.75
+Lands: 35 cards - $3.70
+
+Support Subtotal: $10.10
+
+RUNNING DECK TOTALS
+====================
+Commander: Edric, Spymaster of Trest - $0.40
+
+MAIN DECK CARDS:
+Core Strategy: 44 cards - $12.45
+  - Evasive creatures: 23 cards - $3.95
+  - Mass pump: 7 cards - $1.30
+  - Protection: 5 cards - $2.45
+  - Unique/fun: 4 cards - $4.75 (includes Beastmaster Ascension $3)
+Support: 25 cards - $10.10
+  - Removal: 6 cards - $1.30
+  - Card Draw: 4 cards - $1.35
+  - Ramp: 10 cards - $3.75
+  - Lands: 35 cards - $3.70
+Commander: 1 card - $0.40
+
+SUBTOTAL: 70 cards - $23.00
+
+MISSING: 30 cards (need 100 total)
+
+Wait, that can't be right. Let me recount:
+
+Evasive creatures: 23
+Mass pump: 7
+Protection: 5
+Unique: 4
+Removal: 6
+Draw: 4
+Ramp: 10
+Lands: 35
+Commander: 1
+
+TOTAL: 23+7+5+4+6+4+10+35+1 = 95 cards
+
+Need 5 more cards!
+
+ADDITIONAL CARDS NEEDED (5 cards):
+Looking at gaps...
+
+1. Need more evasive creatures? Have 23, could use 2-3 more
+2. Need more interaction? Have 6 removal + 5 protection = 11 total (good)
+3. Need more ramp? Have 10 (good for low curve)
+
+Let me add 5 more evasive creatures:
+
+ADDITIONAL EVASIVE CREATURES (5 cards):
+1. Daring Apprentice (1UU) - $0.10 - 1/1 flying, {T} sacrifice: counter spell
+   - Flying + utility (counterspell)
+   
+2. Dream Stalker (1U) - $0.10 - 1/5 (no evasion) - SKIP
+   
+3. Sage's Row Denizen (2U) - $0.10 - 2/3 (no evasion) - SKIP
+
+4. Monastery Flock (2U) - $0.10 - 0/4 flying, defender - SKIP
+
+5. Augury Owl is already in list!
+
+Let me think differently. We need utility creatures with evasion:
+
+Better additions:
+1. Man-o'-War (2U) - $0.10 - 2/2, bounce creature
+   - No evasion but utility - SKIP
+
+2. Aerie Ouphes (4G) - $0.10 - Flying, sacrifice: destroy flying creature
+   - Anti-flying but has flying itself
+
+3. Scryb Ranger (1G) - $0.25 - Flying, return forest: untap creature
+   - Flying + untap for extra activations
+
+4. Whirler Rogue (2UU) - $0.10 - 2/2, creates 2 1/1 thopter tokens (flying)
+   - Tokens for Edric triggers
+
+5. Skycat Sovereign (WU) - NO WHITE
+
+6. Favorable Winds (1U) - $0.25 - Flying creatures get +1/+1
+   - Anthem for flyers
+
+FINAL ADDITIONAL 5 CARDS:
+1. Scryb Ranger - $0.25 (flying + untap utility)
+2. Whirler Rogue - $0.10 (flying tokens)
+3. Aerie Ouphes - $0.10 (flying + removal)
+4. Daring Apprentice - $0.10 (flying + counterspell)
+5. Favorable Winds - $0.25 (flying anthem)
+
+Additional Cards Subtotal: $0.80
+
+UPDATED TOTALS:
+Core Strategy: 44 cards - $12.45
+Additional: 5 cards - $0.80
+Support: 25 cards - $10.10
+Removal: 6 cards - $1.30
+Card Draw: 4 cards - $1.35
+Ramp: 10 cards - $3.75
+Lands: 35 cards - $3.70
+Commander: 1 card - $0.40
+
+Wait, I'm double counting. Let me organize properly:
+
+FINAL COUNT:
+Commander: 1
+Evasive creatures: 23 + 5 additional = 28
+Mass pump: 7
+Protection: 5
+Unique: 4
+Removal: 6
+Draw: 4
+Ramp: 10
+Lands: 35
+
+TOTAL: 1+28+7+5+4+6+4+10+35 = 100 cards ✓
+
+FINAL BUDGET:
+Commander: $0.40
+Evasive creatures (28): $3.95 + $0.80 = $4.75
+Mass pump (7): $1.30
+Protection (5): $2.45
+Unique (4): $4.75 (includes $3 Beastmaster)
+Removal (6): $1.30
+Draw (4): $1.35
+Ramp (10): $3.75
+Lands (35): $3.70
+
+TOTAL: $23.75
+
+Wait, this is WAY under budget ($50-60 target). I have ~$26-36 remaining!
+
+I can upgrade several cards:
+
+UPGRADES TO CONSIDER:
+1. Add Lightning Greaves ($2.50) instead of one basic land? No, need lands.
+2. Upgrade Beastmaster is already in ($3)
+3. Add Cyclonic Rift ($3-5)?
+4. Add better lands?
+
+Let me add some power cards within budget:
+
+POWER ADDITIONS (5 cards to add value):
+1. Cyclonic Rift (1U) - $3.50 - Bounce permanent or overload 6U: bounce all nonland permanents opponents control
+   - AMAZING tempo card
+   
+2. Beast Within is already in
+
+3. Rhystic Study (2U) - $20+ - TOO EXPENSIVE
+
+4. Mystic Remora (U) - $5-8 - Borderline but powerful
+   - Let's skip, too expensive
+
+5. Growing Ranks (2G/W G/W) - $0.25 - NO WHITE
+
+6. Bident of Thassa (2UU) - $0.50 - Draw when creatures damage opponents
+   - TOO ON THE NOSE (Edric already does this)
+
+Actually, the deck is fine at $23.75. Being under budget is good! It allows for future upgrades.
+
+But I should add Cyclonic Rift since we have budget:
+
+Replace one evasive creature with Cyclonic Rift:
+Remove: Aerie Ouphes ($0.10)
+Add: Cyclonic Rift ($3.50)
+
+Updated removal section:
+REMOVAL (7 cards):
+1. Beast Within - $0.50
+2. Nature's Claim - $0.10
+3. Pongify - $0.25
+4. Rapid Hybridization - $0.25
+5. Blink of an Eye - $0.10
+6. Into the Roil - $0.10
+7. Cyclonic Rift - $3.50
+
+New Removal Subtotal: $4.80
+
+Evasive creatures now: 27 (removed Aerie Ouphes)
+
+FINAL TOTALS:
+100 cards - $27.15 ✓
+
+NEXT PHASE: Vulnerability analysis, validation, documentation

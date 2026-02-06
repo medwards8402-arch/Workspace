@@ -1,0 +1,199 @@
+// Grenzo, Dungeon Warden - Deck Plan & Strategy Guide
+// Commander: Grenzo, Dungeon Warden {X}{B}{R}
+// Budget: ~$20 (well under $60 target)
+
+// ========================================
+// COMMANDER ANALYSIS
+// ========================================
+
+GRENZO, DUNGEON WARDEN
+Cost: {X}{B}{R}
+Type: Legendary Creature — Goblin Rogue
+Stats: 2/2 base
+Abilities:
+  - Enters with X +1/+1 counters
+  - {2}: Put bottom card of library into graveyard
+         If creature with power ≤ Grenzo's power, put onto battlefield
+
+STRENGTHS:
+✓ Cheats creatures into play bypassing mana costs
+✓ Activated ability works at instant speed
+✓ Very cheap commander (~$0.28)
+✓ Unique bottom-of-library mechanic
+✓ Scales with X value
+
+WEAKNESSES:
+✗ Random element - can whiff on non-creatures
+✗ Needs power ≤ Grenzo to work
+✗ Library manipulation is limited in Rakdos
+✗ No built-in protection
+
+// ========================================
+// CORE STRATEGY
+// ========================================
+
+GAMEPLAN:
+1. EARLY GAME (Turns 1-3)
+   - Play mana rocks (Sol Ring, Signets)
+   - Cast Grenzo with X=0 or X=1
+   - Set up sacrifice outlets (Viscera Seer priority!)
+
+2. MID GAME (Turns 4-7)
+   - Activate Grenzo repeatedly ({2} per activation)
+   - Use Viscera Seer scry to put bad cards on BOTTOM
+   - Build board with ETB creatures
+   - Establish death trigger engines
+
+3. LATE GAME (Turns 8+)
+   - Drain opponents with Blood Artist/Zulaport/Gary
+   - Loop creatures through graveyard
+   - Use Reito Lantern to stack bottom of library
+   - Overwhelm with creature value
+
+KEY INTERACTIONS:
+• Viscera Seer: Sacrifice creature → Scry 1 → Put card on BOTTOM for Grenzo!
+• Reito Lantern: Put creature from GY on bottom → Grenzo activates → Creature returns!
+• Mortuary Mire/Witch's Cottage: Put creature on top → Scry to bottom → Grenzo!
+
+// ========================================
+// MULLIGAN GUIDE
+// ========================================
+
+KEEP HANDS WITH:
+✓ 2-4 lands (including at least 1 black source)
+✓ 1-2 mana rocks OR low-cost creatures
+✓ Access to both colors by turn 3
+✓ At least one sacrifice outlet OR Grenzo synergy
+
+MULLIGAN HANDS WITH:
+✗ 0-1 lands or 6+ lands
+✗ No black sources (can't cast Grenzo)
+✗ All high-cost cards with no ramp
+✗ No synergy pieces
+
+IDEAL OPENING:
+Turn 1: Land
+Turn 2: Land, Sol Ring or Signet
+Turn 3: Land, Grenzo (X=0 or X=1)
+Turn 4: Start activating Grenzo
+
+// ========================================
+// PRIORITY TARGETS
+// ========================================
+
+PROTECT THESE CARDS:
+1. Grenzo himself (recast tax adds up!)
+2. Viscera Seer (best card in deck)
+3. Blood Artist / Zulaport Cutthroat (win conditions)
+4. Pitiless Plunderer (enables explosive turns)
+
+SACRIFICE PRIORITY (when you must choose):
+Low priority (sac first): Burglar Rat, Reassembling Skeleton
+Medium priority: Most ETB creatures (already got value)
+High priority (protect): Syr Konrad, Grim Haruspex, Midnight Reaper
+
+// ========================================
+// MATCHUP NOTES
+// ========================================
+
+VS. GRAVEYARD HATE:
+- Don't overextend into graveyard
+- Prioritize Reito Lantern (works even with hate)
+- Win through creature combat if drain blocked
+
+VS. CREATURE-LIGHT DECKS:
+- Blood Artist triggers on ANY creature dying
+- Focus on ETB value over sacrifice loops
+- Gray Merchant devotion drain is one-sided
+
+VS. BOARD WIPES:
+- Death triggers actually benefit you!
+- Blood Artist drains for each death
+- Reassembling Skeleton always comes back
+
+VS. ARTIFACT HATE:
+- Protect Sol Ring and Ashnod's Altar
+- Mana rocks are vulnerable - rely on Burnished Hart
+- Creature-based ramp like Ornithopter survives some hate
+
+// ========================================
+// WIN CONDITIONS
+// ========================================
+
+PRIMARY: DEATH TRIGGER DRAIN
+- Blood Artist + Zulaport Cutthroat + sacrifice loops
+- Each creature death pings all opponents
+- Gray Merchant for big life swings
+
+SECONDARY: OVERWHELMING BOARD
+- Free creatures from Grenzo activations
+- Siege-Gang Commander + Chittering Witch tokens
+- Goblin Bombardment as finisher
+
+TERTIARY: INFINITE COMBO (with upgrades)
+- Murderous Redcap + persist reset + sac outlet
+- Ashnod's Altar + recursion engine
+
+// ========================================
+// BUDGET BREAKDOWN
+// ========================================
+
+Category          | Count | Est. Cost
+------------------|-------|----------
+Commander         |   1   |  $0.28
+Creatures         |  37   |  $8.50
+Artifacts         |  12   |  $4.50
+Enchantments      |   4   |  $1.10
+Instants/Sorceries|  10   |  $2.06
+Lands (non-basic) |  16   |  $3.52
+Basic Lands       |  20   |  $0.40
+------------------|-------|----------
+TOTAL             | 100   | ~$20.36
+
+✓ WELL UNDER $60 BUDGET TARGET
+
+// ========================================
+// UPGRADE PATH
+// ========================================
+
+$30 Budget:
++ Mayhem Devil ($1.50)
++ Living Death ($1.50)
++ Dictate of Erebos ($2)
++ Crystal Ball ($0.50)
++ Better mana base
+
+$50 Budget:
++ Grave Pact ($4)
++ Imperial Recruiter (if not included)
++ Metallic Mimic ($2)
++ Murderous Redcap combo
+
+$100+ Budget:
++ Dockside Extortionist (~$40)
++ Scroll Rack (~$20)
++ Sensei's Divining Top (~$25)
++ Blood Crypt, premium lands
+
+// ========================================
+// CARD CATEGORIES FOR QUICK REFERENCE
+// ========================================
+
+SACRIFICE OUTLETS (Free):
+Viscera Seer, Carrion Feeder, Bloodthrone Vampire, Yahenni,
+Nantuko Husk, Phyrexian Ghoul, Goblin Bombardment
+
+BOTTOM-OF-LIBRARY MANIPULATION:
+Viscera Seer (scry to bottom), Reito Lantern, Epitaph Golem,
+Mortuary Mire (put on top, then scry to bottom)
+
+ETB REMOVAL:
+Ravenous Chupacabra, Nekrataal, Bone Shredder, Faceless Butcher,
+Manic Vandal, Goblin Cratermaker
+
+DEATH PAYOFFS:
+Blood Artist, Zulaport Cutthroat, Bastion of Remembrance,
+Midnight Reaper, Grim Haruspex, Pitiless Plunderer
+
+RECURSION:
+Animate Dead, Victimize, Stitch Together, Reassembling Skeleton

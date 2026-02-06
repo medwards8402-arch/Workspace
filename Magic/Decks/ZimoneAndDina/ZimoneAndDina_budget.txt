@@ -1,0 +1,120 @@
+# Zimone and Dina - Budget Deck (~$25)
+
+1x Zimone and Dina *CMDR*
+
+# Lands (36)
+11x Forest
+9x Island
+8x Swamp
+1x Command Tower
+1x Opulent Palace
+1x Jungle Hollow
+1x Dismal Backwater
+1x Thornwood Falls
+1x Evolving Wilds
+1x Terramorphic Expanse
+1x Bojuka Bog
+
+# Ramp (12)
+1x Sol Ring
+1x Arcane Signet
+1x Simic Signet
+1x Golgari Signet
+1x Dimir Signet
+1x Cultivate
+1x Kodama's Reach
+1x Rampant Growth
+1x Farseek
+1x Sakura-Tribe Elder
+1x Farhaven Elf
+1x Wild Growth
+
+# Draw Engine - Second Card Triggers (12)
+1x Brainstorm
+1x Ponder
+1x Temple Bell
+1x Dictate of Kruphix
+1x Curse of Verbosity
+1x Read the Bones
+1x Sign in Blood
+1x Night's Whisper
+1x Secrets of the Dead
+1x Monastery Siege
+1x Kumena's Awakening
+1x Winged Words
+
+# Sacrifice Fodder/Token Generators (10)
+1x Reassembling Skeleton
+1x Persistent Specimen
+1x Awakening Zone
+1x From Beyond
+1x Jadar, Ghoulcaller of Nephalia
+1x Shambling Ghast
+1x Sanitarium Skeleton
+1x Doomed Dissenter
+1x Eyeless Watcher
+1x Blisterpod
+
+# Sacrifice Payoffs (6)
+1x Blood Artist
+1x Zulaport Cutthroat
+1x Grim Haruspex
+1x Midnight Reaper
+1x Falkenrath Noble
+1x Morbid Opportunist
+
+# Landfall Synergy (5)
+1x Tatyova, Benthic Druid
+1x Retreat to Hagra
+1x Sporemound
+1x Rampaging Baloths
+1x Tireless Tracker
+
+# Win Conditions (5)
+1x Gray Merchant of Asphodel
+1x Exsanguinate
+1x Consume Spirit
+1x Essence Drain
+1x Syr Konrad, the Grim
+
+# Removal (6)
+1x Beast Within
+1x Nature's Claim
+1x Putrefy
+1x Murder
+1x Counterspell
+1x Negate
+
+# Protection (3)
+1x Swiftfoot Boots
+1x Snakeskin Veil
+1x Dive Down
+
+# Unique/Fun (4)
+1x Villainous Wealth
+1x The Gitrog Monster
+1x Kiora, Behemoth Beckoner
+1x Ramunap Excavator
+
+# Budget Swaps from Main Deck:
+# Howling Mine → Ponder (~$1.50 savings)
+# Phyrexian Arena → Night's Whisper (~$1.00 savings)
+# Horn of Greed → Sign in Blood (~$0.50 savings)
+# Notion Thief → Read the Bones (~$0.80 savings)
+# Exotic Orchard → Basic Land (~$0.50 savings)
+# Guildless Commons → Basic Land (~$0.25 savings)
+# Tireless Provisioner → Doomed Dissenter (~$1.00 savings)
+# Blight Mound → Eyeless Watcher (~$0.50 savings)
+# Squirrel Nest → Blisterpod (~$0.30 savings)
+# Pitiless Plunderer → Falkenrath Noble (~$1.50 savings)
+# Avenger of Zendikar → Sporemound (~$0.70 savings)
+# Ob Nixilis, the Fallen → Essence Drain (~$0.50 savings)
+# Assassin's Trophy → Murder (~$1.50 savings)
+# Lightning Greaves → Dive Down (~$1.50 savings)
+# Muldrotha, the Gravetide → Kiora, Behemoth Beckoner (~$1.50 savings)
+# Wood Elves → Wild Growth (~$0.30 savings)
+# Total Savings: ~$13-15
+
+# Strategy: Same as main deck, ~85% power
+# Slightly slower draw engine, less explosive finishers
+# Turn 7-9 average win, Power Level 5/10

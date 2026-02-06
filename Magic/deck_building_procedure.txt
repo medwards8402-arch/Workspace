@@ -1,0 +1,880 @@
+======================================
+EDH DECK BUILDING PROCEDURE
+======================================
+Version 2.0 - Updated with Zimone and Dina lessons learned
+
+This document outlines a systematic procedure for building budget EDH/Commander decks
+optimized for 1-hour 4-player multiplayer games. Focus is on finishing games, not
+controlling the board. Single-target removal is de-emphasized in favor of win conditions.
+
+======================================
+PHASE 1: REQUIREMENTS GATHERING
+======================================
+
+1. Collect User Constraints:
+   □ Budget: Default $60 target, strict $75 maximum (no need to ask)
+   □ Commander choice or preferences
+   □ Playgroup meta: DEFAULT is 1-hour 4-player multiplayer
+      - Fast games = fewer removal, more win conditions
+      - Avoid cards that lengthen games (excessive control, stax)
+   □ Deck preferences (tricky, aggro, control, combo, etc.)
+   □ Existing commanders (avoid duplicates)
+   □ Friends' commanders (avoid duplicates)
+   □ Desired deck characteristics (replayability, politics, etc.)
+
+2. Document Format Requirements:
+   □ Check existing decks for formatting standards
+   □ Note category structure (Lands, Ramp, Card Draw, etc.)
+   □ Understand output format (TappedOut compatible)
+   □ Confirm sideboard requirements (alternatives vs upgrades)
+
+3. Set Hard Limits:
+   □ EXACTLY 100 cards (99 + Commander)
+   □ Commander price: <$5 preferred
+   □ Deck cost: $60 target, $75 strict maximum
+   □ Sideboard approach (budget alternatives for testing, not upgrades)
+   □ Single deck output (no main + budget split)
+   □ Prioritize win conditions over interaction for 1-hour games
+
+======================================
+PHASE 2: COMMANDER ANALYSIS
+======================================
+
+1. Research Commander Mechanics:
+   □ Read exact card text and abilities
+   □ Identify power/toughness requirements (e.g., Grenzo's power threshold)
+   □ Note activation costs and restrictions
+   □ Understand timing windows (instant speed, sorcery speed, etc.)
+   □ Check for summoning sickness implications
+
+2. Identify Core Strategy:
+   □ What is the PRIMARY win condition?
+   □ What is the SECONDARY strategy?
+   □ What cards are CRITICAL to the strategy?
+   □ What synergies exist?
+   □ What are the combos or engines?
+
+3. Identify Vulnerabilities:
+   □ What shuts down the strategy? (graveyard hate, enchantments, etc.)
+   □ Commander removal/tax problem?
+   □ Board wipe recovery?
+   □ Does the deck have backup plans?
+   □ What common hate pieces exist in the meta?
+
+======================================
+PHASE 3: DECK BUILDING THEORY
+======================================
+
+Standard EDH Deck Composition Template:
+□ 35-38 Lands (adjust based on curve and strategy)
+   - Higher CMC decks (avg 3.5-4.5): 37-38 lands
+   - Lower CMC decks (avg 2.5-3.5): 35-36 lands
+   - Commanders with built-in card advantage: fewer lands needed
+□ 8-12 Ramp sources
+   - High CMC strategies: 10-12 ramp
+   - Low CMC strategies: 8-10 ramp
+□ 7-10 Card draw effects
+   - Colors with weak draw (WR, RG): 10+ sources
+   - Colors with strong draw (UGx): 7-8 sources
+□ 4-6 Removal (DEFAULT for 1-hour 4-player games)
+   - Prioritize versatile removal (any permanent) over creature-only
+   - Single-target creature removal is low-value in multiplayer
+   - Board wipes only if one-sided or very cheap (Blasphemous Act)
+   - Focus on answering must-kill threats, not controlling board
+   - Long grindy games (if needed): 8-10 removal
+□ Remaining slots for strategy (~30-45 cards)
+
+Strategy-Specific Categories:
+□ Engine pieces (critical to strategy, 8-15 cards)
+□ Synergy creatures/spells (15-25 cards)
+□ Win conditions (finishers, drain effects, pump spells, 3-5 cards)
+□ Protection/Enablers (haste, protection spells, sac outlets, 3-8 cards)
+□ Utility (answers to specific threats, 2-5 cards)
+
+Color-Specific Considerations:
+□ White: Efficient removal, board wipes, weak ramp (artifact ramp)
+□ Blue: Strong draw, counterspells, weak removal (bounce/counter)
+□ Black: Strong draw/removal, tutors, weak enchantment removal
+□ Red: Direct damage, artifact removal, weak card draw (impulse draw)
+□ Green: Best ramp, creature removal, weak board wipes
+□ Multi-color: More fixing needed, access to more answers
+
+======================================
+PHASE 4: BUDGET RESEARCH
+======================================
+
+1. Identify Expensive Staples to AVOID:
+   □ Research common cards in the archetype
+   □ Check prices on TCGPlayer/CardKingdom (VERIFY ACTUAL PRICES!)
+   □ Create "DO NOT INCLUDE" list with prices
+   □ Document why they're too expensive
+   □ Common pricing mistakes:
+      - Assume old prices without checking current market
+      - Assume bulk rares are cheap (many are $3-8)
+      - Assume common/uncommon means cheap (format staples can be $1-5)
+
+2. Find Budget Alternatives:
+   □ Search for common/uncommon replacements
+   □ Prioritize bulk cards (<$0.15)
+   □ Accept slightly higher cost ONLY for CRITICAL pieces ($0.50-1.00 max)
+   □ Total cards >$0.50 should be <10 cards in entire deck
+   □ NO card over $2 unless absolutely essential to strategy
+
+3. Price Categories (for ~$60 budget):
+   □ Commander: <$3 (ideally <$1)
+   □ Lands: $2-8
+      - Mono/2-color: $2-4 (mostly basics + gates)
+      - 3+ colors: $5-8 (budget duals, NO lands over $0.50)
+   □ Ramp: $4-8
+      - Green decks: $4-6 (land ramp is cheap)
+      - Non-green: $6-8 (artifact ramp)
+   □ Card Draw: $3-7
+   □ Removal: $2-5 (less removal needed for 1-hour games)
+   □ Strategy pieces: $15-25 (STRICT - verify each card!)
+   □ Win conditions: $4-8 (prioritize these, but stay cheap)
+   □ Utility/Protection: $3-8
+
+======================================
+PHASE 5: CORE STRATEGY BUILD
+======================================
+
+1. Build Engine Package (8-15 cards):
+   □ Identify the 3-5 CRITICAL cards that enable the strategy
+   □ Add redundancy (2-4 backup cards that do similar things)
+   □ Add tutors or manipulation if budget allows
+   □ Examples:
+      - Aristocrats: Sac outlets + blood artist effects
+      - Spellslinger: Cost reduction + copy effects
+      - Tokens: Token doublers + anthem effects
+      - Voltron: Equipment/auras + protection
+      - Reanimator: Discard outlets + reanimation spells
+
+2. Add Synergy Pieces (15-25 cards):
+   □ Creatures/spells that work with commander
+   □ CMC should match strategy:
+      - Aggro/tempo: Focus on 1-3 CMC
+      - Midrange: Focus on 2-4 CMC
+      - Control/combo: Mix of all CMCs
+      - Ramp/big mana: 4-6+ CMC payoffs
+   □ Ensure synergies match commander's strategy
+   □ Examples:
+      - Token decks: Token generators + go-wide payoffs
+      - +1/+1 counters: Counter generators + proliferate
+      - Graveyard: Self-mill + recursion targets
+
+3. Include Win Conditions (3-5 cards):
+   □ How does the deck actually KILL opponents?
+   □ Common win condition types:
+      - Combat damage: Overrun effects, evasion, pump spells
+      - Drain/burn: Blood Artist effects, Impact Tremors, Purphoros
+      - Mill: Persistent Petitioners, Bruvac, Altar of Dementia
+      - Combo: Infinite loops, game-winning synergies
+      - Alternative wins: Laboratory Maniac, Approach of the Second Sun
+   □ Don't assume value = wins (common mistake)
+   □ Include multiple paths to victory
+   □ CRITICAL: Ensure win conditions match strategy
+      - Mass pump for go-wide strategies (Overrun, not single-target pumps)
+      - Evasive infect needs unblockable/flying infect creatures
+      - Commander synergy matters (Edric needs evasive creatures for draw)
+
+4. Add Protection/Enablers (3-8 cards, varies by strategy):
+   □ Haste enablers (if commander/creatures have tap abilities or need immediate impact)
+   □ Sacrifice outlets (aristocrats, creature protection, ETB abuse)
+   □ Untap effects (if commander has tap abilities)
+   □ Protection spells (hexproof, indestructible for key pieces)
+   □ Cost reduction (for spell-heavy or expensive decks)
+   □ Examples by strategy:
+      - Tap-ability commanders: Haste (Lightning Greaves, etc.)
+      - Aristocrats: Sac outlets (Viscera Seer, Ashnod's Altar)
+      - Spellslinger: Cost reduction (Goblin Electromancer)
+      - Voltron: Protection (Swiftfoot Boots, Heroic Intervention)
+
+5. Include Unique/Fun Cards (4 cards):
+   □ Cards that add personality and memorability to the deck
+   □ Should loosely fit the strategy but don't need to be optimal
+   □ Often come from commander precons or older niche cards
+   □ Should be somewhat powerful or synergistic with commander
+   □ Budget friendly (<$2 each typically)
+   □ CRITICAL: Don't be "too on the nose" with commander
+      - Avoid cards that just repeat what commander already does
+      - Look for unexpected angles or game-changing effects
+      - Example: For Edric (draw from combat damage), avoid more "draw from combat" cards
+      - Instead: Biomass Mutation (turn everything into X/X), Notorious Throng (extra turns)
+   □ Consider mana cost vs deck curve
+      - High CMC unique cards (7+) don't work in low-curve aggro decks
+      - X spells scale well with any curve
+      - 4-6 CMC sweet spot for most decks
+   □ Examples by strategy:
+      - Rakdos decks: Threaten effects (steal/sac), Insurrection, Torrent of Souls
+      - Simic evasive: Biomass Mutation, Nacatl War-Pride, Notorious Throng
+      - Token decks: Warp World, Genesis Wave, Thieves' Auction
+      - Artifacts: Unwinding Clock, Prototype Portal, Mirrorworks
+   □ Don't force references or gimmicks (let them arise naturally)
+   □ Avoid cards that only work in specific scenarios or need other combo pieces
+
+======================================
+PHASE 6: INTERACTION PACKAGE
+======================================
+
+NOTE: For 1-hour 4-player games (the default meta), minimize interaction.
+Every turn spent answering threats is a turn not spent winning.
+
+1. Removal Suite (4-6 cards for 1-hour games):
+   □ Versatile removal (any permanent): 3-4 cards - PRIORITY
+   □ Single-target creature removal: 1-2 cards only
+   □ Avoid narrow answers (creature-only, artifact-only)
+   □ Prioritize: Beast Within, Chaos Warp, Generous Gift, Assassin's Trophy
+   □ Examples by color:
+      - White: Generous Gift, Swords to Plowshares
+      - Blue: Counterspell (protects your win), Reality Shift
+      - Black: Feed the Swarm, Deadly Rollick
+      - Red: Chaos Warp, Abrade
+      - Green: Beast Within, Nature's Claim, Krosan Grip
+
+2. Board Wipes (0-1 cards for 1-hour games):
+   □ Board wipes LENGTHEN games - use sparingly
+   □ Only include if one-sided (Plague Wind, Crux of Fate for dragons)
+   □ Or very cheap/efficient (Blasphemous Act at 1 mana)
+   □ Avoid: 5+ mana symmetrical wipes that reset the game
+   □ Ask: "Does this help me win or just delay everyone?"
+
+3. Graveyard Interaction:
+   □ If strategy uses graveyard, include protection
+   □ Include graveyard hate for opponents
+   □ Example: Bojuka Bog for opponent's graveyards
+
+======================================
+PHASE 7: SUPPORT PACKAGE
+======================================
+
+1. Card Draw (7-10 cards):
+   □ Essential in colors that struggle (red, white, black)
+   □ Mix of one-shot and repeatable effects
+   □ Match draw to strategy:
+      - Creature decks: Creature-based draw (Elemental Bond, Garruk's Uprising)
+      - Spell decks: Cantrips, card selection (Ponder, Brainstorm)
+      - Graveyard decks: Looting effects (Faithless Looting)
+      - Go-wide decks: Draw per creature (Shamanic Revelation)
+   □ Budget options by color:
+      - Blue: Ponder, Brainstorm, Fact or Fiction
+      - Black: Night's Whisper, Sign in Blood, Read the Bones
+      - Green: Harmonize, Rishkar's Expertise, Soul's Majesty
+      - Red: Faithless Looting, Thrill of Possibility, Light Up the Stage
+      - White: Mentor of the Meek, Dawn of Hope, Esper Sentinel
+
+2. Ramp (8-12 cards):
+   □ Green decks: Land ramp preferred (Rampant Growth, Cultivate, Kodama's Reach)
+   □ Non-green: Artifact ramp (Sol Ring, signets, diamonds, Mind Stone, Fellwar Stone)
+   □ 2 CMC ramp preferred for consistency
+   □ High CMC decks: Include 10-12 ramp sources
+   □ Low CMC decks: 8-10 ramp sources sufficient
+   □ 3+ color decks: Prioritize color-fixing ramp (signets, Commander's Sphere)
+   □ Budget artifact ramp: Sol Ring, Arcane Signet, signets, diamonds, Mind Stone, Fellwar Stone
+
+3. Lands (35-38 cards):
+   □ Calculate color requirements and distribution:
+      - Mono-color: 35-36 basics + 1-2 utility lands
+      - 2-color: 14-16 of each basic + 5-7 duals
+      - 3-color: 10-12 of each basic + 7-10 duals
+      - 4-5 color: 8-10 of each + 10-15 fixing lands
+   □ Budget dual lands: Gates, bounce lands (Karoos), gain lands, Terramorphic Expanse
+   □ Utility lands (2-4): Bojuka Bog, cycling lands, Reliquary Tower, Rogue's Passage
+   □ Higher CMC decks: 37-38 lands
+   □ Lower CMC decks: 35-36 lands
+   □ Avoid expensive lands: Fetchlands, shocklands, ABUR duals (unless within budget)
+
+======================================
+PHASE 8: VULNERABILITY ANALYSIS
+======================================
+
+Critical Questions to Ask:
+□ What happens if commander gets removed 3+ times?
+   - Include backup recursion or alternative win conditions
+   - Examples: Cost reduction (for recasting), recursion (reanimate), alternative threats
+
+□ What if graveyard gets exiled?
+   - Include alternative recursion paths
+   - Don't rely solely on graveyard
+
+□ What if key enchantment/artifact shuts down strategy?
+   - Include versatile removal in all colors
+   - Examples: Chaos Warp (R), Beast Within (G), Generous Gift (W), Cyclonic Rift (U), Feed the Swarm (B)
+
+□ What if board gets wiped?
+   - Include recovery mechanisms
+   - Card draw, recursion, low CMC curve
+
+□ How does deck win if primary strategy fails?
+   - Include 2-3 backup win conditions
+   - Examples: Combat damage (as backup to combo), drain effects (as backup to tokens), commander damage (as backup plan)
+
+======================================
+PHASE 9: DECK ASSEMBLY & VALIDATION
+======================================
+
+1. Count Cards by Category:
+   □ Create category structure matching existing decks
+   □ Verify EXACTLY 100 cards (99 + Commander)
+   □ Double-check math: sum all categories
+
+2. Validate Color Identity (CRITICAL - DO THIS BEFORE FINALIZING):
+   □ List commander's colors explicitly (e.g., "Sultai = B, G, U")
+   □ For EVERY card, check ALL mana symbols (casting cost AND text box)
+   □ Common mistakes to catch:
+      - X spells with off-color mana (Debt to the Deathless is WUBB, not just XBB)
+      - Hybrid mana counts as BOTH colors
+      - Activated abilities with colored mana in cost
+      - Reminder text in parentheses doesn't count (extort is fine)
+   □ Use Scryfall search: "id:[colors]" to verify (e.g., "id:sultai Exsanguinate")
+   □ If in doubt, check the card on Scryfall - color identity is displayed
+
+3. Validate Strategy Ratios (for 1-hour 4-player games):
+   □ 8-15 engine pieces?
+   □ 15-25 synergy pieces?
+   □ 5-8 win conditions? (MORE for fast games!)
+   □ 4-6 removal? (LESS for fast games!)
+   □ 7-10 card draw?
+   □ 10-12 ramp?
+   □ 4 unique/fun cards?
+
+3. Check Mana Curve:
+   □ Average CMC varies by strategy:
+      - Aggro/tempo: 2.0-3.0 average
+      - Midrange: 2.5-3.5 average
+      - Control: 3.0-4.0 average
+      - Ramp/big mana: 3.5-5.0 average
+   □ CMC distribution should match strategy:
+      - Aggro: Heavy at 1-3 CMC, few cards above 4
+      - Midrange: Peak at 2-4 CMC, some 5-6 CMC threats
+      - Control: Spread across 2-5 CMC, board wipes at 4-5
+      - Ramp: Cheap ramp at 2-3, payoffs at 6-8+
+
+4. Budget Validation (CRITICAL - VERIFY EVERY PRICE!):
+   □ Calculate total cost by category
+   □ Ensure ≤$60 target (strict $75 maximum)
+   □ Document ALL cards >$0.50 (there should be <10)
+   □ Verify no single card >$2 (unless absolutely essential)
+   □ Aim for 90%+ of cards <$0.35 each
+   □ VERIFY prices on TCGPlayer (don't assume!)
+   □ If over budget: cut expensive cards FIRST, replace with bulk
+   □ Check sideboard budget too (~$3-5 total)
+   □ RECOUNT total after any substitutions
+
+======================================
+PHASE 10: DOCUMENTATION
+======================================
+
+1. Create Deck File ([CommanderName].txt):
+   □ Use TappedOut format (copy/paste ready)
+   □ Start with deck title comment: "# [Commander Name] (~$XX)"
+   □ First line: "1x [Commander Name] *CMDR*"
+   □ Blank line after commander
+   □ Organize by categories with "# Category Name (count)" (e.g., "# Lands (36)")
+   □ List all cards as "1x Card Name" (no prices in main list)
+   □ Categories should be: Lands, Ramp, Card Draw, Removal, [Strategy-specific sections]
+   □ End with blank line + comments for strategy summary
+   □ Comments use # prefix: "# Strategy: [brief description]"
+   
+   Example format:
+   # Commander Name (~$55)
+   
+   1x Commander Name *CMDR*
+   
+   # Lands (36)
+   10x Island
+   8x Swamp
+   1x Command Tower
+   ...
+   
+   # Ramp (10)
+   1x Sol Ring
+   1x Arcane Signet
+   ...
+   
+   # Strategy: [One-line summary]
+   # Primary Win: [Win condition]
+   # Turn X-Y average win, Power Level X/10
+
+2. Create Sideboard File (sideboard.txt):
+   □ Standard prose format (not TappedOut format - reference document)
+   □ 15-18 budget alternative cards (<$0.50 each preferred)
+   □ NOT expensive upgrades (keep budget philosophy)
+   □ Include alternative creatures, removal, tech cards
+   □ Total sideboard cost: ~$3-5 (must be buyable with deck)
+   □ Purpose: Testing and tuning, meta adjustments
+   □ Organize by: Situational cards, Flexible slots, Meta-specific swaps
+
+3. Create Plan File (plan.txt):
+   □ Comprehensive strategy guide
+   □ Commander overview and mechanics
+   □ Core strategy breakdown
+   □ Engine and synergy explanations
+   □ Vulnerability analysis
+   □ Gameplay guide (early/mid/late game)
+   □ Combo highlights
+   □ Budget breakdown by category
+   □ Final checklist verification
+
+NOTE: Only the deck file uses TappedOut format.
+Sideboard and plan files are reference documents in prose format.
+
+======================================
+PHASE 11: CRITICAL GAP ANALYSIS
+======================================
+
+Review Deck for Missing Pieces:
+□ Win conditions sufficient?
+□ Answers to enchantments/artifacts?
+□ Graveyard protection/alternatives?
+□ Commander tax mitigation?
+□ Board wipe recovery?
+□ Haste enablers (if needed)?
+□ Sacrifice outlets (if needed)?
+□ Backup recursion paths?
+
+Check for Combo Pieces Without Payoffs:
+□ Review each card for typical combo uses
+□ Common orphaned combo pieces:
+   - Curiosity/Ophidian Eye without ping effects (Niv-Mizzet, etc.)
+   - Cloud of Faeries without bounce land abuse or Aluren
+   - Sigil Tracer without other Wizards to tap
+   - Thieving Skydiver in low-curve decks (can't pay high X)
+   - Blink effects (Jeskai Barricade) without ETB creatures
+   - Mana doublers without high-cost payoffs
+   - Creature type matters cards without critical mass of that type
+□ Replace orphaned combo pieces with cards that work standalone
+□ If keeping combo pieces, include their enablers or payoffs
+
+Meta-Specific Adjustments:
+□ 1-hour 4-player games: Reduce single-target removal, increase win conditions
+   - 4-6 removal instead of 8-12
+   - Focus on finishing games, not controlling board
+   - Versatile removal (hits any permanent) > creature removal
+□ Long grindy games: More card advantage, more removal
+□ Competitive meta: More interaction, faster combos
+□ Casual meta: More fun cards, less efficient tutors
+
+Add Missing Pieces (maintain 100 card limit):
+□ Identify lowest-impact cards
+□ Replace with critical missing pieces
+□ Re-validate card count
+□ Update plan document
+
+======================================
+PHASE 12: FINAL REVIEW CHECKLIST
+======================================
+
+Deck Completeness:
+□ Exactly 100 cards (99 + Commander)
+□ All categories represented
+□ Win conditions present (3-5)
+□ Interaction sufficient (10 removal)
+□ Card draw adequate (7-10)
+□ Ramp present (10)
+□ Mana base functional (37 lands)
+
+Budget Compliance:
+□ Total cost ≤ user's budget
+□ Commander ≤ $5 (or user's limit)
+□ Documented cost breakdown
+□ No individual card breaks budget
+
+Strategy Coherence:
+□ Engine pieces present (8-12)
+□ Synergy creatures/spells (15-20)
+□ Win conditions identified
+□ Backup plans exist
+□ Vulnerabilities addressed
+
+Documentation Complete:
+□ Deck file created (TappedOut format)
+□ Sideboard file created (budget alternatives)
+□ Plan file created (comprehensive guide)
+□ All files in correct directory
+
+User Requirements Met:
+□ Matches user preferences
+□ Avoids duplicate commanders
+□ Appropriate for playgroup meta
+□ Replayability/trickiness as requested
+
+======================================
+COMMON PITFALLS TO AVOID
+======================================
+
+1. Budget Creep:
+   ❌ "This card is only $3, it's worth it"
+   ✅ Stick to bulk cards, splurge on 3-4 critical pieces max
+
+2. Value Without Wins:
+   ❌ Deck generates tons of value but no way to close games
+   ✅ Include 3-5 explicit win conditions
+
+3. Narrow Answers:
+   ❌ Only creature removal, no enchantment/artifact answers
+   ✅ Include versatile removal (Chaos Warp, etc.)
+
+4. Commander Over-reliance:
+   ❌ Entire strategy requires commander surviving
+   ✅ Include backup plans and alternative win conditions
+
+5. Ignoring Summoning Sickness:
+   ❌ Tap-ability commanders with no haste
+   ✅ Include 2-3 haste enablers
+
+6. Graveyard Vulnerability:
+   ❌ All recursion relies on graveyard
+   ✅ Include alternative paths (token copies, direct reanimation)
+
+7. Tribal Over-focus:
+   ❌ "Goblin tribal" as PRIMARY strategy without payoffs
+   ✅ Use creature types as SECONDARY theme, focus on abilities
+
+8. Card Count Errors:
+   ❌ Forgetting to count commander, ending up with 101 cards
+   ✅ Always verify: 99 cards + 1 commander = 100 total
+
+9. Insufficient Testing Categories:
+   ❌ No mana curve analysis
+   ✅ Check average CMC, ensure low curve
+
+10. Sideboard as Upgrades:
+    ❌ $50 sideboard with expensive cards "to buy later"
+    ✅ $2-5 sideboard with budget alternatives for tuning
+
+11. Mismatched Win Conditions:
+    ❌ Single-target pump spells in go-wide deck
+    ❌ Non-evasive infect creatures in evasive deck
+    ✅ Mass pump (Overrun) for go-wide strategies
+    ✅ Win conditions that synergize with commander
+
+12. Not Verifying Card Prices:
+    ❌ Assuming bulk rares are cheap without checking
+    ❌ Using outdated price information
+    ✅ Verify every card >$0.50 on current market
+    ✅ Budget can explode quickly ($65 becomes $150)
+
+13. Missing Unique/Fun Cards:
+    ❌ All cards are "optimal" but deck lacks personality
+    ❌ Forcing gimmick cards that don't work
+    ❌ Unique cards are "too on the nose" (just repeat commander's effect)
+    ✅ Include 4 unique cards that loosely fit strategy
+    ✅ Focus on memorability and commander synergy
+    ✅ Budget-friendly unique cards (<$2 each)
+    ✅ Look for unexpected angles, not direct synergy
+
+14. Combo Pieces Without Payoffs:
+    ❌ Including Curiosity without ping effects
+    ❌ Cloud of Faeries without bounce land combos
+    ❌ Blink effects without ETB creatures
+    ❌ Sigil Tracer as the only Wizard
+    ✅ Check each card for typical combo uses
+    ✅ Either include the combo or remove the orphaned piece
+    ✅ Prioritize cards that work standalone
+
+15. Too Much Single-Target Removal for Meta:
+    ❌ 10+ removal spells in 1-hour 4-player games
+    ❌ Spending turns answering threats instead of winning
+    ✅ 4-6 removal for fast multiplayer games
+    ✅ Prioritize versatile removal (any permanent) over creature-only
+    ✅ More win conditions, less interaction
+
+16. Including Cards That Don't Support Core Strategy:
+    ❌ Vodalian Zombie (vanilla 2/1 with weak draw) in encore deck
+    ❌ Siren Stormtamer (1/1 single-use counter) vs permanent protection
+    ❌ Slip Out the Back (single protection) when repeatable mill more valuable
+    ❌ Havengul Lich (cast from GY) when strategy wants creatures IN graveyard
+    ❌ In Garruk's Wake (9 mana) when deck wins on turn 5-6
+    ✅ Every card should actively support the strategy
+    ✅ Ask: "Does this help me win?" not "Is this value?"
+    ✅ ETB creatures in encore deck need STRONG triggers (draw multiple, removal, drain)
+    ✅ Replace weak synergy with strong synergy at same budget
+
+17. Color Identity Violations:
+    ❌ Grisly Salvage (BG) in Dimir (UB) deck
+    ❌ Forgetting hybrid mana costs add both colors
+    ❌ Not checking color indicators on flip cards
+    ✅ Verify every card matches commander's color identity
+    ✅ Check mana symbols in cost, text box, AND color indicator
+    ✅ Commander format: Color identity is strict (no exceptions)
+
+18. Budget Creep (MOST COMMON ISSUE):
+    ❌ "Just $1 more" on 20+ cards = $20+ over budget
+    ❌ Assuming staples are cheap (Sol Ring, Arcane Signet can be $1-3)
+    ❌ Not verifying prices during card selection
+    ❌ Including $2-5 cards without checking alternatives
+    ❌ Lands creeping up (Command Tower, Exotic Orchard, etc.)
+    ✅ CHECK PRICE of every non-basic BEFORE adding to deck
+    ✅ If card is >$0.50, search for cheaper alternative FIRST
+    ✅ Hard rule: <10 cards over $0.50 in entire deck
+    ✅ Hard rule: NO cards over $2 unless essential
+    ✅ Verify total cost after EVERY 10-15 cards added
+    ✅ If over $60, immediately cut most expensive non-essential cards
+
+19. Wrong Deck File Format (CRITICAL):
+    ❌ Using "1 Card Name // $0.50 - description" format
+    ❌ Using "// Comment" style comments instead of "# Comment"
+    ❌ Putting prices inline with card names
+    ❌ Adding card descriptions/notes inline
+    ❌ Forgetting *CMDR* tag on commander
+    ❌ Forgetting "1x" prefix on card names
+    ✅ ALWAYS check existing deck file format BEFORE creating new deck
+    ✅ Format MUST be TappedOut-compatible for copy/paste
+    ✅ Use "1x Card Name" format (no prices, no descriptions)
+    ✅ Use "# Section Name (count)" for categories
+    ✅ Use "# Comment text" for notes (at end of file only)
+    ✅ Commander line: "1x Commander Name *CMDR*"
+    ✅ Price only in title: "# Commander Name (~$XX)"
+
+20. Including Expensive "Staple" Cards Without Checking Price:
+    ❌ Assuming format staples are cheap (many are $5-$50+!)
+    ❌ Not verifying prices on cards commonly mentioned in guides
+    ❌ Including cards from memory without current price check
+    
+    KNOWN EXPENSIVE "STAPLES" TO AVOID (prices fluctuate):
+    - Phyrexian Altar (~$50+)
+    - Ashnod's Altar (~$6-12)
+    - Altar of Dementia (~$10+)
+    - Imperial Recruiter (~$10+)
+    - Pitiless Plunderer (~$2-3)
+    - Phyrexian Arena (~$3+)
+    - Grave Pact (~$4+)
+    - Dictate of Erebos (~$2+)
+    - Urza's Incubator (~$15+)
+    - Herald's Horn (~$5+)
+    - Coat of Arms (~$5+)
+    
+    ✅ VERIFY PRICE ON SCRYFALL for EVERY card before including
+    ✅ Search with "usd<0.5" filter to find budget alternatives
+    ✅ If Scryfall shows price >$2, DO NOT include - find alternative
+    ✅ Never trust card name recognition - always verify
+
+======================================
+TEMPLATE: QUICK START CHECKLIST
+======================================
+
+When creating a new deck, go through this checklist:
+
+SETUP:
+□ Get user requirements (budget, commander, meta, preferences)
+□ Assume 1-hour 4-player multiplayer unless specified otherwise
+□ Research commander mechanics and strategy
+□ Identify expensive cards to avoid
+□ Create deck folder: Magic/Decks/[CommanderName]/
+
+CORE BUILD (Single Deck - $60 target, $75 max):
+□ Define primary strategy and win conditions
+□ Build engine package (8-12 cards)
+□ Add synergy creatures (15-20 cards)
+□ Include win conditions (5-8 cards - prioritize finishing games)
+□ Add protection/enablers (3-5 cards)
+□ Include unique/fun cards (4 cards, not too on-the-nose)
+□ Check for orphaned combo pieces (remove or add payoffs)
+
+SUPPORT BUILD:
+□ Add removal (4-6 versatile pieces, prioritize exile/flexibility)
+□ Add card draw (7-10 cards)
+□ Add ramp (10 cards)
+□ Add lands (36-37 cards)
+□ Board wipes: 0-1 max (avoid game-lengthening cards)
+
+VALIDATION:
+□ Count cards = exactly 100
+□ **COLOR IDENTITY CHECK**: Verify EVERY card's mana symbols match commander
+   - Check casting costs AND text boxes for off-color mana
+   - Common traps: X spells with hidden colors (Debt to the Deathless = WUBB)
+□ Check deck budget ≤ $60 (hard cap $75) - VERIFY every card >$0.50
+□ Verify 5-8 win conditions present
+□ Check 4-6 removal pieces (versatile preferred)
+□ No stax or excessive control (finish games, don't drag them out)
+□ Check for vulnerabilities
+□ Add missing pieces
+
+DOCUMENTATION:
+□ **READ EXISTING DECK FILE FIRST** for format reference
+□ Create [CommanderName].txt (TappedOut format - see example below)
+□ Create sideboard.txt (15-18 budget alternatives for testing)
+□ Create plan.txt (strategy guide and breakdown)
+
+TAPPEDOUT FORMAT REMINDER:
+   # Commander Name (~$XX)
+   
+   1x Commander Name *CMDR*
+   
+   # Lands (36)
+   10x Basic Land
+   1x Nonbasic Land
+   
+   # Ramp (10)
+   1x Sol Ring
+   
+   # [Category] (count)
+   1x Card Name
+   
+   # Strategy: [summary at end]
+
+======================================
+EXAMPLE: EDRIC LESSONS LEARNED
+======================================
+
+What Went Right:
+✅ 25 evasive creatures for consistent Edric triggers
+✅ Multiple overrun effects (7 win conditions)
+✅ Low curve (avg 2.0-2.5 CMC) for fast deployment
+✅ 6 protection spells to keep Edric alive
+✅ Mass pump instead of single-target (Overrun > Giant Growth)
+
+What Needed Iteration:
+⚠ Initial budget estimate was $40-50, actual was $130-150!
+⚠ Many "bulk" cards were actually $3-8 (Beastmaster Ascension, Triumph of the Hordes, Intruder Alarm)
+⚠ First win conditions didn't match strategy (single-target pumps for go-wide deck)
+⚠ Infect creatures without evasion don't work with Edric
+⚠ Sideboard started expensive, had to rebuild with <$0.25 cards
+
+Critical Fixes Made:
+1. Verified all card prices on current market (removed $50+ in expensive cards)
+2. Replaced single-target pumps with mass overruns
+3. Removed non-evasive infect creatures (don't trigger Edric or connect)
+4. Added 3 more protection spells (Edric dies frequently)
+5. Rebuilt sideboard to be truly budget ($2-5 total)
+
+Key Takeaways:
+- VERIFY card prices before finalizing deck (biggest lesson!)
+- Match win conditions to strategy (mass pump for go-wide)
+- Commander synergy is critical (Edric needs evasive creatures)
+- Protection is essential for commander-dependent decks
+- Sideboard must be budget too (for simultaneous purchase)
+- "Bulk rare" doesn't mean cheap in current market
+
+======================================
+EXAMPLE: EDRIC V2 LESSONS LEARNED
+======================================
+
+What Went Right:
+✅ 25 evasive creatures for consistent Edric triggers
+✅ 11 win conditions (mass pump effects) for fast multiplayer games
+✅ Low curve (avg 2.0-2.5 CMC) for fast deployment
+✅ 4 protection spells (focused, not excessive)
+✅ Only 4 removal spells (appropriate for 1-hour 4-player games)
+✅ 4 unique/fun cards that aren't "too on the nose"
+✅ No orphaned combo pieces (removed Curiosity, Cloud of Faeries, Sigil Tracer, etc.)
+
+What Needed Iteration:
+⚠ Initial build had 8 removal + 6 protection = 14 reactive cards (too much for fast multiplayer)
+⚠ Unique cards were too on-the-nose (Coastal Piracy, Tandem Lookout just repeat Edric's effect)
+⚠ Included combo pieces without payoffs (Curiosity, Cloud of Faeries, Sigil Tracer)
+⚠ Some cards didn't fit low curve (Rite of Replication, Stolen Identity too expensive)
+
+Critical Changes Made:
+1. Reduced removal from 8 to 4 (enough for key threats)
+2. Reduced protection from 6 to 4 (focused counterspells + hexproof)
+3. Increased win conditions from 5 to 11 (prioritize finishing games)
+4. Replaced orphaned combo pieces with standalone evasive creatures
+5. Upgraded unique cards to game-changing effects (Biomass Mutation, Nacatl War-Pride, Notorious Throng, Murmuring Mystic)
+6. Moved "on the nose" cards to support categories (Coastal Piracy, Tandem Lookout to Card Draw Payoffs)
+
+Key Takeaways:
+- 1-hour 4-player games need fewer reactive cards, more win conditions
+- Unique cards should be game-changing, not just synergistic
+- Check every card for orphaned combo pieces (Curiosity needs Niv-Mizzet, Cloud of Faeries needs Aluren, etc.)
+- "On the nose" means repeating what commander already does (avoid this)
+- Meta constraints matter more than general theory (4 removal is fine for fast games)
+- Consider mana cost when choosing unique cards (7+ CMC doesn't work in 2.5 avg CMC deck)
+
+======================================
+EXAMPLE: GRENZO V2 LESSONS LEARNED
+======================================
+
+What Went Right:
+✅ Price verification from the start (avoided Edric V1 mistake)
+✅ Strong bottom-deck manipulation package (8 cards)
+✅ Multiple stacking win conditions (6 aristocrats effects)
+✅ Budget compliance (~$26-33 final cost)
+✅ Meta-specific optimization (no board wipes for lunch games)
+✅ Haste enablers for immediate Grenzo activation
+✅ Unique/fun cards that actually win games (Insurrection, Torrent of Souls)
+
+What Needed Iteration:
+⚠ Initial build had board wipes (wrong for lunch meta)
+⚠ First unique cards were underpowered (Kazuul, Wand of Orcus)
+⚠ Needed one more card after adjustments
+
+Critical Additions Made:
+1. Replaced board wipes with fast win conditions (Purphoros, Warstorm Surge)
+2. Upgraded unique cards to powerful synergistic effects (Threaten, Insurrection, Torrent of Souls)
+3. Added Fleshbag Marauder for repeatable removal
+4. Ensured all creatures had power ≤2 for Grenzo synergy
+
+Key Takeaways:
+- Meta requirements override general theory (lunch games = no board wipes)
+- Unique cards should be powerful AND memorable (not just cute)
+- Stacking win conditions create fast clock (6 aristocrats effects = 4-6 damage per activation)
+- Price verification prevents budget explosions
+- Commander synergy is critical (all creatures power ≤2, haste enablers essential)
+- Theft effects in Rakdos = steal, sac, profit (perfect synergy)
+
+======================================
+EXAMPLE: ARAUMI LESSONS LEARNED
+======================================
+
+What Went Right:
+✅ Self-mill engine (12 cards) feeds graveyard for encore
+✅ ETB creatures with strong triggers (draw, removal, drain)
+✅ Gray Merchant win condition (3 copies = ~30 life drain)
+✅ Instant-speed self-mill for flexibility
+✅ Multiple protection pieces (boots, hexproof)
+✅ TappedOut format from Phase 10 for easy deck list sharing
+
+What Needed Iteration:
+⚠ Initial deck was $170 vs target $65 (didn't verify prices early)
+⚠ Card count errors (97, then 96, then 97 cards across iterations)
+⚠ Included Grisly Salvage (BG) in Dimir (UB) deck (color identity violation)
+⚠ Weak cards that don't support strategy:
+   - Vodalian Zombie (vanilla 2/1, weak draw ETB)
+   - Siren Stormtamer (1/1 single-use protection)
+   - Supernatural Stamina (niche protection that doesn't fit)
+   - Havengul Lich (casts from GY, but strategy wants creatures IN GY for encore)
+   - Drown in Dreams (mills opponents, not yourself)
+   - In Garruk's Wake (9 mana boardwipe in turn 5-6 win deck)
+⚠ Slip Out the Back as protection (single-use, repeatable mill more valuable)
+
+Critical Fixes Made:
+1. Verified all prices on Card Kingdom (caught $100+ discrepancy)
+2. Removed expensive cards, replaced with bulk alternatives
+3. Fixed card counts to exactly 100 (systematic recount)
+4. Validated color identity (removed Grisly Salvage, replaced with Taigam's Scheming)
+5. Replaced weak cards with strategy-supporting cards:
+   - Vodalian Zombie → Pilgrim's Eye (ramps, better ETB)
+   - Drown in Dreams → Millikin (self-mills + ramps)
+   - Siren Stormtamer/Supernatural Stamina → Diabolic Edict/Doom Blade (reliable removal)
+   - Havengul Lich → Treasure Mage (tutors artifacts, useful ETB when encored)
+   - In Garruk's Wake → Oblivion Stone (5 mana vs 9 mana boardwipe)
+   - Slip Out the Back → Perpetual Timepiece (repeatable self-mill)
+
+Key Takeaways:
+- Card Kingdom prices differ from TCGPlayer (VERIFY pricing source!)
+- Commander color identity is strict (check every mana symbol)
+- Card count validation critical (count multiple times, double-check math)
+- Every card should actively support strategy (ask: "Does this help encore win?")
+- ETB creatures need STRONG triggers (Pilgrim's Eye > Vodalian Zombie)
+- Repeatable effects > single-use (Perpetual Timepiece > Slip Out the Back)
+- Strategy coherence: Don't include cards that work against strategy
+  - Encore wants creatures IN graveyard (not cast from GY like Havengul Lich)
+  - Self-mill deck wants mill SELF (not opponents like Drown in Dreams)
+- Boardwipe CMC should match deck speed (5 mana for fast deck, not 9)
+- TappedOut format essential for deck list sharing and validation
+- Board wipes 0-1 max (avoid game-lengthening cards in 1-hour meta)
+
+======================================
+END OF PROCEDURE
+======================================
+
+This procedure should be followed for all future deck builds to ensure:
+- Budget compliance
+- Strategic coherence
+- Vulnerability coverage
+- Complete documentation
+- User satisfaction
+- Meta-appropriate interaction levels
+- No orphaned combo pieces
+- Memorable unique cards that aren't "too on the nose"

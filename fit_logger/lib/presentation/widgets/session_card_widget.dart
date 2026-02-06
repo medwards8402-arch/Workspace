@@ -88,14 +88,31 @@ class SessionCard extends StatelessWidget {
                   spacing: 8,
                   runSpacing: 4,
                   children: exercises.map((exercise) {
+                    final plannedDetails = session.getPlannedDetails(exercise!.id);
+                    final hasPlannedDetails = plannedDetails != null;
+
                     return Chip(
                       avatar: Icon(
-                        exercise!.icon,
+                        exercise.icon,
                         size: 16,
                       ),
-                      label: Text(
-                        exercise.name,
-                        style: Theme.of(context).textTheme.bodySmall,
+                      label: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            exercise.name,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          if (hasPlannedDetails)
+                            Text(
+                              plannedDetails.getSummary(),
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontSize: 10,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                            ),
+                        ],
                       ),
                       visualDensity: VisualDensity.compact,
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

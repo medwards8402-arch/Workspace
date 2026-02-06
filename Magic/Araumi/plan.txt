@@ -1,0 +1,344 @@
+ARAUMI OF THE DEAD TIDE - GAMEPLAY PLAN
+========================================
+
+DECK OVERVIEW
+=============
+Commander: Araumi of the Dead Tide (1UB)
+Strategy: Self-mill creatures, encore them for TRIPLE ETB triggers
+Power Level: 7-8/10
+Budget: $49.80 main, $27.55 budget
+Win Turns: 5-6 average
+
+Core Mechanic:
+Araumi's encore ability creates THREE hasty token copies of a creature from your graveyard. These tokens exile at end of turn, but trigger all ETB effects three times.
+
+TURN-BY-TURN GAMEPLAN
+======================
+
+TURN 1 (Ideal):
+- Play: Land
+- Cast: Sol Ring or Wayfarer's Bauble
+- Goal: Ramp for turn 2
+
+TURN 1 (Backup):
+- Play: Land
+- Cast: Thought Scour (mill 2, draw 1)
+- Goal: Start filling graveyard
+
+TURN 2:
+Option A (Ramp):
+- Play: Land
+- Cast: 2 CMC ramp (Signet, Talisman, Mind Stone)
+- Goal: Hit 4+ mana turn 3 for Araumi + protection
+
+Option B (Mill):
+- Play: Land
+- Cast: Drowned Secrets or Perpetual Timepiece
+- Goal: Engine for consistent mill
+
+TURN 3 (CRITICAL):
+- Play: Land
+- Cast: Araumi (1UB)
+- Cast: Lightning Greaves or Swiftfoot Boots (if available)
+- Equip Araumi immediately
+- Goal: Protected commander ready to encore
+
+TURN 4-5 (SETUP):
+- Self-mill 5-10 cards into graveyard
+- Priority targets for GY:
+  * Gray Merchant (primary win con)
+  * Mulldrifter (draw 6)
+  * Archaeomancer (get back 3 spells)
+  * Fleshbag Marauder (force 3 sacrifices)
+- Hold up interaction if needed
+- Goal: 8-15 cards in GY with key creatures
+
+TURN 5-6 (WIN):
+Main Phase or End Step:
+- Tap Araumi
+- Exile cards from GY = Gray Merchant's CMC (5 cards)
+- Encore Gray Merchant
+- Get THREE Gary copies with haste
+- Each triggers: drain = devotion to black
+- Total drain: ~30+ life (10 per Gary)
+- Win if opponents low on life
+
+Backup if Gary not available:
+- Encore Kokusho: 3 copies = 45 life gain, 15 drain per opponent
+- Encore Sidisi: tutor 3 cards, find answers/combo
+- Encore Mulldrifter: draw 6 cards, find win condition
+
+TURN 7+ (IF GAME CONTINUES):
+- Encore again on end step before your turn
+- Multiple encore turns to overwhelm opponents
+- Archaeomancer recursion to get back key spells
+- Goal: Value-grind or combo finish
+
+MULLIGAN STRATEGY
+=================
+Keep if hand has:
+✓ 2-3 lands + ramp
+✓ 3 lands + self-mill
+✓ 2 lands + Sol Ring + anything
+✓ 3 lands + Araumi protection
+
+Mulligan if hand has:
+✗ 0-1 lands
+✗ 5+ lands with no action
+✗ No ramp and all 5+ CMC spells
+✗ No self-mill and no draw
+
+Priority in opening hand:
+1. Lands (2-3)
+2. Ramp (1-2 pieces)
+3. Self-mill or draw
+4. Protection for Araumi
+
+CRITICAL DECISION POINTS
+=========================
+
+When to Play Araumi:
+- WAIT if: No protection available and opponents have mana up
+- WAIT if: Not enough self-mill setup yet
+- PLAY if: Have Lightning Greaves/Swiftfoot Boots
+- PLAY if: Opponents tapped out
+- PLAY if: Behind on board and need value NOW
+
+When to Encore:
+INSTANT SPEED RESPONSE:
+- In response to graveyard hate (Bojuka Bog, Tormod's Crypt)
+- In response to board wipe (get value before wipe)
+- End step before your turn (untap for combat/protection)
+
+SORCERY SPEED:
+- Your turn with removal backup
+- When opponents tapped out
+- When you can win immediately (Gary encore)
+
+What to Encore First:
+Priority 1 - WIN NOW:
+- Gray Merchant (if devotion 10+)
+- Kokusho (if opponents at 20+ life)
+
+Priority 2 - DRAW INTO WIN:
+- Mulldrifter (draw 6 cards)
+- Sea Gate Oracle (scry 6, draw 3)
+- Archaeomancer (get back 3 key spells)
+
+Priority 3 - ANSWER THREATS:
+- Fleshbag Marauder (3 forced sacrifices)
+- Ravenous Chupacabra (destroy 3 creatures)
+- Man-o'-War (bounce 3 creatures)
+
+Priority 4 - BUILD BOARD:
+- Solemn Simulacrum (ramp 3, draw 3 when they die)
+- Peregrine Drake (untap 15 lands!)
+- Woe Strider (scry 3, 3 sacrifice outlets)
+
+When to Hold Up Interaction:
+- Opponent announces combo
+- Opponent has threatening boardstate
+- You have instant-speed removal (Reality Shift, Go for the Throat)
+- You're ahead and want to protect lead
+
+When to Tap Out:
+- You can win this turn (Gary encore)
+- You're behind and need to catch up (Mulldrifter encore)
+- Opponents tapped out (safe to extend)
+
+MATCHUP-SPECIFIC PLANS
+=======================
+
+VS AGGRO:
+- Mulligan for early interaction
+- Encore Fleshbag/Plaguecrafter for board control
+- Encore Gray Merchant to stabilize life total
+- Don't wait to set up - encore for value turn 4-5
+
+VS MIDRANGE:
+- Race them with encore value
+- Encore Mulldrifter to out-draw them
+- Encore Gonti/Sidisi for card advantage
+- Win with Gray Merchant before they stabilize
+
+VS CONTROL:
+- Play around counterspells (bait with ramp)
+- Encore on their end step (less mana for counters)
+- Encore Archaeomancer to recurse key spells
+- Grind with value until they run out of answers
+
+VS COMBO:
+- Mulligan for interaction
+- Encore Fleshbag to disrupt combo pieces
+- Encore Sidisi to tutor answers
+- Go for fast Gary win (turn 5-6)
+
+VS GRAVEYARD STRATEGIES:
+- Use Bojuka Bog proactively
+- Race them (we encore faster than they reanimate)
+- Encore instant-speed in response to their GY hate
+- Perpetual Timepiece as backup plan
+
+COMMON MISTAKES TO AVOID
+=========================
+
+1. Playing Araumi without protection
+   - Wait for Lightning Greaves/Swiftfoot Boots
+   - Or wait until opponents tapped out
+
+2. Self-milling win conditions
+   - Don't mill Gray Merchant if you need to hardcast it
+   - Keep 1-2 win cons in deck as backup
+
+3. Encoring too early
+   - Wait until you have 8-15 cards in GY
+   - Better to encore once powerfully than twice weakly
+
+4. Ignoring graveyard hate
+   - Always have instant-speed encore ready
+   - Perpetual Timepiece in response to exile effects
+
+5. Not using instant-speed mill
+   - Thought Scour, Mental Note = instant encore setup
+   - Can mill during opponent's end step, encore on yours
+
+6. Focusing only on Gary
+   - Mulldrifter encore draws 6 = finds Gary
+   - Sidisi encore tutors 3 = finds combo
+   - Have multiple paths to victory
+
+7. Tapping Araumi into removal
+   - Encore at end step, not during your turn
+   - Have mana for protection spell
+   - Use encore when opponents tapped out
+
+8. Not counting devotion
+   - Gray Merchant needs devotion 10+ to win
+   - Count permanents before encoring Gary
+   - Araumi (UB) = 2 devotion, Gary (BB) = 2 devotion per copy
+
+ADVANCED TECHNIQUES
+===================
+
+1. DOUBLE ENCORE
+   - Spark Double copies Araumi
+   - Now you have TWO Araumis
+   - Encore twice per turn cycle
+   - EXPLOSIVE value
+
+2. LAND UNTAP LOOPS
+   - Encore Peregrine Drake (untap 5 lands x3 = 15 lands)
+   - Floating mana = 15+ mana available
+   - Cast Archaeomancer from hand
+   - Get back instant/sorcery
+   - Can encore again if you have another Araumi activation
+
+3. INSTANT-SPEED COMBO TURN
+   - Opponent's end step:
+     * Thought Scour (mill 2, draw)
+     * Mental Note (mill 5, draw)
+   - Your turn:
+     * Tap Araumi, encore Gray Merchant
+     * Win with 30+ drain
+
+4. POLITICAL ENCORE
+   - Encore Hostage Taker: steal 3 permanents
+   - Offer to encore for player's benefit
+   - "If you don't attack me, I'll encore Fleshbag to clear player X's board"
+
+5. SACRIFICE LOOPS
+   - Encore Woe Strider (3 copies + 3 goat tokens = 6 creatures)
+   - Sacrifice all 6 to Altar of Dementia
+   - Mill opponents 20-30 cards
+   - Find more creatures to encore
+   - Repeat until opponents milled out
+
+6. RECURSION CHAINS
+   - Encore Archaeomancer (get back 3 instants/sorceries)
+   - Get back: Thought Scour, Mental Note, Deep Analysis
+   - Cast all three (mill more, draw more)
+   - Find next encore target or win condition
+
+BUDGET DECK ADJUSTMENTS
+========================
+
+Strategy Changes:
+- Commander's Plate instead of Lightning Greaves
+  * Still protects Araumi, but no shroud
+  * Can target Araumi with your own buffs
+  
+- Vindictive Vampire instead of Kokusho
+  * Much weaker win condition
+  * Need more creatures dying for value
+  * Pair with Fleshbag/Plaguecrafter encores
+
+- Selhoff Occultist instead of Altar of Dementia
+  * Mill on death, not instant
+  * Need to encore creature that dies
+  * Pair with sacrifice outlets
+
+Timing Adjustment:
+- Budget deck wins turn 6-7 instead of turn 5-6
+- Need extra turn to build devotion without Kokusho
+- Focus more on value encores (Mulldrifter) than combo finishes
+
+POWER LEVEL ASSESSMENT
+=======================
+
+Current Deck: 7-8/10
+
+To reach 8-9/10:
+- Add expensive staples: Rhystic Study, Mystic Remora, Cyclonic Rift
+- Add fast mana: Mana Crypt, Mana Vault, Grim Monolith
+- Add tutors: Demonic Tutor, Vampiric Tutor, Mystical Tutor
+- Upgrade lands: Watery Grave, Underground Sea, fetchlands
+- Cost increase: ~$300-500
+
+To stay 7-8/10 (current):
+- Focus on encore synergy
+- Budget-efficient interaction
+- Fast clock with Gray Merchant
+- Minimal expensive cards
+
+To be 6-7/10 (budget version):
+- Similar strategy but slower
+- Weaker win conditions
+- Still effective, just less explosive
+
+WINNING THE GAME
+=================
+
+Primary Path: Gray Merchant Encore
+- Requirements: Devotion 10+, Gray Merchant in GY, Araumi + 3UB available
+- Execution: Encore Gary, drain 30+ life total
+- Timing: Turn 5-6 on average
+
+Secondary Path: Kokusho Encore
+- Requirements: Kokusho in GY, Araumi + 4UB available
+- Execution: Encore Kokusho, gain 45 life, drain 15 per opponent
+- Timing: Turn 6-7 on average
+
+Tertiary Path: Sacrifice Loops
+- Requirements: Altar of Dementia in play, Woe Strider in GY, Araumi available
+- Execution: Encore Woe Strider (6 creatures), sacrifice all to Altar, mill 20-30
+- Timing: Turn 6-8 depending on setup
+
+Backup Path: Value Grind
+- Requirements: Multiple encore turns, recursion creatures
+- Execution: Encore Archaeomancer repeatedly, recur spells, overwhelm with value
+- Timing: Turn 8-12 in grindy games
+
+The key to winning is FLEXIBILITY. Don't force Gray Merchant if opponents have answers. Encore for value (Mulldrifter), draw into answers, then encore for the win.
+
+FINAL TIPS
+==========
+1. Always count devotion before encoring Gray Merchant
+2. Save instant-speed mill for opponent's end step
+3. Encore Archaeomancer to get back key spells
+4. Use Perpetual Timepiece as GY insurance
+5. Protect Araumi at all costs with boots/greaves
+6. Have multiple win conditions in GY
+7. Don't self-mill too deep (keep deck resources)
+8. Political play with Hostage Taker encore
+9. Encore at end step before your turn when possible
+10. HAVE FUN - Araumi is explosive and exciting!

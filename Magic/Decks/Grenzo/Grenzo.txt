@@ -1,0 +1,108 @@
+# Grenzo, Dungeon Warden (~$25)
+
+1x Grenzo, Dungeon Warden *CMDR*
+
+# Lands (36)
+10x Swamp
+10x Mountain
+1x Command Tower
+1x Rakdos Carnarium
+1x Bloodfell Caves
+1x Rakdos Guildgate
+1x Temple of Malice
+1x Tainted Peak
+1x Smoldering Marsh
+1x Sulfurous Springs
+1x Foreboding Ruins
+1x Dragonskull Summit
+1x Cinder Barrens
+1x Akoum Refuge
+1x Bojuka Bog
+1x Memorial to Folly
+1x Mortuary Mire
+1x Witch's Cottage
+
+# Ramp (8)
+1x Sol Ring
+1x Arcane Signet
+1x Rakdos Signet
+1x Talisman of Indulgence
+1x Mind Stone
+1x Charcoal Diamond
+1x Fire Diamond
+1x Ornithopter of Paradise
+
+# Creatures - ETB Value (18)
+1x Solemn Simulacrum
+1x Ravenous Chupacabra
+1x Manic Vandal
+1x Goblin Cratermaker
+1x Bone Shredder
+1x Nekrataal
+1x Chittering Witch
+1x Siege-Gang Commander
+1x Bronze Walrus
+1x Priest of Gix
+1x Stingscourger
+1x Ingot Chewer
+1x Faceless Butcher
+1x Goblin Matron
+1x Beetleback Chief
+1x Accursed Marauder
+1x Gray Merchant of Asphodel
+1x Burglar Rat
+
+# Creatures - Sacrifice Outlets (8)
+1x Viscera Seer
+1x Carrion Feeder
+1x Bloodthrone Vampire
+1x Yahenni, Undying Partisan
+1x Nantuko Husk
+1x Phyrexian Ghoul
+1x Skirk Prospector
+1x Woe Strider
+
+# Creatures - Death Payoffs (6)
+1x Zulaport Cutthroat
+1x Vindictive Vampire
+1x Syr Konrad, the Grim
+1x Pawn of Ulamog
+1x Midnight Reaper
+1x Grim Haruspex
+
+# Creatures - Utility (5)
+1x Burnished Hart
+1x Epitaph Golem
+1x Dockside Chef
+1x Disciple of Bolas
+1x Reassembling Skeleton
+
+# Artifacts - Utility (4)
+1x Reito Lantern
+1x Millikin
+1x Mortarpod
+1x Culling Dais
+
+# Enchantments (4)
+1x Bastion of Remembrance
+1x Vampiric Rites
+1x Animate Dead
+1x Goblin Bombardment
+
+# Removal (6)
+1x Chaos Warp
+1x Feed the Swarm
+1x Terminate
+1x Go for the Throat
+1x Defile
+1x Blasphemous Act
+
+# Card Draw/Value (4)
+1x Village Rites
+1x Victimize
+1x Stitch Together
+1x Read the Bones
+
+# Strategy: Cast Grenzo with X=0 or X=1, activate {2} to flip creatures from bottom of library
+# Primary Win: Zulaport Cutthroat/Vindictive Vampire drain loops, Gray Merchant devotion
+# Key Synergy: Viscera Seer scry puts cards on BOTTOM for Grenzo to flip!

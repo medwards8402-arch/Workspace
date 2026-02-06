@@ -1,0 +1,107 @@
+# Edric, Spymaster of Trest - Main Deck ($27.15)
+
+1x Edric, Spymaster of Trest *CMDR*
+
+# Lands (35)
+10x Island
+13x Forest
+1x Command Tower
+1x Simic Growth Chamber
+1x Simic Guildgate
+1x Temple of Mystery
+1x Thornwood Falls
+1x Woodland Stream
+1x Evolving Wilds
+1x Terramorphic Expanse
+1x Exotic Orchard
+1x Reliquary Tower
+1x Lonely Sandbar
+1x Tranquil Thicket
+
+# Ramp (10)
+1x Sol Ring
+1x Arcane Signet
+1x Simic Signet
+1x Llanowar Elves
+1x Elvish Mystic
+1x Fyndhorn Elves
+1x Arbor Elf
+1x Rampant Growth
+1x Nature's Lore
+1x Sakura-Tribe Elder
+
+# Card Draw (4)
+1x Brainstorm
+1x Ponder
+1x Harmonize
+1x Opt
+
+# Removal (7)
+1x Beast Within
+1x Nature's Claim
+1x Pongify
+1x Rapid Hybridization
+1x Blink of an Eye
+1x Into the Roil
+1x Cyclonic Rift
+
+# Evasive Creatures - Flying (12)
+1x Hypnotic Siren
+1x Faerie Miscreant
+1x Wingcrafter
+1x Cloudfin Raptor
+1x Faerie Seer
+1x Scryb Sprites
+1x Cloud of Faeries
+1x Augury Owl
+1x Mist Raven
+1x Scryb Ranger
+1x Whirler Rogue
+1x Trygon Predator
+
+# Evasive Creatures - Unblockable (10)
+1x Slither Blade
+1x Triton Shorestalker
+1x Invisible Stalker
+1x Mist-Cloaked Herald
+1x Phantom Warrior
+1x Scroll Thief
+1x Mothdust Changeling
+1x Faerie Impostor
+1x Looter il-Kor
+1x Thalakos Seer
+
+# Evasive Creatures - Utility (5)
+1x Thalakos Sentry
+1x Taunting Elf
+1x Daring Apprentice
+1x Favorable Winds
+1x Quirion Ranger
+
+# Protection (5)
+1x Swiftfoot Boots
+1x Counterspell
+1x Negate
+1x Vines of Vastwood
+1x Ranger's Guile
+
+# Mass Pump / Win Conditions (7)
+1x Overrun
+1x Overwhelming Stampede
+1x Echoing Courage
+1x Biomass Mutation
+1x Nacatl War-Pride
+1x Hunger of the Howlpack
+1x Murmuring Mystic
+
+# Unique/Fun (4)
+1x Beastmaster Ascension
+1x Opposition
+1x Awakening Zone
+1x Notorious Throng
+
+# Strategy: Deploy cheap evasive creatures, cast Edric turn 3-4, draw 5-10 cards per turn
+# Primary Win: Mass pump (Overrun, Overwhelming Stampede) for alpha strike
+# Secondary Win: Beastmaster Ascension (+5/+5 permanently), extra turns (Notorious Throng)
+# Turn 6-7 average win, Power Level 7-8/10
+# Math: 15 creatures × 5 power (after pump) = 75 damage

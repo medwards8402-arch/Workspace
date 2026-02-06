@@ -13,6 +13,7 @@ import 'data/models/workout_session_hive.dart';
 import 'data/models/exercise_log_hive.dart';
 import 'data/models/workout_log_hive.dart';
 import 'data/models/duration_adapter.dart';
+import 'data/models/planned_exercise_details_hive.dart';
 import 'data/repositories/hive_workout_repository.dart';
 
 void main() async {
@@ -23,6 +24,7 @@ void main() async {
   
   // Register Hive adapters
   Hive.registerAdapter(DurationAdapter());
+  Hive.registerAdapter(PlannedExerciseDetailsHiveAdapter());
   Hive.registerAdapter(ExerciseHiveAdapter());
   Hive.registerAdapter(WorkoutSessionHiveAdapter());
   Hive.registerAdapter(RepsOnlyLogHiveAdapter());

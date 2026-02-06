@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../domain/models/workout_session.dart';
+import '../../domain/models/planned_exercise_details.dart';
 import '../../core/constants/enums.dart';
 import '../../core/constants/app_constants.dart';
 import '../providers/workout_provider.dart';
 import '../widgets/exercise_picker_widget.dart';
 import '../widgets/common_widgets.dart';
+import '../widgets/planned_details_form_widget.dart';
 
 /// Screen for creating or editing workout sessions
 class SessionFormScreen extends StatefulWidget {
@@ -22,6 +24,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
   late TextEditingController _nameController;
   WeekDay? _selectedDay;
   List<String> _selectedExerciseIds = [];
+  Map<String, PlannedExerciseDetails> _plannedDetails = {};
   bool _isActive = true;
   bool _isSaving = false;
 
@@ -31,6 +34,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
     _nameController = TextEditingController(text: widget.session?.name ?? '');
     _selectedDay = widget.session?.plannedDay;
     _selectedExerciseIds = List.from(widget.session?.exerciseIds ?? []);
+    _plannedDetails = Map.from(widget.session?.plannedDetails ?? {});
     _isActive = widget.session?.isActive ?? true;
   }
 
@@ -186,18 +190,42 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                           final workoutProvider = context.read<WorkoutProvider>();
                           final exercise = workoutProvider.workoutService.repository
                               .getExercise(exerciseId);
+                          final hasPlannedDetails = _plannedDetails.containsKey(exerciseId);
 
-                          return ListTile(
+                          return Card(
                             key: ValueKey(exerciseId),
-                            leading: Icon(exercise?.icon ?? Icons.fitness_center),
-                            title: Text(exercise?.name ?? 'Unknown'),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.close),
-                              onPressed: () {
-                                setState(() {
-                                  _selectedExerciseIds.removeAt(index);
-                                });
-                              },
+                            margin: const EdgeInsets.only(bottom: 8),
+                            child: ListTile(
+                              leading: Icon(exercise?.icon ?? Icons.fitness_center),
+                              title: Text(exercise?.name ?? 'Unknown'),
+                              subtitle: hasPlannedDetails
+                                  ? Text(
+                                      '✓ ${_plannedDetails[exerciseId]!.getSummary()}',
+                                      style: TextStyle(color: Theme.of(context).primaryColor),
+                                    )
+                                  : const Text('No plan set'),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(
+                                      hasPlannedDetails ? Icons.edit : Icons.add_circle_outline,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    tooltip: hasPlannedDetails ? 'Edit Plan' : 'Add Plan',
+                                    onPressed: () => _showPlannedDetailsDialog(exerciseId, exercise!),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.close),
+                                    onPressed: () {
+                                      setState(() {
+                                        _selectedExerciseIds.removeAt(index);
+                                        _plannedDetails.remove(exerciseId);
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -271,6 +299,21 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
     );
   }
 
+  void _showPlannedDetailsDialog(String exerciseId, exercise) {
+    showDialog(
+      context: context,
+      builder: (context) => PlannedDetailsFormWidget(
+        exercise: exercise,
+        existingDetails: _plannedDetails[exerciseId],
+        onSave: (details) {
+          setState(() {
+            _plannedDetails[exerciseId] = details;
+          });
+        },
+      ),
+    );
+  }
+
   Future<void> _saveSession() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -295,6 +338,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
         await workoutProvider.createSession(
           name: _nameController.text.trim(),
           exerciseIds: _selectedExerciseIds,
+          plannedDetails: _plannedDetails,
           plannedDay: _selectedDay,
         );
       } else {
@@ -302,6 +346,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
         final updated = widget.session!.copyWith(
           name: _nameController.text.trim(),
           exerciseIds: _selectedExerciseIds,
+          plannedDetails: _plannedDetails,
           plannedDay: _selectedDay,
           isActive: _isActive,
           clearPlannedDay: _selectedDay == null,

@@ -1,6 +1,8 @@
 import 'package:hive/hive.dart';
 import '../../domain/models/workout_session.dart';
+import '../../domain/models/planned_exercise_details.dart';
 import '../../core/constants/enums.dart';
+import 'planned_exercise_details_hive.dart';
 
 part 'workout_session_hive.g.dart';
 
@@ -33,6 +35,9 @@ class WorkoutSessionHive extends HiveObject {
   @HiveField(8)
   final DateTime createdAt;
 
+  @HiveField(9)
+  final Map<String, PlannedExerciseDetailsHive>? plannedDetailsMap;
+
   WorkoutSessionHive({
     required this.id,
     required this.name,
@@ -43,10 +48,18 @@ class WorkoutSessionHive extends HiveObject {
     required this.weekStartDate,
     this.lastCompletedDate,
     required this.createdAt,
+    this.plannedDetailsMap,
   });
 
   /// Convert from domain model
   factory WorkoutSessionHive.fromDomain(WorkoutSession session) {
+    // Convert planned details map
+    final plannedDetailsMap = session.plannedDetails.isEmpty
+        ? null
+        : session.plannedDetails.map(
+            (key, value) => MapEntry(key, PlannedExerciseDetailsHive.fromDomain(value)),
+          );
+
     return WorkoutSessionHive(
       id: session.id,
       name: session.name,
@@ -57,15 +70,23 @@ class WorkoutSessionHive extends HiveObject {
       weekStartDate: session.weekStartDate,
       lastCompletedDate: session.lastCompletedDate,
       createdAt: session.createdAt,
+      plannedDetailsMap: plannedDetailsMap,
     );
   }
 
   /// Convert to domain model
   WorkoutSession toDomain() {
+    // Convert planned details map
+    final plannedDetails = plannedDetailsMap?.map(
+          (key, value) => MapEntry(key, value.toDomain()),
+        ) ??
+        {};
+
     return WorkoutSession(
       id: id,
       name: name,
       exerciseIds: List<String>.from(exerciseIds),
+      plannedDetails: plannedDetails,
       plannedDay: plannedDayIndex != null ? WeekDay.values[plannedDayIndex!] : null,
       isActive: isActive,
       completedThisWeek: completedThisWeek,

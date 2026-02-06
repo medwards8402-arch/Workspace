@@ -1,0 +1,104 @@
+# Edric, Spymaster of Trest - Budget Deck ($16.90)
+
+1x Edric, Spymaster of Trest *CMDR*
+
+# Lands (38)
+13x Island
+16x Forest
+1x Command Tower
+1x Simic Guildgate
+1x Thornwood Falls
+1x Woodland Stream
+1x Evolving Wilds
+1x Terramorphic Expanse
+1x Lonely Sandbar
+1x Tranquil Thicket
+1x Simic Growth Chamber
+
+# Ramp (9)
+1x Arcane Signet
+1x Simic Signet
+1x Llanowar Elves
+1x Elvish Mystic
+1x Fyndhorn Elves
+1x Arbor Elf
+1x Rampant Growth
+1x Nature's Lore
+1x Sakura-Tribe Elder
+
+# Card Draw (4)
+1x Brainstorm
+1x Ponder
+1x Harmonize
+1x Opt
+
+# Removal (6)
+1x Beast Within
+1x Nature's Claim
+1x Pongify
+1x Rapid Hybridization
+1x Blink of an Eye
+1x Into the Roil
+
+# Evasive Creatures - Flying (12)
+1x Hypnotic Siren
+1x Faerie Miscreant
+1x Wingcrafter
+1x Cloudfin Raptor
+1x Faerie Seer
+1x Scryb Sprites
+1x Cloud of Faeries
+1x Augury Owl
+1x Mist Raven
+1x Scryb Ranger
+1x Whirler Rogue
+1x Trygon Predator
+
+# Evasive Creatures - Unblockable (10)
+1x Slither Blade
+1x Triton Shorestalker
+1x Invisible Stalker
+1x Mist-Cloaked Herald
+1x Phantom Warrior
+1x Scroll Thief
+1x Mothdust Changeling
+1x Faerie Impostor
+1x Looter il-Kor
+1x Thalakos Seer
+
+# Evasive Creatures - Utility (5)
+1x Thalakos Sentry
+1x Taunting Elf
+1x Daring Apprentice
+1x Favorable Winds
+1x Quirion Ranger
+
+# Protection (5)
+1x Swiftfoot Boots
+1x Counterspell
+1x Negate
+1x Vines of Vastwood
+1x Ranger's Guile
+
+# Mass Pump / Win Conditions (7)
+1x Overrun
+1x Overwhelming Stampede
+1x Echoing Courage
+1x Biomass Mutation
+1x Nacatl War-Pride
+1x Hunger of the Howlpack
+1x Murmuring Mystic
+
+# Unique/Fun (3)
+1x Opposition
+1x Awakening Zone
+1x Notorious Throng
+
+# Budget Changes from Main Deck:
+# Removed: Sol Ring ($1.50), Beastmaster Ascension ($3.00), Cyclonic Rift ($3.50), Exotic Orchard ($0.75), Reliquary Tower ($0.50)
+# Added: 3 Island, 3 Forest (basic lands are free)
+# Result: $8.25 savings, exactly 100 cards
+
+# Strategy unchanged: Deploy evasive creatures, Edric draws cards, mass pump for victory
+# Power Level 7/10 (slightly lower due to removal of best finisher and best removal)
+# Turn 7-8 average win (one turn slower without Beastmaster Ascension)

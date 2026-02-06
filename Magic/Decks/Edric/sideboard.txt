@@ -1,0 +1,109 @@
+# Edric Sideboard - Meta Swaps and Upgrade Path
+
+## Meta-Specific Swaps
+
+### Against Aggro/Token Decks
+Swap out: 1-2 mass pump effects (Echoing Courage, Hunger of the Howlpack)
+Swap in: 
+- Aetherize ($0.40) - Bounce all attacking creatures, stops swarms
+- AEtherspouts ($1.50) - Tuck attacking creatures to bottom
+
+### Against Control/Counter-Heavy
+Swap out: 1-2 unprotected mass pump spells
+Swap in:
+- Autumn's Veil ($0.35) - Uncounterable, gives hexproof from blue
+- Veil of Summer ($1.50) - Draw a card, can't be countered, hexproof from blue/black
+
+### Against Board Wipe Heavy
+Swap out: 1-2 card draw spells (Brainstorm, Ponder)
+Swap in:
+- Heroic Intervention ($3.00) - Indestructible + hexproof for entire board
+- Wrap in Vigor ($0.30) - All creatures get "prevent damage, indestructible until end of turn"
+
+### Against Flyer-Heavy Decks
+Swap out: 1-2 unblockable creatures (lose effectiveness when opponents have flyers)
+Swap in:
+- Gravity Well ($0.25) - Flying creatures can be blocked by non-flyers
+- Silklash Spider ($0.30) - {X}{G}{G}: Deal X to all creatures with flying
+
+### Against Fast Combo
+Swap out: 1-2 slower mass pump effects (Biomass Mutation, Nacatl War-Pride)
+Swap in:
+- Summary Dismissal ($0.40) - Exile all spells and abilities on stack
+- Tale's End ($0.50) - Counter activated/triggered abilities
+
+## Flexible Slots (Cards that underperform in certain metas)
+
+1. **Murmuring Mystic** - Weak if not drawing many instants/sorceries
+   - Replace with: Ohran Viper ($0.30) - More reliable evasive creature
+
+2. **Hunger of the Howlpack** - Inconsistent without creature deaths
+   - Replace with: Giant Growth ($0.10) - More reliable combat trick
+
+3. **Daring Apprentice** - Dies easily, mana-intensive
+   - Replace with: Man-o'-War ($0.20) - More reliable tempo play
+
+4. **Awakening Zone** - Slow if board gets wiped
+   - Replace with: Kodama's Reach ($0.30) - More reliable ramp
+
+5. **Notorious Throng** - Dead card if no Rogues or can't deal combat damage
+   - Replace with: Coastal Piracy ($0.40) - More consistent card draw
+
+## Upgrade Path ($15-25 total investment)
+
+### Tier 1 Upgrades (Best bang for buck)
+1. **Reconnaissance** ($4.00) - Attack with everything, untap before damage if blocked
+2. **Beast Whisperer** ($1.50) - Draw engine for creatures
+3. **Guardian Project** ($2.00) - Backup Edric effect
+4. **Coastal Piracy** ($0.40) - Additional Edric effect
+5. **Mystic Remora** ($3.50) - Insane early card draw
+
+### Tier 2 Upgrades (Power boosts)
+6. **Craterhoof Behemoth** ($15-20) - Best finisher for creature decks (save up for this)
+7. **Triumph of the Hordes** ($8-12) - Infect finisher, kills in one hit
+8. **Sword of the Animist** ($2.00) - Equipment-based ramp
+9. **Coat of Arms** ($3.00) - Mass pump on permanent
+10. **Breeding Pool** ($12) - Best dual land for Simic
+
+### Tier 3 Upgrades (Optimization)
+11. **Rhystic Study** ($20+) - Best card draw in format (luxury upgrade)
+12. **Cyclonic Rift** ($3.50) - Already in main deck, ensure in budget deck
+13. **Consecrated Sphinx** ($25+) - Card draw engine (luxury)
+14. **Yavimaya Coast** ($1.50) - Pain land, better than guildgate
+15. **Hinterland Harbor** ($2.00) - Check land, better than enters tapped lands
+
+## Budget-to-Main Transition
+If playing budget deck and want to upgrade to main deck:
+1. Add Sol Ring ($1.50) - Best first upgrade
+2. Add Beastmaster Ascension ($3.00) - Best win condition
+3. Add Cyclonic Rift ($3.50) - Best removal
+4. Add Exotic Orchard ($0.75) - Better mana
+5. Add Reliquary Tower ($0.50) - No max hand size with Edric
+
+Total upgrade cost: $9.25 to go from budget to main deck
+
+## Cards to Avoid (Traps)
+- **Edric ETB doublers** (Panharmonicon) - Don't work with Edric's combat trigger
+- **Card draw doublers** (Alhammarret's Archive $8) - Win-more, overkill
+- **Wheels** (Windfall, Day's Undoing) - Give opponents cards too
+- **Extra combat** (Aggravated Assault) - Better to just win with one combat + pump
+- **Expensive creatures** (>3 CMC without evasion) - Too slow, miss Edric triggers
+
+## Meta-Specific Additions
+
+### Casual/Battlecruiser Meta
+Add: More expensive finishers, fewer counterspells
+- In: Crater's Claws ($0.25), Genesis Wave ($1.00), Rite of Replication ($1.50)
+- Out: Counterspell, Negate, some protection
+
+### Competitive/cEDH-Adjacent Meta
+Add: Fast mana, more interaction, cheaper creatures
+- In: Mana Crypt ($150 - only if very competitive), extra counterspells, Flusterstorm ($15)
+- Out: Slower mass pump, 3+ CMC creatures, "fun" cards like Notorious Throng
+
+### Multiplayer Political Meta
+Add: Group hug effects, incentivize not attacking you
+- In: Rites of Flourishing ($2), Edric himself (draws for opponents too)
+- Out: Oppressive cards like Opposition, taxing effects
+
+Total sideboard budget: $3-5 for meta swaps, $15-25 for upgrade path

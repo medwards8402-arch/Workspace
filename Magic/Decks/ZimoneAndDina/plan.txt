@@ -1,0 +1,195 @@
+ZIMONE AND DINA - DECK PLAN & ANALYSIS
+======================================
+
+COMMANDER OVERVIEW
+==================
+Zimone and Dina {B}{G}{U} - Legendary Creature — Human Dryad (3/4)
+- Whenever you draw your second card each turn, target opponent loses 2 life and you gain 2 life.
+- {T}, Sacrifice another creature: Draw a card. You may put a land from your hand onto the battlefield tapped. If you control 8+ lands, repeat this process once.
+
+Commander Cost: ~$0.36 (well under $5 limit)
+
+CORE STRATEGY
+=============
+
+Primary Win Condition: Life Drain
+---------------------------------
+The deck aims to trigger Zimone and Dina's drain ability as often as possible:
+- Each trigger = 2 life loss to opponent + 2 life gain for you
+- In a 4-player game, targeting each opponent once per turn cycle = 6 damage dealt, 6 life gained
+- Combined with aristocrats effects (Blood Artist, Zulaport Cutthroat), each sacrifice = additional drain
+
+Secondary Win Condition: Big Mana Finishers
+-------------------------------------------
+- Exsanguinate (X = each opponent loses X, you gain that much)
+- Debt to the Deathless (X = each opponent loses 2X, you gain life equal to total lost)
+- Villainous Wealth (steal opponent's deck)
+
+Tertiary: Landfall Beatdown
+---------------------------
+- Rampaging Baloths (4/4s on landfall)
+- Avenger of Zendikar (plant army)
+- Tatyova, Benthic Druid (draw + life on landfall)
+
+ENGINE BREAKDOWN
+================
+
+Draw Second Card Triggers (12 cards):
+-------------------------------------
+Cards that help you draw your second card each turn:
+1. Brainstorm - Instant draw 3, enables trigger anytime
+2. Temple Bell - Tap to draw (each player), can use on opponents' turns
+3. Howling Mine - Each player draws extra card on upkeep (triggers on YOUR upkeep)
+4. Dictate of Kruphix - Flash, each player draws extra on upkeep
+5. Curse of Verbosity - Draw when enchanted player is attacked
+6. Horn of Greed - Draw when playing lands (synergy with Zimone's ability!)
+7. Phyrexian Arena - Draw on YOUR upkeep (guarantees 2nd card draw)
+8. Heartwood Storyteller - Draw when noncreature spells cast
+9. Secrets of the Dead - Draw when casting from graveyard
+10. Notion Thief - Opponents' draws become YOUR draws (combo with group draw!)
+11. Monastery Siege - Either draw/discard or tax opponents
+12. Kumena's Awakening - Each player draws on upkeep (Ascend version only you draw)
+
+Key Synergy: Notion Thief + Howling Mine/Dictate = Opponents draw nothing, you draw everything!
+
+Sacrifice Fodder (10 cards):
+----------------------------
+Cheap or recurring creatures to feed Zimone's tap ability:
+1. Reassembling Skeleton - 1B: Return from GY to battlefield
+2. Persistent Specimen - 1B: Return from GY to battlefield  
+3. Awakening Zone - Makes 0/1 Eldrazi Spawn each upkeep (sac for mana OR Zimone)
+4. From Beyond - Makes 1/1 Eldrazi Scion each upkeep
+5. Jadar, Ghoulcaller of Nephalia - Makes 2/2 Zombie each end step
+6. Tireless Provisioner - Makes Food/Treasure on landfall (sac for Zimone synergy)
+7. Blight Mound - Makes 1/1 Pest when nontoken creature dies (chain sacrifices!)
+8. Shambling Ghast - Dies: drain 1 OR make Treasure
+9. Sanitarium Skeleton - 1B: Return from GY to hand
+10. Squirrel Nest - Enchant land: tap for 1/1 Squirrel
+
+VULNERABILITY ANALYSIS
+======================
+
+1. Commander Removal
+   Problem: Deck relies heavily on Zimone and Dina
+   Solutions:
+   - Swiftfoot Boots / Lightning Greaves for hexproof/shroud
+   - Snakeskin Veil for instant protection
+   - Aristocrats effects work without commander (Blood Artist, etc.)
+   - Big mana finishers (Exsanguinate) don't need commander
+
+2. Graveyard Hate
+   Problem: Reassembling Skeleton, Persistent Specimen, Secrets of the Dead rely on GY
+   Solutions:
+   - Most of the deck doesn't rely on graveyard
+   - Token generators (Awakening Zone, etc.) are GY-independent
+   - Main strategy is draw triggers, not GY recursion
+   - Sideboard has Loaming Shaman for reshuffle
+
+3. Enchantment/Artifact Hate
+   Problem: Draw engines (Howling Mine, etc.) are artifacts/enchantments
+   Solutions:
+   - Deck has 6 removal spells including Nature's Claim, Beast Within
+   - Redundancy in draw engines (12 cards)
+   - Commander provides card advantage independently
+
+4. Board Wipes
+   Problem: Token generators and creatures get swept
+   Solutions:
+   - Recurring creatures (Reassembling Skeleton, Sanitarium Skeleton)
+   - Enchantment-based token generators survive creature wipes
+   - Low CMC curve allows quick rebuilding
+   - Aristocrats trigger on death (benefit from wipes!)
+
+MANA CURVE ANALYSIS
+===================
+CMC 0: 0 cards
+CMC 1: ~8 cards (Brainstorm, cantrips, cheap creatures)
+CMC 2: ~18 cards (signets, 2-drop ramp, sac fodder)
+CMC 3: ~15 cards (commander, key pieces)
+CMC 4: ~10 cards (win conditions, payoffs)
+CMC 5: ~6 cards (Avenger, finishers)
+CMC 6+: ~4 cards (big finishers)
+
+Average CMC: ~3.0 (healthy for midrange strategy)
+
+BUDGET BREAKDOWN (Main Deck ~$42)
+=================================
+Commander: $0.36
+Lands (non-basic): ~$3.00
+Ramp Package: ~$4.00
+Draw Engine: ~$6.00
+Token Generators: ~$4.00
+Sacrifice Payoffs: ~$5.00
+Landfall Synergy: ~$2.50
+Win Conditions: ~$3.00
+Removal: ~$4.50
+Protection: ~$3.00
+Unique/Fun: ~$4.00
+Basics: $0.00
+
+Total: ~$40-45 (well under $60 target)
+
+GAMEPLAY GUIDE
+==============
+
+Early Game (Turns 1-3):
+-----------------------
+- Prioritize ramp: Sol Ring, signets, land ramp
+- Play draw engines when possible (Howling Mine, Dictate)
+- Set up token generators (Awakening Zone)
+
+Mid Game (Turns 4-6):
+---------------------
+- Cast Zimone and Dina
+- Start sacrificing tokens for draw + land drops
+- Trigger drain ability each turn
+- Deploy aristocrats effects
+
+Late Game (Turns 7+):
+---------------------
+- Should have 8+ lands for doubled Zimone ability
+- Massive Exsanguinate or Debt to the Deathless
+- Villainous Wealth for blowout plays
+- Avenger of Zendikar for token army
+
+COMBO HIGHLIGHTS
+================
+
+1. Notion Thief + Howling Mine/Dictate of Kruphix
+   - Opponents' card draws are replaced with your draws
+   - Each opponent's upkeep, you draw instead of them
+   - Locks opponents out of resources while you draw 4+ cards/turn
+
+2. Zimone + 8 Lands + Recurring Creature
+   - Sacrifice, draw 2, put 2 lands into play
+   - Each activation = 2 Zimone triggers = 4 life drain
+   - With Reassembling Skeleton, can activate multiple times per turn
+
+3. Blood Artist + Awakening Zone + Sac Outlet
+   - Each Eldrazi Spawn sacrifice = drain 1 (Blood Artist)
+   - Feeds Zimone for draw + land + 2 life drain
+   - Self-sustaining engine
+
+FINAL CHECKLIST
+===============
+✓ Exactly 100 cards (99 + Commander)
+✓ Budget under $60 (estimated ~$42)
+✓ No card over $5 individually
+✓ 36 lands + 12 ramp = adequate mana
+✓ 12 draw engine cards
+✓ 5 win conditions
+✓ 6 removal spells
+✓ 3 protection pieces
+✓ Graveyard hate (Bojuka Bog)
+✓ Artifact/enchantment removal (Nature's Claim, Beast Within)
+✓ Backup win conditions without commander
+✓ Color identity verified (all cards BUG)
+✓ TappedOut format for easy import
+
+POWER LEVEL: 6/10
+=================
+- Consistent but not explosive
+- Multiple paths to victory
+- Resilient to removal
+- Good in casual/mid-power pods
+- May struggle against fast combo or heavy stax

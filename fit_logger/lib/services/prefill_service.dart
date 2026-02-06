@@ -10,12 +10,22 @@ class PrefillService {
 
   PrefillService(this._repository);
 
-  /// Get pre-filled exercise log based on last performance
+  /// Get pre-filled exercise log based on planned details or last performance
   Future<ExerciseLog?> getPrefillData({
     required String sessionId,
     required String exerciseId,
   }) async {
-    // Get the last workout log for this session
+    // First, check if there are planned details for this exercise in the session
+    final session = await _repository.getSession(sessionId);
+    if (session != null) {
+      final plannedDetails = session.getPlannedDetails(exerciseId);
+      if (plannedDetails != null) {
+        // Use planned details to create prefill log
+        return _createLogFromPlannedDetails(exerciseId, plannedDetails);
+      }
+    }
+
+    // No planned details, get the last workout log for this session
     final lastLog = await _repository.getLastLogForSession(sessionId);
     
     if (lastLog == null) {
@@ -36,6 +46,71 @@ class PrefillService {
 
     // Apply progressive overload based on difficulty and measurement type
     return _applyProgressiveOverload(lastExerciseLog);
+  }
+
+  /// Create an exercise log from planned details
+  ExerciseLog? _createLogFromPlannedDetails(String exerciseId, dynamic plannedDetails) {
+    final exercise = _repository.getExercise(exerciseId);
+    if (exercise == null) return null;
+
+    final now = DateTime.now();
+    final id = 'temp_${now.millisecondsSinceEpoch}'; // Temporary ID
+
+    switch (exercise.measurementType) {
+      case MeasurementType.repsOnly:
+        return RepsOnlyLog(
+          id: id,
+          exerciseId: exerciseId,
+          exerciseName: exercise.name,
+          difficulty: Difficulty.medium,
+          notes: plannedDetails.notes ?? 'From plan: ${plannedDetails.getSummary()}',
+          timestamp: now,
+          sets: plannedDetails.plannedSets ?? 3,
+          repsPerSet: List<int>.from(plannedDetails.plannedRepsPerSet ?? [10, 10, 10]),
+        );
+
+      case MeasurementType.repsWeight:
+        return RepsWeightLog(
+          id: id,
+          exerciseId: exerciseId,
+          exerciseName: exercise.name,
+          difficulty: Difficulty.medium,
+          notes: plannedDetails.notes ?? 'From plan: ${plannedDetails.getSummary()}',
+          timestamp: now,
+          sets: plannedDetails.plannedSets ?? 3,
+          repsPerSet: List<int>.from(plannedDetails.plannedRepsPerSet ?? [10, 10, 10]),
+          weightsPerSet: List<double>.from(plannedDetails.plannedWeightsPerSet ?? [20.0, 20.0, 20.0]),
+        );
+
+      case MeasurementType.timeDistance:
+        return TimeDistanceLog(
+          id: id,
+          exerciseId: exerciseId,
+          exerciseName: exercise.name,
+          difficulty: Difficulty.medium,
+          notes: plannedDetails.notes ?? 'From plan: ${plannedDetails.getSummary()}',
+          timestamp: now,
+          duration: plannedDetails.plannedDuration ?? const Duration(minutes: 30),
+          distance: plannedDetails.plannedDistance ?? 5.0,
+          speed: null,
+        );
+
+      case MeasurementType.intervals:
+        return IntervalsLog(
+          id: id,
+          exerciseId: exerciseId,
+          exerciseName: exercise.name,
+          difficulty: Difficulty.medium,
+          notes: plannedDetails.notes ?? 'From plan: ${plannedDetails.getSummary()}',
+          timestamp: now,
+          intervalCount: plannedDetails.plannedIntervalCount ?? 5,
+          runDurations: List<Duration>.from(plannedDetails.plannedRunDurations ?? 
+              List.generate(5, (_) => const Duration(minutes: 2))),
+          walkDurations: List<Duration>.from(plannedDetails.plannedWalkDurations ?? 
+              List.generate(5, (_) => const Duration(minutes: 1))),
+          speeds: [],
+        );
+    }
   }
 
   /// Apply progressive overload suggestions based on last performance

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../../core/constants/enums.dart';
+import 'planned_exercise_details.dart';
 
 /// Mutable workout session template containing exercises
 @immutable
@@ -7,6 +8,7 @@ class WorkoutSession {
   final String id;
   final String name;
   final List<String> exerciseIds;
+  final Map<String, PlannedExerciseDetails> plannedDetails;
   final WeekDay? plannedDay;
   final bool isActive;
   final bool completedThisWeek;
@@ -18,6 +20,7 @@ class WorkoutSession {
     required this.id,
     required this.name,
     required this.exerciseIds,
+    this.plannedDetails = const {},
     this.plannedDay,
     this.isActive = true,
     this.completedThisWeek = false,
@@ -31,6 +34,7 @@ class WorkoutSession {
     String? id,
     String? name,
     List<String>? exerciseIds,
+    Map<String, PlannedExerciseDetails>? plannedDetails,
     WeekDay? plannedDay,
     bool? clearPlannedDay,
     bool? isActive,
@@ -44,6 +48,7 @@ class WorkoutSession {
       id: id ?? this.id,
       name: name ?? this.name,
       exerciseIds: exerciseIds ?? this.exerciseIds,
+      plannedDetails: plannedDetails ?? this.plannedDetails,
       plannedDay: clearPlannedDay == true ? null : (plannedDay ?? this.plannedDay),
       isActive: isActive ?? this.isActive,
       completedThisWeek: completedThisWeek ?? this.completedThisWeek,
@@ -53,6 +58,25 @@ class WorkoutSession {
           : (lastCompletedDate ?? this.lastCompletedDate),
       createdAt: createdAt ?? this.createdAt,
     );
+  }
+
+  /// Add or update planned details for an exercise
+  WorkoutSession setPlannedDetails(String exerciseId, PlannedExerciseDetails details) {
+    final newPlannedDetails = Map<String, PlannedExerciseDetails>.from(plannedDetails);
+    newPlannedDetails[exerciseId] = details;
+    return copyWith(plannedDetails: newPlannedDetails);
+  }
+
+  /// Remove planned details for an exercise
+  WorkoutSession removePlannedDetails(String exerciseId) {
+    final newPlannedDetails = Map<String, PlannedExerciseDetails>.from(plannedDetails);
+    newPlannedDetails.remove(exerciseId);
+    return copyWith(plannedDetails: newPlannedDetails);
+  }
+
+  /// Get planned details for an exercise
+  PlannedExerciseDetails? getPlannedDetails(String exerciseId) {
+    return plannedDetails[exerciseId];
   }
 
   /// Add an exercise to the session
@@ -67,9 +91,11 @@ class WorkoutSession {
 
   /// Remove an exercise from the session
   WorkoutSession removeExercise(String exerciseId) {
-    return copyWith(
+    final newSession = copyWith(
       exerciseIds: exerciseIds.where((id) => id != exerciseId).toList(),
     );
+    // Also remove planned details for this exercise
+    return newSession.removePlannedDetails(exerciseId);
   }
 
   /// Mark the session as complete for this week

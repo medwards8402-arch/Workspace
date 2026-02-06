@@ -26,13 +26,15 @@ class WorkoutSessionHiveAdapter extends TypeAdapter<WorkoutSessionHive> {
       weekStartDate: fields[6] as DateTime,
       lastCompletedDate: fields[7] as DateTime?,
       createdAt: fields[8] as DateTime,
+      plannedDetailsMap:
+          (fields[9] as Map?)?.cast<String, PlannedExerciseDetailsHive>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, WorkoutSessionHive obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -50,7 +52,9 @@ class WorkoutSessionHiveAdapter extends TypeAdapter<WorkoutSessionHive> {
       ..writeByte(7)
       ..write(obj.lastCompletedDate)
       ..writeByte(8)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(9)
+      ..write(obj.plannedDetailsMap);
   }
 
   @override

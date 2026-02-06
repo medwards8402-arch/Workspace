@@ -1,0 +1,252 @@
+ARAUMI - INTERACTION & SUPPORT PACKAGES
+========================================
+
+PHASE 6: INTERACTION PACKAGE
+=============================
+Goal: 5 removal pieces (4-6 range for 1-hour meta)
+
+REMOVAL SELECTION:
+==================
+
+Spot Removal (3 pieces):
+1. Reality Shift (1U) - $0.25
+   - Exile creature, opponent gets 2/2 manifest
+   - Instant speed, deals with indestructible
+   
+2. Victim of Night (BB) - $0.10
+   - Destroy nonblack, nonvampire, nonwerewolf creature
+   - Instant speed, cheap CMC, very few restrictions in practice
+
+3. Go for the Throat (1B) - $0.75
+   - Destroy nonartifact creature
+   - Instant speed, efficient, cheap
+
+Board Wipes (2 pieces):
+4. Crux of Fate (3BB) - $0.50
+   - Choose: destroy all dragons OR all non-dragons
+   - Budget alternative to Toxic Deluge
+   - Works with our ETB strategy (encore after wipe)
+
+5. Crypt Incursion (2B) - $0.10
+   - WAIT - this is graveyard hate, not board wipe
+   - REPLACE: Decree of Pain (6BB) - $0.75
+   - Destroy all creatures, draw card for each (or cycle)
+
+REVISED INTERACTION PACKAGE:
+1. Reality Shift - $0.25
+2. Victim of Night - $0.10
+3. Go for the Throat - $0.75
+4. Crux of Fate - $0.50
+5. Deadly Rollick (3B) - $8.00 - TOO EXPENSIVE
+
+BUDGET-CONSCIOUS REVISION:
+1. Reality Shift - $0.25
+2. Victim of Night - $0.10
+3. Go for the Throat - $0.75
+4. Crux of Fate - $0.50
+5. Murder (1BB) - $0.10
+
+Interaction Subtotal: $1.70
+
+BUDGET DECK VERSION (same cards, all budget-friendly):
+Same as main deck - $1.70
+
+
+PHASE 7: SUPPORT PACKAGE
+=========================
+
+CARD DRAW - Target: 8 cards
+============================
+Note: Many ETB creatures already provide draw (Mulldrifter, Sea Gate Oracle, Phyrexian Rager, Dusk Legion Zealot, Baleful Strix)
+
+Additional Draw Spells:
+1. Night's Whisper (1B) - $0.50 - Sorcery: draw 2, lose 2 life
+2. Sign in Blood (BB) - $0.25 - Instant: draw 2, lose 2 life
+3. Deep Analysis (3U) - $0.15 - Sorcery: draw 2, flashback 1UB
+4. Brainstorm (U) - $1.50 - Instant: draw 3, put 2 back
+5. Ponder (U) - $1.00 - Sorcery: look at top 3, draw 1
+6. Preordain (U) - $0.50 - Sorcery: scry 2, draw 1
+7. Read the Bones (2B) - $0.10 - Sorcery: scry 2, draw 2, lose 2 life
+8. Fact or Fiction (3U) - $0.50 - Instant: reveal top 5, opponent splits into piles
+
+Draw Cards from ETB Creatures (already counted):
+- Mulldrifter, Sea Gate Oracle, Phyrexian Rager, Dusk Legion Zealot, Baleful Strix = 5 creatures
+
+Additional Draw Needed: 3 cards
+1. Night's Whisper - $0.50
+2. Deep Analysis - $0.15
+3. Read the Bones - $0.10
+
+Draw Subtotal: $0.75
+
+BUDGET DECK VERSION:
+Same cards - $0.75
+
+
+RAMP - Target: 10 cards
+========================
+1. Sol Ring (1) - $1.50 - STAPLE
+2. Arcane Signet (2) - $0.50
+3. Dimir Signet (2) - $0.50
+4. Talisman of Dominance (2) - $0.75
+5. Mind Stone (2) - $0.25
+6. Wayfarer's Bauble (1) - $0.25
+7. Thought Vessel (2) - $1.00
+8. Charcoal Diamond (2) - $0.15
+9. Fellwar Stone (2) - $1.00
+10. Commander's Sphere (3) - $0.25
+
+Ramp Subtotal: $6.15
+
+BUDGET DECK VERSION (swap expensive pieces):
+1. Sol Ring - $1.50 (too good to cut)
+2. Arcane Signet - $0.50
+3. Dimir Signet - $0.50
+4. Talisman of Dominance - $0.75
+5. Mind Stone - $0.25
+6. Wayfarer's Bauble - $0.25
+7. Sky Diamond (2) - $0.10 (replaces Thought Vessel)
+8. Charcoal Diamond - $0.15
+9. Coldsteel Heart (2) - $0.50 (replaces Fellwar Stone)
+10. Commander's Sphere - $0.25
+
+Budget Ramp: $4.75 (saves $1.40)
+
+
+LANDS - Target: 37 cards
+=========================
+Land Budget: Main $8-18, Budget $3-8
+
+Color Requirements: UB (Dimir)
+- Need consistent UU for Araumi turn 3
+- Need BB for Gary and other cards
+- Minimal color fixing needed (only 2 colors)
+
+LAND BREAKDOWN:
+
+Dual Lands (12):
+1. Command Tower (0) - $0.50 - STAPLE
+2. Dimir Aqueduct (2U/B) - $0.25 - Bounce land
+3. Dismal Backwater (2UB) - $0.10 - Gain 1 life tapland
+4. Temple of Deceit (2UB) - $0.50 - Scry 1 tapland
+5. Tainted Isle (UB) - $0.75 - Untapped if swamp
+6. Choked Estuary (UB) - $0.50 - Untapped if <2 lands revealed
+7. Sunken Hollow (UB) - $0.75 - Basic land type, enters tapped
+8. Darkwater Catacombs (UB) - $0.50 - Pay 1 life for untapped
+9. Jwar Isle Refuge (2UB) - $0.15 - Gain 1 life tapland
+10. Submerged Boneyard (2UB) - $0.10 - Tapland
+11. Dimir Guildgate (2UB) - $0.10 - Tapland
+12. Evolving Wilds (0) - $0.10 - Fetch basic
+
+Utility Lands (4):
+13. Bojuka Bog (B) - $0.75 - ETB: exile opponent's GY (also GY hate insurance)
+14. Reliquary Tower (0) - $1.00 - No max hand size
+15. Lonely Sandbar (U) - $0.10 - Cycle 1
+16. Barren Moor (B) - $0.10 - Cycle 1
+
+Basic Lands (21):
+17-27. Island x11
+28-37. Swamp x10
+
+Land Subtotal: $6.25
+
+BUDGET DECK VERSION (cut Reliquary Tower, Tainted Isle, Sunken Hollow):
+1. Command Tower - $0.50
+2. Dimir Aqueduct - $0.25
+3. Dismal Backwater - $0.10
+4. Temple of Deceit - $0.50
+5. Choked Estuary - $0.50
+6. Darkwater Catacombs - $0.50
+7. Jwar Isle Refuge - $0.15
+8. Submerged Boneyard - $0.10
+9. Dimir Guildgate - $0.10
+10. Evolving Wilds - $0.10
+11. Terramorphic Expanse - $0.10 (replaces Tainted Isle)
+12. Bojuka Bog - $0.75
+13. Lonely Sandbar - $0.10
+14. Barren Moor - $0.10
+15-26. Island x12 (was 11)
+27-37. Swamp x11 (was 10)
+
+Budget Lands: $3.85 (saves $2.40)
+
+
+SUPPORT PACKAGE SUMMARY
+========================
+Card Draw: 3 spells + 5 ETB creatures = 8 total - $0.75
+Ramp: 10 artifacts - $6.15 (budget: $4.75)
+Lands: 37 lands - $6.25 (budget: $3.85)
+
+Support Subtotal (Main): $13.15
+Support Subtotal (Budget): $9.35
+
+
+RUNNING DECK TOTALS
+====================
+Commander: Araumi of the Dead Tide - $0.50
+
+MAIN DECK:
+Core Strategy: $33.70
+Interaction: $1.70
+Support: $13.15
+TOTAL: $48.55 (within $45-55 range) ✓
+
+BUDGET DECK:
+Core Strategy: $16.00
+Interaction: $1.70
+Support: $9.35
+TOTAL: $26.55 (within $23-28 range) ✓
+
+CARD COUNT:
+Commander: 1
+Engine: 12
+Synergy (ETB creatures): 20
+Protection: 3
+Unique: 4
+Removal: 5
+Draw: 3 (5 more from ETBs)
+Ramp: 10
+Lands: 37
+TOTAL: 95 cards
+
+MISSING: 5 cards to reach 100
+
+PROBLEM: We need 5 more cards. Let me recalculate...
+
+CARD RECOUNT:
+1. Araumi (commander)
+2-13. Engine (12): Thought Scour, Mental Note, Dream Twist, Perpetual Timepiece, Folio of Fancies, Millikin, Stitcher's Supplier, Altar of Dementia, Merfolk Secretkeeper, Drowned Secrets, Shriekhorn, Vessel of Paramnesia
+14-33. Synergy (20): Gray Merchant, Mulldrifter, Sea Gate Oracle, Phyrexian Rager, Dusk Legion Zealot, Archaeomancer, Mnemonic Wall, Possessed Skaab, Fleshbag Marauder, Plaguecrafter, Ravenous Chupacabra, Man-o'-War, Solemn Simulacrum, Gonti, Peregrine Drake, Cloud of Faeries, Woe Strider, Sidisi, Baleful Strix, Kokusho
+34-36. Protection (3): Lightning Greaves, Swiftfoot Boots, Kaya's Ghostform
+37-40. Unique (4): Gravecrawler, Spark Double, Dire Fleet Ravager, Hostage Taker
+41-45. Removal (5): Reality Shift, Victim of Night, Go for the Throat, Crux of Fate, Murder
+46-48. Draw (3): Night's Whisper, Deep Analysis, Read the Bones
+49-58. Ramp (10): Sol Ring, Arcane Signet, Dimir Signet, Talisman, Mind Stone, Wayfarer's Bauble, Thought Vessel, Charcoal Diamond, Fellwar Stone, Commander's Sphere
+59-95. Lands (37): listed above
+
+TOTAL: 95 cards
+
+Need to add 5 more cards. Let me add versatile cards:
+
+ADDITIONAL CARDS (5):
+96. Tragic Slip (B) - $0.15 - Instant removal, morbid -13/-13
+97. Disfigure (B) - $0.10 - Instant removal, -2/-2
+98. Vraska's Contempt (2BB) - $0.25 - Exile creature/planeswalker, gain 2 life
+99. Siren Stormtamer (U) - $0.15 - Counter spell targeting permanent you control
+100. Supernatural Stamina (B) - $0.10 - Regenerate creature, return with +1/+1 counter
+
+Main Deck Addition: $0.75
+Budget Deck: Same cards - $0.75
+
+FINAL TOTALS:
+=============
+MAIN DECK: $48.55 + $0.75 = $49.30 ✓ (within $45-55)
+BUDGET DECK: $26.55 + $0.75 = $27.30 ✓ (within $23-28)
+CARDS: 100 exactly ✓
+
+
+NEXT PHASE:
+===========
+Phase 8: Vulnerability analysis
+Phase 9: Deck validation (verify counts, curve, budget)
+Phase 10: Create documentation files

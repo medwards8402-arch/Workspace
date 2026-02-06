@@ -1,0 +1,160 @@
+ZIMONE AND DINA - SIDEBOARD
+============================
+
+BUDGET ALTERNATIVE CARDS ($3-5 total)
+=====================================
+These cards can be swapped in for testing or meta adjustments.
+All cards apply to the MAIN deck (budget deck already uses cheaper alternatives).
+
+META-SPECIFIC SWAPS
+===================
+
+Against Graveyard Strategies:
+-----------------------------
+1. Nihil Spellbomb (1) - $0.25
+   ETB: {T}, Sac: Exile target player's graveyard, draw 1
+   
+   Swap for: Secrets of the Dead (less relevant without graveyard play)
+   When: Facing reanimator, dredge, flashback decks
+
+2. Soul-Guide Lantern (1) - $0.25
+   ETB: Exile target card from a graveyard
+   {T}, Sac: Exile each opponent's graveyard
+   {1}, {T}, Sac: Draw a card
+   
+   Swap for: Monastery Siege
+   When: Need instant-speed graveyard hate
+
+3. Bojuka Bog (land) - $0.50
+   Already in deck, but consider adding second copy via:
+   
+   Swap for: Guildless Commons
+   When: Graveyard decks are common in your meta
+
+Against Enchantment/Artifact Heavy Decks:
+-----------------------------------------
+4. Naturalize (1G) - $0.10
+   Destroy target artifact or enchantment
+   
+   Swap for: Snakeskin Veil
+   When: Facing enchantment-based strategies (Zur, enchantress)
+
+5. Reclamation Sage (2G) - $0.25
+   ETB: Destroy target artifact or enchantment
+   Sac fodder that provides value!
+   
+   Swap for: Shambling Ghast
+   When: Need repeatable artifact/enchantment removal
+
+6. Caustic Caterpillar (G) - $0.15
+   {1}{G}, Sac: Destroy target artifact or enchantment
+   
+   Swap for: Sanitarium Skeleton
+   When: Need cheap removal that can be recurred
+
+Against Token Strategies:
+-------------------------
+7. Virulent Plague (2B) - $0.25
+   Creature tokens get -2/-2
+   Shuts down token strategies entirely
+   
+   Swap for: One sac fodder card (Blisterpod or Doomed Dissenter)
+   When: Facing token-heavy metas (Krenko, Rhys, Adrix/Nev)
+
+8. Illness in the Ranks (B) - $0.15
+   Creature tokens get -1/-1
+   
+   Swap for: Persistent Specimen
+   When: Need cheap token hate
+
+FLEXIBLE SLOTS
+==============
+
+Alternative Draw Engines:
+-------------------------
+9. Thassa's Bounty (5U) - $0.10
+   Draw 3 cards, target player mills 3
+   High CMC but cheap and card-efficient
+   
+   Swap for: Winged Words
+   When: Need more raw card draw
+
+10. Soul of the Harvest (4GG) - $0.25
+    Whenever another nontoken creature ETBs, draw a card
+    
+    Swap for: Rampaging Baloths
+    When: Creature-heavy builds
+
+Alternative Win Conditions:
+---------------------------
+11. Consume Spirit (XBB) - $0.15
+    Deal X damage to any target, gain X life
+    
+    Swap for: Essence Drain
+    When: Need more efficient drain
+
+12. Corrupt (5B) - $0.10
+    Deal damage equal to Swamps you control, gain that life
+    
+    Swap for: Essence Drain
+    When: Running more Swamps
+
+Alternative Sacrifice Fodder:
+-----------------------------
+13. Typhoid Rats (B) - $0.10
+    Deathtouch 1/1
+    Cheap, discourages attacks
+    
+    Swap for: Blisterpod
+    When: Need defensive creatures
+
+14. Nested Shambler (B) - $0.15
+    When dies, create X 1/1 Squirrels (X = power)
+    Creates tokens when it dies!
+    
+    Swap for: Shambling Ghast
+    When: Want more token generation on death
+
+15. Tukatongue Thallid (G) - $0.10
+    When dies, create 1/1 Saproling
+    
+    Swap for: Blisterpod
+    When: Need green creature for color balance
+
+SITUATIONAL TECH
+================
+
+16. Loaming Shaman (2G) - $0.25
+    ETB: Target player shuffles any number of cards from their GY into library
+    Graveyard hate that can also reset your own graveyard
+    
+    Swap for: Morbid Opportunist
+    When: Need flexible graveyard interaction
+
+17. Llanowar Visionary (1GG) - $0.10
+    ETB: Draw a card
+    {T}: Add {G}
+    Ramp + draw trigger!
+    
+    Swap for: Farhaven Elf
+    When: Want more draw triggers
+
+18. Masked Vandal (1G) - $0.15
+    Changeling
+    ETB: Exile a creature card from your GY, exile target artifact/enchantment
+    
+    Swap for: Reclamation Sage
+    When: Have graveyard fodder to exile
+
+SIDEBOARD TOTAL: ~$3.60
+=======================
+
+These cards provide flexibility for:
+- Graveyard hate (5 options)
+- Artifact/enchantment removal (4 options)
+- Token hate (2 options)
+- Alternative draw (2 options)
+- Alternative win conditions (2 options)
+- Alternative sac fodder (3 options)
+
+All cards are under $0.50 each for easy acquisition.

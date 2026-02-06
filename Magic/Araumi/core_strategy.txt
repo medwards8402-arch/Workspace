@@ -1,0 +1,202 @@
+ARAUMI - CORE STRATEGY BUILD
+============================
+
+PHASE 5: CORE STRATEGY COMPONENTS
+==================================
+
+ENGINE CARDS (Self-Mill) - Target: 12 cards
+============================================
+Goal: Fill graveyard with encore targets and provide fuel for Araumi
+
+Tier 1 - Instant Speed Self-Mill (Priority):
+1. Thought Scour (U) - $0.25 - Instant, mill 2, draw 1
+2. Mental Note (1U) - $0.15 - Instant, mill 5, draw 1
+3. Obsessive Search (U) - $0.10 - Instant, mill yourself when discarded
+4. Dream Twist (U) - $0.10 - Instant, mill 3, flashback U
+
+Tier 2 - Repeatable Self-Mill:
+5. Perpetual Timepiece (2) - $0.50 - {T}: Mill 2, can shuffle GY back if needed
+6. Folio of Fancies (1U) - $0.50 - Each player draws cards, mill on activation
+7. Millikin (2) - $0.25 - Tap for mana, mill 1
+8. Altar of Dementia (2) - $4.00 - Sacrifice creature: mill target = power
+
+Tier 3 - Bulk Self-Mill:
+9. Mire's Toll (B) - $0.10 - Opponent discards, you can discard for swamp count
+10. Stitcher's Supplier (B) - $0.40 - ETB and death: mill 3
+11. Mesmeric Orb (2) - $8.00 - Each untap: mill 1 (TOO EXPENSIVE - SKIP)
+12. Perpetual Timepiece is enough repeatable
+
+REVISED ENGINE (Budget Conscious):
+1. Thought Scour - $0.25
+2. Mental Note - $0.15
+3. Dream Twist - $0.10
+4. Perpetual Timepiece - $0.50
+5. Folio of Fancies - $0.50
+6. Millikin - $0.25
+7. Stitcher's Supplier - $0.40
+8. Altar of Dementia - $4.00 (HIGH IMPACT SACRIFICE OUTLET + MILL)
+9. Merfolk Secretkeeper (U) - $0.10 - Adventure: mill 4
+10. Drowned Secrets (1U) - $0.25 - Cast blue spell: mill 2
+11. Shriekhorn (1) - $0.15 - Charge counter mill artifact
+12. Vessel of Paramnesia (1U) - $0.10 - Mill 3, sacrifice for recursion
+
+Engine Subtotal: ~$6.75
+
+
+SYNERGY CARDS (ETB Creatures) - Target: 20 cards
+=================================================
+Goal: High-impact ETB effects that triple when encored
+
+Tier 1 - Win Condition ETBs:
+1. Gray Merchant of Asphodel (3BB) - $0.50 - ETB: drain = devotion (3 copies = ~30 drain)
+2. Kokusho, the Evening Star (4BB) - $6.00 - Death trigger: 15 drain/15 gain per opponent
+3. Bone Miser (4B) - $0.25 - Discard triggers (combo with other effects)
+
+Tier 2 - Value ETBs (Draw):
+4. Mulldrifter (4U) - $0.15 - ETB: draw 2 (3 copies = 6 cards)
+5. Sea Gate Oracle (2U) - $0.10 - ETB: scry 2, draw 1 (3 copies = scry 6, draw 3)
+6. Phyrexian Rager (2B) - $0.10 - ETB: draw 1, lose 1 life
+7. Baleful Strix (UB) - $2.50 - ETB: draw 1, deathtouch flyer
+8. Dusk Legion Zealot (1B) - $0.10 - ETB: draw 1
+
+Tier 3 - Recursion ETBs:
+9. Archaeomancer (2UU) - $0.15 - ETB: return instant/sorcery from GY
+10. Mnemonic Wall (4U) - $0.10 - ETB: return instant/sorcery from GY
+11. Skullwinder (2G) - $0.25 - SKIP (has green in cost)
+12. Possessed Skaab (3UB) - $0.25 - ETB: return instant/sorcery, mill 3
+
+Tier 4 - Removal ETBs:
+13. Fleshbag Marauder (2B) - $0.25 - ETB: each player sacrifices creature
+14. Plaguecrafter (2B) - $0.50 - ETB: each player sacrifices creature/planeswalker/discard
+15. Ravenous Chupacabra (2BB) - $0.15 - ETB: destroy target creature
+16. Man-o'-War (2U) - $0.10 - ETB: bounce creature
+
+Tier 5 - Utility ETBs:
+17. Solemn Simulacrum (4) - $1.50 - ETB: ramp, death: draw
+18. Pilgrim's Eye (3) - $0.10 - ETB: search basic land to hand
+19. Gonti, Lord of Luxury (2BB) - $0.50 - ETB: exile card from opponent, can cast
+20. Massacre Wurm (3BBB) - $5.00 - ETB: -2/-2 all opponent creatures, drain 2 per death
+
+REVISED SYNERGY (Optimized):
+1. Gray Merchant of Asphodel - $0.50 (PRIMARY WIN CON)
+2. Mulldrifter - $0.15
+3. Sea Gate Oracle - $0.10
+4. Phyrexian Rager - $0.10
+5. Dusk Legion Zealot - $0.10
+6. Archaeomancer - $0.15
+7. Mnemonic Wall - $0.10
+8. Possessed Skaab - $0.25
+9. Fleshbag Marauder - $0.25
+10. Plaguecrafter - $0.50
+11. Ravenous Chupacabra - $0.15
+12. Man-o'-War - $0.10
+13. Solemn Simulacrum - $1.50
+14. Gonti, Lord of Luxury - $0.50
+15. Peregrine Drake (4U) - $0.10 - ETB: untap 5 lands
+16. Cloud of Faeries (1U) - $0.10 - ETB: untap 2 lands
+17. Woe Strider (1BB) - $0.25 - ETB: scry 1, free sacrifice outlet
+18. Sidisi, Undead Vizier (3BB) - $1.00 - ETB: tutor any card
+19. Baleful Strix - $2.50
+20. Kokusho, the Evening Star - $6.00 (SECONDARY WIN CON)
+
+Synergy Subtotal: ~$14.40
+
+
+WIN CONDITIONS - Target: 4 cards
+=================================
+Primary: Gray Merchant of Asphodel
+- 3 copies via encore = ~30 life drain total
+- Devotion count: Araumi (2) + Gary (2) + other permanents
+- Turn 5-6 win potential
+
+Secondary: Kokusho, the Evening Star
+- 3 copies = 15 damage per opponent, 45 life gain
+- Death triggers stack
+- 6 mana to encore (exile 6 from GY)
+
+Tertiary: Woe Strider + Altar of Dementia
+- Encore Woe Strider: 3 copies with 3 scapegoats
+- Sacrifice all 6 creatures to Altar
+- Mill 20-30 cards, encore more creatures
+- Loop until opponents milled out
+
+Quaternary: Sidisi, Undead Vizier
+- Encore Sidisi: tutor 3 cards
+- Assemble combo pieces or answers
+- Backup plan if graveyard disrupted
+
+Win Condition Cards (already counted above):
+1. Gray Merchant of Asphodel (synergy card)
+2. Kokusho, the Evening Star (synergy card)
+3. Woe Strider (synergy card)
+4. Altar of Dementia (engine card - doubles as win con)
+
+
+PROTECTION CARDS - Target: 3 cards
+===================================
+Goal: Protect graveyard and Araumi
+
+1. Lightning Greaves (2) - $5.00 - Haste, shroud, equip 0
+2. Swiftfoot Boots (2) - $1.50 - Haste, hexproof, equip 1
+3. Perpetual Timepiece (2) - $0.50 - Already counted in engine, shuffles GY back if needed
+
+REVISED PROTECTION:
+1. Lightning Greaves - $5.00 (protect Araumi)
+2. Swiftfoot Boots - $1.50 (backup protection)
+3. Kaya's Ghostform (B) - $0.15 - Enchant creature, returns when dies
+
+Protection Subtotal: ~$6.65
+
+
+UNIQUE/FUN CARDS - Target: 4 cards
+===================================
+Goal: Non-obvious cards that aren't just "encore again"
+
+1. Gravecrawler (B) - $2.00
+   - Cast from graveyard with zombie
+   - Not ETB, but great sacrifice fodder for Altar
+   - Unique: Recursive without ETB spam
+
+2. Spark Double (3U) - $3.00
+   - ETB: Copy creature or planeswalker, +1/+1 counter
+   - Unique: Copy Araumi for double encore capability
+   - Can encore itself for 3 copies
+
+3. Dire Fleet Ravager (3BB) - $0.50
+   - ETB: Each player loses 1/3 life rounded up
+   - 3 copies = 70% life loss total
+   - Unique: Scales with life totals, not devotion
+
+4. Hostage Taker (2UB) - $0.40
+   - ETB: Exile creature/artifact, can cast it
+   - 3 copies = steal 3 permanents
+   - Unique: Temporary steal, political tool
+
+Unique Cards Subtotal: ~$5.90
+
+
+CORE STRATEGY SUMMARY
+======================
+Total Cards: 49 (Engine: 12, Synergy: 20, Protection: 3, Unique: 4, Win Conditions: integrated)
+Total Cost: $33.70
+
+Remaining Budget:
+Main Deck: $45-55 budget → $12-22 for lands, ramp, draw, removal
+Budget Deck: $23-28 budget → Need cheaper alternatives for Lightning Greaves, Kokusho, Spark Double, Altar, Gravecrawler, Baleful Strix
+
+BUDGET DECK SWAPS (reduce ~$18):
+- Lightning Greaves ($5) → Commander's Plate ($0.50) 
+- Kokusho ($6) → Vindictive Vampire ($0.10)
+- Spark Double ($3) → Sakashima's Student ($0.50)
+- Altar of Dementia ($4) → Selhoff Occultist ($0.10)
+- Gravecrawler ($2) → Sanitarium Skeleton ($0.10)
+- Baleful Strix ($2.50) → Vodalian Zombie ($0.10)
+- Solemn Simulacrum ($1.50) → Burnished Hart ($0.25)
+
+Budget Version Core: ~$16.00 (savings of ~$17.70)
+
+
+NEXT PHASE:
+===========
+Phase 6: Build interaction package (5 removal, board wipes)
+Phase 7: Complete support package (8 draw, 10 ramp, 37 lands)

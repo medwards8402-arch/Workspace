@@ -1,6 +1,7 @@
 import 'package:uuid/uuid.dart';
 import '../domain/models/exercise.dart';
 import '../domain/models/workout_session.dart';
+import '../domain/models/planned_exercise_details.dart';
 import '../domain/models/workout_log.dart';
 import '../domain/models/exercise_log.dart';
 import '../domain/repositories/workout_repository.dart';
@@ -22,6 +23,7 @@ class WorkoutService {
   Future<WorkoutSession> createSession({
     required String name,
     List<String> exerciseIds = const [],
+    Map<String, PlannedExerciseDetails>? plannedDetails,
     WeekDay? plannedDay,
     bool isActive = true,
   }) async {
@@ -32,6 +34,7 @@ class WorkoutService {
       id: _uuid.v4(),
       name: name,
       exerciseIds: exerciseIds,
+      plannedDetails: plannedDetails ?? {},
       plannedDay: plannedDay,
       isActive: isActive,
       completedThisWeek: false,

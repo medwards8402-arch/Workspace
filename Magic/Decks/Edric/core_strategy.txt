@@ -1,0 +1,266 @@
+EDRIC, SPYMASTER OF TREST - CORE STRATEGY BUILD
+===============================================
+
+PHASE 5: CORE STRATEGY COMPONENTS
+==================================
+
+EVASIVE CREATURES - Target: 22-25 cards
+========================================
+Goal: Creatures that can't be blocked to trigger Edric
+
+Tier 1 - Flying (1 CMC):
+1. Hypnotic Siren (U) - $0.10 - 1/1 flyer
+2. Slither Blade (U) - $0.10 - 2/1 unblockable (BETTER than flyer!)
+3. Faerie Miscreant (U) - $0.10 - 1/1 flyer, draws card if you have another
+4. Wingcrafter (U) - $0.10 - 1/1, gives creature flying
+5. Cloudfin Raptor (U) - $0.10 - 0/1 flyer, evolve
+
+Tier 2 - Flying/Unblockable (2 CMC):
+6. Phantasmal Bear (1U) - $0.10 - 2/2 (no evasion but efficient) - SKIP
+7. Invisible Stalker (1U) - $0.25 - 1/1 hexproof, unblockable
+8. Mist-Cloaked Herald (1U) - $0.10 - 1/1 unblockable
+9. Looter il-Kor (1U) - $0.10 - 1/1 shadow, loot on damage
+10. Phantom Warrior (1UU) - $0.10 - 2/2 unblockable
+11. Scroll Thief (2U) - $0.10 - 2/3 unblockable
+12. Curiosity Crafter (2U) - $0.10 - Gives creatures card draw (NOT NEEDED with Edric)
+
+Tier 3 - Green Evasive:
+13. Taunting Elf (G) - $0.10 - 0/1, must be blocked by all creatures
+14. Narnam Renegade (G) - $0.10 - 1/2, deathtouch (not evasive) - SKIP
+15. Basking Rootwalla (G) - $0.10 - 1/1 (no evasion) - SKIP
+
+Tier 4 - Shadow Creatures:
+16. Dauthi Slayer (BB) - NO BLACK
+17. Thalakos Seer (2U) - $0.10 - 1/1 shadow, draws on death
+18. Thalakos Sentry (2U) - $0.10 - 2/2 shadow
+19. Dauthi Embrace (2B) - NO BLACK
+
+Tier 5 - Changeling/Misc:
+20. Mothdust Changeling (U) - $0.10 - 1/1, can gain flying
+21. Triton Shorestalker (U) - $0.10 - 1/1 unblockable
+22. Slippery Bogle (G/U) - $0.25 - 1/1 hexproof (no evasion) - SKIP
+23. Mist Raven (3U) - $0.10 - 2/2 flying, bounce creature
+24. Faerie Impostor (U) - $0.10 - 1/1 flying, return creature
+
+Tier 6 - Value Evasive:
+25. Baleful Strix (UB) - $2.50 - TOO EXPENSIVE (and has black)
+26. Cloud of Faeries (1U) - $0.25 - 1/1 flying, untap 2 lands
+27. Augury Owl (1U) - $0.25 - 0/1 flying, scry 3
+28. Faerie Seer (U) - $0.10 - 1/1 flying, scry 2
+29. Brazen Borrower (1UU) - $8+ - TOO EXPENSIVE
+
+REVISED EVASIVE CREATURES (23 cards):
+Flying (1 CMC) - 6 cards:
+1. Hypnotic Siren - $0.10
+2. Faerie Miscreant - $0.10
+3. Wingcrafter - $0.10
+4. Cloudfin Raptor - $0.10
+5. Triton Shorestalker - $0.10 (unblockable)
+6. Faerie Seer - $0.10
+
+Unblockable (1-2 CMC) - 7 cards:
+7. Slither Blade - $0.10
+8. Invisible Stalker - $0.25
+9. Mist-Cloaked Herald - $0.10
+10. Phantom Warrior - $0.10
+11. Scroll Thief - $0.10
+12. Mothdust Changeling - $0.10
+13. Faerie Impostor - $0.10
+
+Shadow (2-3 CMC) - 3 cards:
+14. Looter il-Kor - $0.10
+15. Thalakos Seer - $0.10
+16. Thalakos Sentry - $0.10
+
+Value/Utility (2-3 CMC) - 7 cards:
+17. Cloud of Faeries - $0.25
+18. Augury Owl - $0.25
+19. Mist Raven - $0.10
+20. Taunting Elf - $0.10
+21. Scryb Sprites (G) - $0.10 - 1/1 flying
+22. Quirion Ranger (G) - $0.75 - Return forest: untap creature (ramp + combo)
+23. Llanowar Elves (G) - $0.10 - Mana dork (not evasive but ramp)
+
+Wait, Llanowar Elves doesn't have evasion. Let me replace with:
+23. Trygon Predator (1GU) - $0.25 - 2/3 flying, destroy artifact/enchantment on damage
+
+Evasive Creatures Subtotal: $3.95
+
+MASS PUMP EFFECTS - Target: 7-8 cards
+======================================
+Goal: Win conditions that pump all creatures for alpha strike
+
+Tier 1 - Best Budget Options:
+1. Overrun (2GGG) - $0.25 - Creatures get +3/+3, trample
+2. Overwhelming Stampede (3GG) - $0.50 - Creatures get +X/+X, trample (X = biggest power)
+3. Echoing Courage (1G) - $0.10 - Instant, creatures get +2/+2
+4. Blossoming Defense (G) - $0.25 - NOT MASS PUMP (single target) - SKIP
+
+Tier 2 - Instant Speed:
+5. Inspired Charge (2WW) - NO WHITE
+6. Become Immense (5G) - $0.10 - Delve, target creature gets +6/+6 (single target) - SKIP
+7. Might of the Masses (G) - $0.10 - Single target +1/+1 per creature - SKIP
+8. Coat of Arms (5) - $2.00 - TOO EXPENSIVE
+
+Tier 3 - Anthems/Permanent Buffs:
+9. Murmuring Mystic (3U) - $0.10 - Creates 1/1 flying tokens when cast instant/sorcery
+   - Not pump, but creates evasive creatures
+10. Intangible Virtue (1W) - NO WHITE
+11. Shared Animosity (2R) - NO RED
+
+Tier 4 - Unique Effects:
+12. Biomass Mutation (XG/U G/U) - $0.25 - All creatures become X/X
+    - Flexible, can be massive late game
+    - Turn 10 with 8 mana: All creatures 8/8
+13. Strength of the Tajuru (XGG) - $0.10 - Put X +1/+1 counters on target creature
+    - Single target - SKIP
+14. Finale of Devastation (XGG) - $15+ - TOO EXPENSIVE
+
+Tier 5 - Extra Turns (Pump in Time):
+15. Notorious Throng (3U) - $0.25 - Prowl: Create 1/1 faerie tokens, take extra turn
+    - PERFECT! Have faeries, get extra turn for more attacks
+16. Time Warp (3UU) - $2.50 - TOO EXPENSIVE
+17. Temporal Manipulation (3UU) - $2.50 - TOO EXPENSIVE
+
+Tier 6 - More Attacks:
+18. Relentless Assault (2RR) - NO RED
+19. Nacatl War-Pride (3GGG) - $0.25 - Creates token copy for each creature defending player controls
+    - Unique effect, creates evasive tokens
+20. Primal Surge (8GG) - $1.00 - Too expensive CMC and $ - SKIP
+
+REVISED MASS PUMP (8 cards):
+1. Overrun - $0.25
+2. Overwhelming Stampede - $0.50
+3. Echoing Courage - $0.10
+4. Murmuring Mystic - $0.10 (token generator + evasive)
+5. Biomass Mutation - $0.25
+6. Notorious Throng - $0.25
+7. Nacatl War-Pride - $0.25
+8. Beastmaster Ascension (2G) - $3.00 - TOO EXPENSIVE but amazing
+   Replace with: Hunger of the Howlpack (G) - $0.10 - Morbid: target creature gets +3/+3
+
+Mass Pump Subtotal: $1.80
+
+PROTECTION - Target: 4-5 cards
+===============================
+Goal: Protect Edric from removal
+
+Tier 1 - Equipment:
+1. Lightning Greaves (2) - $2.50
+2. Swiftfoot Boots (2) - $1.50
+3. Whispersilk Cloak (3) - $0.75 - Unblockable + shroud
+
+Tier 2 - Counterspells:
+4. Counterspell (UU) - $0.50
+5. Swan Song (U) - $0.75
+6. Negate (1U) - $0.10
+7. Arcane Denial (1U) - $0.50
+8. Mana Leak (1U) - $0.25
+
+Tier 3 - Hexproof/Protection Spells:
+9. Vines of Vastwood (G) - $0.25 - Kicker 2: +4/+4, hexproof
+10. Ranger's Guile (G) - $0.10 - Hexproof, +1/+1
+11. Heroic Intervention (1G) - $2.00 - TOO EXPENSIVE
+12. Dive Down (U) - $0.10 - Hexproof, +0/+3
+
+REVISED PROTECTION (5 cards):
+1. Swiftfoot Boots - $1.50
+2. Counterspell - $0.50
+3. Negate - $0.10
+4. Vines of Vastwood - $0.25
+5. Ranger's Guile - $0.10
+
+Protection Subtotal: $2.45
+
+UNIQUE/FUN CARDS - Target: 4 cards
+===================================
+Goal: Memorable cards that aren't "too on the nose"
+
+Requirements:
+- Not just card draw (Edric already draws)
+- Not single-target pump
+- Game-changing effects
+- 3-6 CMC sweet spot
+- Budget friendly (<$2 each)
+
+Tier 1 - Game-Changing:
+1. Triumph of the Hordes (2GG) - $8-12 - TOO EXPENSIVE
+   - Would be perfect (mass infect pump) but out of budget
+2. Beastmaster Ascension (2G) - $3.00 - Borderline
+   - Triggers: +5/+5 to all creatures permanently
+   - AMAZING but expensive
+3. Craterhoof Behemoth (5GGG) - $12-20 - TOO EXPENSIVE
+
+Tier 2 - Unique Effects:
+4. Nacatl War-Pride (3GGG) - $0.25 - Already in mass pump!
+5. Biomass Mutation (XG/U G/U) - $0.25 - Already in mass pump!
+6. Notorious Throng (3U) - $0.25 - Already in mass pump!
+
+Tier 3 - Tap/Control:
+7. Opposition (2UU) - $1.00 - Tap creature: tap permanent
+   - AMAZING with tokens/weenies
+8. Sleep (2UU) - $0.25 - Tap all opponent's creatures, don't untap
+9. Blustersquall (U) - $0.10 - Overload 3U: Tap all opponent's creatures
+10. Tidal Wave (2U) - $0.10 - Tap all nonblue creatures
+
+Tier 4 - Protection/Utility:
+11. Spellskite (2) - $3.00 - TOO EXPENSIVE
+12. Cyclonic Rift (1U) - $3-5 - Overload 6U: Bounce all nonland permanents opponents control
+    - AMAZING but borderline expensive
+13. Awakening Zone (2G) - $0.50 - Create 0/1 Eldrazi Spawn tokens
+    - Blockers + sacrifice for mana
+
+Tier 5 - Win-More Fun:
+14. Coat of Arms (5) - $2.00 - TOO EXPENSIVE
+15. Bident of Thassa (2UU) - $0.50 - Creatures you control get card draw on damage
+    - TOO ON THE NOSE (Edric already does this)
+16. Coastal Piracy (2UU) - $0.25 - Draw when creature damages opponent
+    - TOO ON THE NOSE
+
+REVISED UNIQUE/FUN (4 cards):
+1. Opposition - $1.00 (tap control)
+2. Sleep - $0.25 (one-sided tap down)
+3. Blustersquall - $0.10 (flexible tap)
+4. Awakening Zone - $0.50 (token generation + ramp)
+
+Unique Cards Subtotal: $1.85
+
+Wait, these feel too much like "tempo/control" additions rather than memorable fun cards. Let me reconsider:
+
+BETTER UNIQUE/FUN:
+1. Beastmaster Ascension (2G) - $3.00 - Splurge on this, it's worth it
+   - Permanent +5/+5 after 7 attacks
+   - Game-winning card
+2. Awakening Zone (2G) - $0.50 - Token generation
+3. Opposition (2UU) - $1.00 - Tap control with weenies
+4. Notorious Throng (3U) - Already counted in mass pump!
+
+Actually, Notorious Throng should be unique, not mass pump. Let me reorganize:
+
+FINAL UNIQUE/FUN (4 cards):
+1. Beastmaster Ascension - $3.00 (permanent pump)
+2. Opposition - $1.00 (tap control)
+3. Awakening Zone - $0.50 (token generation)
+4. Notorious Throng - $0.25 (extra turn + tokens)
+
+Unique Cards Subtotal: $4.75
+
+And update mass pump to remove Notorious Throng:
+Mass Pump: Overrun, Overwhelming Stampede, Echoing Courage, Murmuring Mystic, Biomass Mutation, Nacatl War-Pride, Hunger of the Howlpack
+That's 7 cards, good.
+
+CORE STRATEGY SUMMARY
+======================
+Total Cards: 44 cards
+- Evasive creatures: 23 cards - $3.95
+- Mass pump: 7 cards - $1.30 (removed Notorious Throng)
+- Protection: 5 cards - $2.45
+- Unique/fun: 4 cards - $4.75
+
+Core Subtotal: $12.45
+
+Remaining Budget:
+Main Deck: $50-60 budget → $37-47 for lands, ramp, removal, card draw
+Budget Deck: $25-30 budget → Need cheaper alternatives
+
+Next: Phase 6-7 (Interaction & Support packages)

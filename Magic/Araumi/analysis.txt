@@ -1,0 +1,126 @@
+ARAUMI OF THE DEAD TIDE - DECK BUILDING ANALYSIS
+=================================================
+
+PHASE 1: REQUIREMENTS GATHERING
+================================
+Budget Constraints:
+- Main Deck: $45-55 (Commander: $0.50, remaining cards: $44.50-54.50)
+- Budget Deck: $23-28 (Commander: $0.50, remaining cards: $22.50-27.50)
+- Exactly 100 cards in both versions
+
+Meta Context:
+- 4-player 1-hour games
+- Fast-paced gameplay favoring explosive wins
+- Lower interaction requirement (4-6 removal, not 8-12)
+- Focus on finishing, not controlling
+
+Differentiation:
+- Must differ from existing Sygg ETB toolbox deck
+- Araumi focuses on BURST ETB value (3x simultaneously)
+- Sygg focuses on CHAIN ETB value (one at a time)
+
+Power Level: 7-8/10
+
+
+PHASE 2: COMMANDER ANALYSIS
+============================
+Araumi of the Dead Tide - 1UB
+Legendary Creature - Merfolk Ninja
+Cost: $0.50
+
+Abilities:
+- {T}, Exile cards from graveyard equal to target's mana value: Encore that creature
+- Encore creates THREE hasty token copies that exile at end of turn
+
+Core Mechanic - Encore Strategy:
+1. Self-mill cards into graveyard
+2. Tap Araumi, exile cards from GY
+3. Get THREE hasty token copies of creature
+4. Trigger THREE ETB effects simultaneously
+5. Tokens exile at end of turn
+
+Win Conditions:
+- Gray Merchant of Asphodel: 3 copies = ~30 life drain
+- Kokusho, the Evening Star: 3 copies = 15 life drain per opponent, 45 life gain
+- Woe Strider: 3 copies = 9 scry, sacrifice 6 permanents
+- Mulldrifter: 3 copies = draw 6 cards
+
+Key Synergies:
+- Self-mill engines (Thought Scour, Mental Note, Perpetual Timepiece)
+- ETB creatures with high impact (drain, draw, removal)
+- Instant-speed self-mill for encore setup
+- Graveyard protection (Archaeomancer for recursion)
+
+Vulnerabilities:
+1. Graveyard hate (Rest in Peace, Bojuka Bog)
+   - Mitigation: Instant-speed encore in response
+   - Backup: Some non-graveyard win conditions
+2. Commander removal
+   - Mitigation: Lightning Greaves, Swiftfoot Boots
+   - Backup: Can win without commander via reanimation
+3. Board wipes
+   - Mitigation: Encore at end of turn before our turn
+   - Backup: Perpetual Timepiece to reload graveyard
+
+Strategic Timing:
+- Encore on end step before our turn (get extra combat)
+- Encore in response to graveyard hate
+- Hold up mana for instant-speed mill + encore
+
+
+PHASE 3: DECK COMPOSITION THEORY
+=================================
+Target Distribution:
+- Lands: 37 (UB color requirements, minimal color fixing needed)
+- Ramp: 10 (Sol Ring, Arcane Signet, Dimir Signet, Talisman, Mind Stone, Wayfarer's Bauble, Thought Vessel, Charcoal Diamond, Fellwar Stone, Commander's Sphere)
+- Card Draw: 8 (Mulldrifter, Sea Gate Oracle, Phyrexian Rager, Deep Analysis, Night's Whisper, Sign in Blood, Brainstorm, Ponder)
+- Removal: 5 (4-6 range for 1-hour meta)
+- Engine (Self-Mill): 12
+- Synergy (ETB Creatures): 20
+- Win Conditions: 4
+- Protection: 3
+- Unique/Fun: 4
+
+Total: 100 cards (including commander)
+
+Mana Curve Target:
+- 1 CMC: 4-6 (self-mill cantrips)
+- 2 CMC: 8-10 (ramp, interaction)
+- 3 CMC: 10-12 (Araumi, more self-mill, early ETBs)
+- 4 CMC: 8-10 (value ETBs)
+- 5 CMC: 4-6 (win condition ETBs)
+- 6+ CMC: 2-4 (high-impact encore targets)
+
+
+PHASE 4: BUDGET RESEARCH
+=========================
+Cost Categories:
+- Bulk ($0.10-0.25): Self-mill cantrips, basic ETB creatures
+- Budget ($0.25-1.00): Most ramp, removal, card draw
+- Mid ($1.00-3.00): Impactful ETB creatures (Gray Merchant, Mulldrifter)
+- Premium ($3.00-8.00): 3-4 cards maximum (key win conditions)
+
+Expensive Cards to AVOID:
+- Cyclonic Rift ($20+)
+- Rhystic Study ($30+)
+- Mystic Remora ($15+)
+- Phyrexian Arena ($8+)
+- Toxic Deluge ($15+)
+
+Budget Alternatives:
+- Board wipes: Crux of Fate ($0.50) instead of Toxic Deluge
+- Card draw: Deep Analysis ($0.15) instead of Rhystic Study
+- Interaction: Reality Shift ($0.25) instead of Pongify
+- Ramp: All signets/talismans are $0.50-1.00
+
+
+NEXT STEPS:
+===========
+Phase 5: Build core strategy (engine, synergy, win conditions, protection, unique cards)
+Phase 6: Select interaction package (5 removal, board wipes)
+Phase 7: Complete support package (finalize draw/ramp, select lands)
+Phase 8: Vulnerability analysis and mitigation strategies
+Phase 9: Assemble and validate deck (count to 100, check budget, analyze curve)
+Phase 10: Create documentation files
+Phase 11: Critical gap analysis (orphaned combo pieces check)
+Phase 12: Final review checklist

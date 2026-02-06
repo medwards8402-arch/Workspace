@@ -1,0 +1,220 @@
+ARAUMI OF THE DEAD TIDE - SIDEBOARD
+====================================
+
+SITUATIONAL CARDS
+=================
+These cards can be swapped into the main deck based on meta:
+
+1. GRAVEYARD HATE (for graveyard-heavy metas)
+   - Soul-Guide Lantern (1) - $0.25
+   - Tormod's Crypt (0) - $0.50
+   - Relic of Progenitus (1) - $2.00
+   - Nihil Spellbomb (1) - $0.50
+   
+   Swap Out: Utility creatures or extra draw spells
+   When: Playing against reanimator, flashback, or graveyard combo decks
+
+2. COUNTERSPELLS (for combo-heavy metas)
+   - Counterspell (UU) - $0.50
+   - Swan Song (U) - $3.00
+   - Negate (1U) - $0.25
+   - Dispel (U) - $0.25
+   - Arcane Denial (1U) - $1.00
+   
+   Swap Out: Sorcery-speed removal (Murder, etc.)
+   When: Playing against storm, combo, or spell-heavy decks
+
+3. ADDITIONAL BOARD WIPES (for creature-heavy metas)
+   - Toxic Deluge (2B) - $15.00 (if budget allows)
+   - Black Sun's Zenith (XBB) - $1.50
+   - Languish (2BB) - $0.50
+   - Drown in Sorrow (1BB) - $0.25
+   
+   Swap Out: Spot removal (too slow)
+   When: Playing against token swarm, wide strategies
+
+4. PROTECTION UPGRADES (for removal-heavy metas)
+   - Cavern of Souls (land) - $50+ (TOO EXPENSIVE)
+   - Imp's Mischief (1B) - $3.00
+   - Diplomatic Immunity (1U) - $0.50
+   - Shimmering Wings (U) - $0.10
+   
+   Swap Out: Less critical creatures
+   When: Commander keeps getting removed
+
+5. EXPLOSIVE WIN CONDITIONS (for faster metas)
+   - Gonti's Aether Heart (6) - $0.25 - Extra turn with energy
+   - Timestream Navigator (1U) - $0.50 - Ascend for extra turns
+   - Laboratory Maniac (2U) - $0.75 - Win by decking yourself
+   - Thassa's Oracle (UU) - $15+ (TOO EXPENSIVE)
+   
+   Swap Out: Slower win conditions
+   When: Need to win faster (turn 4-5 consistently)
+
+6. RECURSION ENGINES (for grindy metas)
+   - Animate Dead (1B) - $15+ (TOO EXPENSIVE)
+   - Dance of the Dead (1B) - $20+ (TOO EXPENSIVE)
+   - Necromancy (2B) - $10+ (TOO EXPENSIVE)
+   - Reanimate (B) - $5.00
+   - Whip of Erebos (4) - $1.50
+   
+   Swap Out: Self-mill pieces
+   When: Games go long, need repeatable value
+
+7. CARD ADVANTAGE ENGINES (for control metas)
+   - Phyrexian Arena (1BB) - $8+
+   - Rhystic Study (2U) - $30+
+   - Mystic Remora (U) - $15+
+   - Coastal Piracy (2UU) - $0.25
+   - Reconnaissance Mission (2UU) - $0.25
+   
+   Swap Out: One-shot draw spells
+   When: Games slow down, need consistent draw
+
+8. LAND UPGRADES (if budget increases)
+   - Underground Sea (UB dual) - $500+ (TOO EXPENSIVE)
+   - Watery Grave (UB shock) - $15+
+   - Polluted Delta (fetch) - $40+
+   - Morphic Pool (UB battlebond) - $15+
+   - Drowned Catacomb (UB check) - $2.50
+   - Underground River (UB pain) - $2.00
+   
+   Replace: Taplands (Dismal Backwater, Jwar Isle Refuge, etc.)
+   When: Budget allows, speed is critical
+
+FLEXIBLE SLOTS IN MAIN DECK
+============================
+These cards can be cut without hurting core strategy:
+
+Low Priority Cuts:
+1. Hostage Taker - Political tool, not core to strategy
+2. Dire Fleet Ravager - Unique effect but situational
+3. Vraska's Contempt - Slow removal
+4. Disfigure - Weak removal
+5. Supernatural Stamina - Narrow protection
+
+Medium Priority Cuts:
+6. Kaya's Ghostform - Decent protection but narrow
+7. Read the Bones - Good but not essential
+8. Siren Stormtamer - Situational counter
+
+NEVER CUT:
+- Araumi (commander)
+- Gray Merchant (primary win con)
+- Self-mill engine (Thought Scour, Mental Note, etc.)
+- Lightning Greaves/Swiftfoot Boots
+- Archaeomancer/Mnemonic Wall (recursion)
+- Mulldrifter/Sea Gate Oracle (consistent draw)
+- Sidisi (tutor)
+- Perpetual Timepiece (GY protection)
+
+BUDGET DECK UPGRADES
+=====================
+Priority order for upgrading budget deck to main deck:
+
+Tier 1 - Critical Upgrades ($18.50 total):
+1. Kokusho ($6.00) - MASSIVE power increase
+   - Replace: Vindictive Vampire
+   - Impact: Secondary win condition
+   
+2. Lightning Greaves ($5.00) - Better protection
+   - Replace: Commander's Plate
+   - Impact: Shroud > protection from colors
+   
+3. Altar of Dementia ($4.00) - Combo enabler
+   - Replace: Selhoff Occultist
+   - Impact: Instant-speed mill, combo potential
+   
+4. Spark Double ($3.00) - Copy Araumi
+   - Replace: Sakashima's Student
+   - Impact: No ninjutsu requirement
+   
+5. Baleful Strix ($2.50) - Efficient draw
+   - Replace: Vodalian Zombie
+   - Impact: Deathtouch + draw
+
+Tier 2 - Nice Upgrades ($5.00 total):
+6. Gravecrawler ($2.00) - Better recursion
+   - Replace: Sanitarium Skeleton
+   - Impact: Free recursion with zombie
+   
+7. Solemn Simulacrum ($1.50) - Better ramp
+   - Replace: Burnished Hart
+   - Impact: Draw on death
+   
+8. Thought Vessel ($1.00) - No max hand
+   - Replace: Sky Diamond
+   - Impact: Keep encore targets in hand
+   
+9. Fellwar Stone ($1.00) - Better ramp
+   - Replace: Coldsteel Heart
+   - Impact: No enters tapped
+
+Tier 3 - Marginal Upgrades ($2.50 total):
+10. Tainted Isle ($0.75) - Speed
+    - Replace: Terramorphic Expanse
+    - Impact: Untapped dual
+    
+11. Sunken Hollow ($0.75) - Speed
+    - Replace: Myriad Landscape
+    - Impact: More dual lands
+    
+12. Bojuka Bog ($0.75) - GY hate
+    - Replace: Swamp
+    - Impact: Answer opponent reanimation
+    
+13. Reliquary Tower ($1.00) - Hand size
+    - Replace: Island
+    - Impact: Keep large hands
+
+Total Upgrade Cost: $26.00 (budget $27.55 → main $49.80)
+
+MATCHUP-SPECIFIC SIDEBOARDING
+==============================
+
+VS GRAVEYARD STRATEGIES:
+OUT: -1 Hostage Taker, -1 Dire Fleet Ravager
+IN: +1 Soul-Guide Lantern, +1 Nihil Spellbomb
+Strategy: Use our GY hate proactively, encore faster before they do
+
+VS COMBO DECKS:
+OUT: -1 Hostage Taker, -1 Kaya's Ghostform, -1 Supernatural Stamina
+IN: +1 Counterspell, +1 Swan Song, +1 Arcane Denial
+Strategy: Hold up interaction, encore in response to combo
+
+VS CREATURE SWARM:
+OUT: -1 Tragic Slip, -1 Disfigure, -1 Victim of Night
+IN: +1 Languish, +1 Drown in Sorrow, +1 Black Sun's Zenith
+Strategy: Board wipe repeatedly, encore after wipes
+
+VS CONTROL:
+OUT: -1 Crux of Fate, -1 Fleshbag Marauder, -1 Plaguecrafter
+IN: +1 Counterspell, +1 Negate, +1 Dispel
+Strategy: Protect key spells, build slowly, win with overwhelming value
+
+VS FAST AGGRO:
+OUT: -1 Hostage Taker, -1 Dire Fleet Ravager, -1 Sidisi
+IN: +1 Drown in Sorrow, +1 Languish, +1 Extra removal
+Strategy: Stabilize with removal/wipes, encore Gray Merchant for life gain path
+
+TECH CARDS TO CONSIDER
+=======================
+
+Budget Tech (<$1):
+- Bloodchief Ascension (1B) - $0.50 - Quest for drain triggers
+- Duskmantle Guildmage (UB) - $0.15 - Convert mill to damage
+- Mindcrank (2) - $0.75 - Mill when opponents lose life
+- Ghostly Pilferer (1U) - $0.25 - Draw when opponent discards/exile
+- Prying Eyes (4U) - $0.10 - Draw equal to opponents, discard hand
+
+Spicy Tech ($1-3):
+- Undead Alchemist (3U) - $1.00 - Mill creates zombies
+- Havengul Lich (3UB) - $1.50 - Cast creatures from any GY
+- Geth, Lord of the Vault (4BB) - $1.50 - Mill + reanimate opponents
+- Phenax, God of Deception (3UB) - $2.00 - Creatures mill = toughness
+
+High-Impact Tech ($3+):
+- Consecrated Sphinx (4UU) - $30+ - Draw double
+- Sheoldred, Whispering One (5BB) - $20+ - Reanimate + opponent sacrifice
+- The Scarab God (3UB) - $15+ - Eternalize creatures
+- Toxrill the Corrosive (5BB) - $30+ - Slug tokens kill creatures

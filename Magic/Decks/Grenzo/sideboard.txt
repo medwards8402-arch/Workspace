@@ -1,0 +1,102 @@
+// Grenzo, Dungeon Warden - Sideboard & Upgrades
+// Budget upgrade path and alternate card choices
+
+// ========== BUDGET UPGRADES ($1-$2 each) ==========
+// These cards enhance the strategy significantly
+
+// Bottom-Deck Manipulation
+Scroll Rack  // ~$20+ (expensive but perfect - put cards on top then scry to bottom)
+Sensei's Divining Top  // ~$25+ (premium but amazing library control)
+Crystal Ball  // ~$0.50 - Scry 2 each turn
+
+// Better Creatures
+Murderous Redcap  // ~$0.40 - Persist + damage, infinite with +1/+1 counter source
+Beetleback Chief  // ~$0.20 - Creates 2 tokens, power 2
+Fleshbag Marauder  // ~$0.15 - Each player sacs creature, power 3 (X=1 needed)
+Plaguecrafter  // ~$0.25 - Better Fleshbag, power 3 (X=1 needed)
+Dualcaster Mage  // ~$0.50 - Copy spell ETB, power 2
+Fanatic of Mogis  // ~$0.15 - Damage based on devotion, power 4 (X=2+ needed)
+Anarchist  // ~$0.10 - Return sorcery ETB, power 2
+Myr Retriever  // ~$0.20 - Return artifact on death, power 1
+
+// Better Death Triggers
+Judith, the Scourge Diva  // ~$0.50 - Anthem + death trigger, power 2
+Mayhem Devil  // ~$1.50 - Ping on any sacrifice, power 3 (X=1 needed)
+
+// Better Removal
+Dockside Extortionist  // ~$40+ (premium but insane value)
+Grave Pact  // ~$4 - Forces sacrifice when your creatures die
+Dictate of Erebos  // ~$2 - Flash Grave Pact effect
+
+// Better Recursion
+Living Death  // ~$1.50 - Mass reanimation
+Patriarch's Bidding  // ~$2 - Tribal mass recursion
+
+// ========== ALTERNATE CARD CHOICES ==========
+// Swap these in/out based on meta
+
+// If facing lots of artifacts:
++ Manic Vandal, Ingot Chewer, Plundering Barbarian
+- Burglar Rat, Faceless Butcher
+
+// If facing lots of graveyard decks:
++ Agent of Erebos, Nihil Spellbomb
+- Reassembling Skeleton, Stitch Together
+
+// If facing lots of flyers:
++ Stingscourger (extra bounce), Big Game Hunter
+- Disciple of Bolas
+
+// If your playgroup has more creature combat:
++ Grenzo, Havoc Raiser (different Grenzo!), Kiki-Jiki (expensive)
+- Read the Bones, Stitch Together
+
+// ========== X-VALUE CONSIDERATIONS ==========
+// Cards that need Grenzo cast with higher X:
+
+// X=0 (Power 2) - Most of deck works here:
+// All power 0-2 creatures flip successfully
+
+// X=1 (Power 3) - Some key cards need this:
+// Woe Strider, Midnight Reaper, Grim Haruspex, Ingot Chewer
+// Fleshbag Marauder, Plaguecrafter, Mayhem Devil
+
+// X=2+ (Power 4+) - Rarely needed:
+// Fanatic of Mogis, Gray Merchant gets better with more devotion
+
+// RECOMMENDATION: Default to X=0 or X=1
+// X=0: Faster, more mana for activations
+// X=1: Hits more cards, still affordable at 3 mana
+
+// ========== COMBO POTENTIAL ==========
+// These combos work with budget cards:
+
+// Infinite Death Triggers:
+// Murderous Redcap + Sac Outlet + Metallic Mimic/Grumgully
+// (Redcap returns with +1/+1 counter neutralizing -1/-1)
+
+// Infinite Mana:
+// Ashnod's Altar + Reassembling Skeleton + [any way to double activations]
+
+// Infinite Grenzo Activations (with infinite mana):
+// Stack entire library on bottom with scry effects
+// Flip entire deck onto battlefield
+
+// ========== CUTS TO CONSIDER ==========
+// If you need to make room:
+
+LOWEST IMPACT (cut first):
+- Burglar Rat (1 card from each opponent is minor)
+- Phyrexian Ghoul (redundant sac outlet)
+- Cinder Barrens (too many taplands)
+- Read the Bones (deck already draws well)
+
+MEDIUM IMPACT:
+- Faceless Butcher (risky if bounced/killed)
+- Defile (sometimes too conditional)
+
+HIGHEST IMPACT (never cut):
+- Viscera Seer (scry puts cards on BOTTOM for Grenzo!)
+- Blood Artist / Zulaport Cutthroat (win conditions)
+- Reito Lantern (directly manipulates bottom of library)
+- Ashnod's Altar (infinite mana potential)

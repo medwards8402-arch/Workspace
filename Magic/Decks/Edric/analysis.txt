@@ -1,0 +1,202 @@
+EDRIC, SPYMASTER OF TREST - DECK BUILDING ANALYSIS
+==================================================
+
+PHASE 1: REQUIREMENTS GATHERING
+================================
+Budget Constraints:
+- Main Deck: $50-60 (Commander: ~$0.40, remaining cards: $49.60-59.60)
+- Budget Deck: $25-30 (Commander: ~$0.40, remaining cards: $24.60-29.60)
+- Exactly 100 cards in both versions
+
+Meta Context:
+- 4-player 1-hour games
+- Fast-paced gameplay favoring explosive wins
+- Lower interaction requirement (4-6 removal, not 8-12)
+- Focus on finishing, not controlling
+
+Differentiation:
+- Must differ from existing decks:
+  * Araumi: Encore ETB burst (triple simultaneously)
+  * Grenzo: Bottom-deck manipulation + aristocrats
+  * Vannifar: Pod chains
+  * Xaxara: X-spells and hydra tokens
+- Edric focuses on: Flying/unblockable weenies + card draw + mass pump
+
+Power Level: 7-8/10
+Colors: Simic (UG)
+
+PHASE 2: COMMANDER ANALYSIS
+============================
+Edric, Spymaster of Trest - 1GU
+Legendary Creature - Elf Rogue
+Power/Toughness: 2/2
+
+Ability: "Whenever a creature deals combat damage to one of your opponents, its controller may draw a card."
+
+CRITICAL MECHANICS:
+1. Triggers on combat damage to OPPONENTS (not you)
+   - Your creatures trigger when they hit opponents
+   - Opponents' creatures trigger when they hit other opponents
+   - Political tool (opponents get cards for hitting each other)
+
+2. "May" draw (optional)
+   - Not forced draw (won't mill yourself out)
+   - Can decline if close to decking
+
+3. Works with ANY creature dealing damage
+   - Not just evasive creatures
+   - But evasive creatures guarantee triggers
+
+4. Each creature draws separately
+   - 10 creatures hit = 10 cards drawn
+   - Massive card advantage engine
+
+5. Edric himself is 2/2 with no evasion
+   - Needs protection (dies easily)
+   - Target for removal (opponents hate the card draw)
+
+CORE STRATEGY:
+==============
+Primary Win Condition:
+- Deploy 20-25 cheap evasive creatures (1-2 CMC)
+- Edric draws cards equal to creatures that connect
+- Draw into mass pump effects (Overrun, Craterhoof, etc.)
+- Alpha strike for lethal (pump all creatures, attack for 40+ damage)
+
+Strategy Phases:
+1. Early (Turns 1-3): Deploy 1-2 creatures per turn, ramp
+2. Mid (Turn 4): Cast Edric, start drawing cards
+3. Draw (Turns 5-6): Draw 5-10 cards per turn from Edric triggers
+4. Win (Turn 6-7): Cast Overrun effect, alpha strike for lethal
+
+Win Condition Math:
+- 15 creatures on board
+- Cast Overrun (+3/+3, trample to all creatures)
+- Each creature is now 4/4+ with trample/evasion
+- 15 × 4 = 60 damage (enough to kill 2 players)
+- Turn 6-7 win typical
+
+Secondary Strategy:
+- Extra turn spells (Notorious Throng has prowl)
+- Tap down opponents' creatures (can't block)
+- Counter key removal spells
+- Political draw (let opponents draw to not attack you)
+
+VULNERABILITIES:
+================
+1. Board Wipes:
+   - Destroy all creatures including Edric
+   - Lose card draw engine
+   - IMPACT: High (need to rebuild)
+   - MITIGATION: Low curve (rebuild quickly), card advantage (refill hand)
+
+2. Edric Removal:
+   - Edric dies → commander tax increases
+   - Second cast: 5 mana, third cast: 7 mana
+   - IMPACT: Medium (can still win without Edric if have cards)
+   - MITIGATION: Protection spells, hexproof equipment, counterspells
+
+3. Flying/Reach Blockers:
+   - Block evasive creatures
+   - No Edric triggers
+   - IMPACT: Medium (some creatures get blocked)
+   - MITIGATION: Multiple evasion types (flying, unblockable, shadow), removal
+
+4. Propaganda/Ghostly Prison Effects:
+   - Tax attacking
+   - Can't afford to attack with all creatures
+   - IMPACT: High (shuts down strategy)
+   - MITIGATION: Removal (Beast Within, Nature's Claim), bounce (Cyclonic Rift)
+
+5. Stax/Prison Effects:
+   - Prevent casting spells or attacking
+   - IMPACT: High (slows down strategy significantly)
+   - MITIGATION: Fast clock (win before they set up), removal
+
+6. Being Archenemy:
+   - Edric draws hate (everyone knows the deck)
+   - Opponents prioritize killing Edric
+   - IMPACT: Medium-High (need politics)
+   - MITIGATION: Politics (give opponents cards), protection, fast wins
+
+SYNERGY IDENTIFICATION:
+=======================
+Critical Synergies:
+1. Evasive creatures + Edric = Card draw
+2. Card draw + Mass pump = Win condition
+3. Low CMC creatures + card draw = Deploy multiple per turn
+4. Extra turns + Edric triggers = More attacks, more draws
+
+Engine Pieces Needed:
+- 20-25 evasive creatures (1-3 CMC flying, unblockable, shadow)
+- 4-6 protection spells (protect Edric)
+- 7-8 mass pump effects (win conditions)
+- 3-4 counterspells (protect Edric, stop board wipes)
+
+DECK BUILDING PRIORITIES:
+==========================
+1. Evasive creatures with power ≥1 (flying, unblockable, shadow)
+2. CMC 1-2 preferred (deploy early, multiple per turn)
+3. Mass pump effects (Overrun, Craterhoof, Triumph of the Hordes)
+4. Protection for Edric (hexproof, counterspells, Lightning Greaves)
+5. Low curve (avg 2.0-2.5 CMC) for fast deployment
+6. Minimal removal (4-6 cards, fast meta)
+7. Card draw redundancy (in case Edric removed)
+
+Avoid:
+- Non-evasive creatures (get blocked, no Edric triggers)
+- Single-target pump (we want MASS pump for all creatures)
+- High CMC cards (slow down deployment)
+- Board wipes (kill our creatures)
+- Creatures without evasion (exception: utility creatures)
+
+PHASE 3: DECK BUILDING THEORY APPLICATION
+==========================================
+For Edric Flying Weenies:
+
+Lands: 35-36 (very low curve deck)
+Ramp: 8-10 (need less, have card draw engine)
+Card Draw: 3-5 (Edric provides most draw)
+Removal: 4-6 (fast multiplayer meta)
+
+Strategy Cards (~45):
+- Evasive creatures: 20-25 cards (core of deck)
+- Mass pump effects: 7-8 cards (win conditions)
+- Protection: 4-5 cards (protect Edric)
+- Interaction: 4-6 cards (removal, counters)
+- Unique/fun: 4 cards
+
+Average CMC: 2.0-2.5 (very aggressive)
+Power Level: 7-8/10
+
+PHASE 4: BUDGET RESEARCH
+=========================
+Expensive Staples to AVOID:
+- Craterhoof Behemoth ($12-20) - Too expensive
+- Triumph of the Hordes ($8-12) - Too expensive (was cheaper, price spiked)
+- Noble Hierarch ($8+) - Too expensive
+- Beastmaster Ascension ($3-5) - Borderline, skip
+- Birds of Paradise ($3-5) - Borderline
+- Cyclonic Rift ($3-5) - Borderline
+- Rhystic Study ($20+) - WAY too expensive
+- Mystic Remora ($5-8) - Too expensive
+
+Budget Alternatives:
+- Overrun ($0.25) instead of Craterhoof
+- Overwhelming Stampede ($0.50) instead of Craterhoof  
+- Elvish Mystic ($0.10) instead of Birds of Paradise
+- Echoing Courage ($0.10) for mass pump
+- Beast Within ($0.50) for removal
+- Llanowar Elves ($0.10) for ramp
+
+Price Targets:
+- Commander: $0.40
+- Lands: $5-8 (mostly basics, few UG duals)
+- Ramp: $2-4 (creature ramp, cheap artifacts)
+- Evasive creatures: $5-10 (bulk 1-2 CMC flyers)
+- Mass pump: $3-6 (Overrun effects)
+- Protection: $2-4 (Swiftfoot Boots, counterspells)
+- Removal: $2-3
+- Unique cards: $4-6
+
+Estimated Total: $24-45 (target $50-60)

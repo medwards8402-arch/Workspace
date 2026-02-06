@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import '../../domain/models/workout_session.dart';
-import '../../domain/models/workout_log.dart';
+import '../../domain/models/planned_exercise_details.dart';
 import '../../domain/models/exercise_log.dart';
+import '../../domain/models/workout_log.dart';
 import '../../domain/repositories/workout_repository.dart';
 import '../../services/workout_service.dart';
 import '../../services/prefill_service.dart';
@@ -83,12 +84,14 @@ class WorkoutProvider with ChangeNotifier {
   Future<WorkoutSession?> createSession({
     required String name,
     List<String> exerciseIds = const [],
+    Map<String, PlannedExerciseDetails>? plannedDetails,
     WeekDay? plannedDay,
   }) async {
     try {
       final session = await _workoutService.createSession(
         name: name,
         exerciseIds: exerciseIds,
+        plannedDetails: plannedDetails,
         plannedDay: plannedDay,
       );
       await loadSessions();
