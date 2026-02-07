@@ -1,0 +1,3 @@
+"""
+Polygomino Game package.
+"""
