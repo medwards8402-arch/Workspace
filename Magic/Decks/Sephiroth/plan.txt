@@ -1,0 +1,204 @@
+# Sephiroth, Fabled SOLDIER - Deck Strategy Guide
+
+## Commander Overview
+
+**Sephiroth, Fabled SOLDIER** {2}{B}
+- 3/3 Legendary Creature — Human Avatar Soldier
+- **Front Side Abilities:**
+  1. When Sephiroth enters or attacks, you may sacrifice another creature to draw a card
+  2. Whenever another creature dies, target opponent loses 1 life and you gain 1 life
+  3. Transforms after the 4th death trigger in a turn
+
+**Sephiroth, One-Winged Angel** (Back Side)
+- 5/5 Flying
+- Super Nova: When transforming, you get an EMBLEM: "Whenever a creature dies, target opponent loses 1 life and you gain 1 life"
+- When attacking, sacrifice any number of creatures to draw that many cards
+
+**Key Insight:** The emblem is PERMANENT. Once you transform Sephiroth, the drain effect stays even if Sephiroth dies. This makes transformation a priority.
+
+## Core Strategy
+
+### Primary Game Plan: Aristocrats Drain
+1. Build a board of sacrifice fodder and death payoffs
+2. Sacrifice creatures to trigger Sephiroth + Blood Artist effects
+3. Stack multiple drain triggers for massive life swings
+4. Transform Sephiroth to lock in permanent drain emblem
+
+### Win Conditions
+- **Death Drain:** Each creature death triggers commander (1 life) + Blood Artist effects (1-2 more) = 3-4 damage per death
+- **Gray Merchant:** With heavy black devotion, Gary can drain 10-15+ life from each opponent
+- **Exsanguinate/Profane Command:** Direct drain spells scaled to late game mana
+- **Transformed Emblem:** Permanent drain makes every future creature death painful
+
+### Transformation Plan
+To transform Sephiroth, you need 4 creature deaths in a single turn:
+1. Attack with Sephiroth (triggers ability)
+2. Sacrifice creatures to free sac outlets (Viscera Seer, Woe Strider)
+3. Each death triggers commander ability
+4. After 4th trigger, Sephiroth transforms and grants permanent emblem
+
+**Board State Needed:** 4+ creatures, 1+ sac outlet, Sephiroth attacking
+
+## Card Categories Breakdown
+
+### Death Trigger Payoffs (7 cards)
+These stack with Sephiroth's built-in drain:
+- Blood Artist, Zulaport Cutthroat: Classic drain effects
+- Bastion of Remembrance: Enchantment drain (harder to remove)
+- Falkenrath Noble, Vindictive Vampire: Creature drain effects
+- Syr Konrad: Triggers on death AND graveyard movement
+- Butcher of Malakir: Forces opponents to sacrifice
+
+### Sacrifice Outlets (5 cards)
+Free sac outlets to control when creatures die:
+- Viscera Seer: Scry 1 per sacrifice
+- Bloodthrone Vampire, Nantuko Husk: Pump effects
+- Yahenni: Indestructible, gets counters
+- Woe Strider: Scry + returns as token
+
+### Recurring Creatures (7 cards)
+These come back for repeated sacrifices:
+- Reassembling Skeleton: 1B to return from graveyard
+- Bloodsoaked Champion: Returns when attacking
+- Tenacious Dead, Persistent Specimen: Return on death
+- Sanitarium Skeleton: Returns with 2B
+- Cult Conscript: Attacks, then returns
+- Gravecrawler: Returns with Zombie on board (you have several)
+
+### Token Generators (5 cards)
+Sacrifice fodder production:
+- Ophiomancer: Snake token EACH upkeep (if no snakes)
+- Sifter of Skulls: Eldrazi Scion tokens on death
+- Endrek Sahr: Thrulls equal to creature CMC
+- Open the Graves: Zombie tokens on death
+- Dreadhorde Invasion: Army token each upkeep (growing)
+
+## Gameplay Guide
+
+### Early Game (Turns 1-3)
+**Priority:** Ramp + Set up engine pieces
+- Turn 1: Play Sol Ring or Wayfarer's Bauble
+- Turn 2: Cast 2-drop ramp (signets) or recurring creature
+- Turn 3: Cast Sephiroth OR set up death payoffs
+
+**Key Plays:**
+- Deploy recurring creatures early (Reassembling Skeleton)
+- Get a sac outlet on board when possible
+- Blood Artist effects should come down before mass sacrificing
+
+### Mid Game (Turns 4-6)
+**Priority:** Build critical mass, aim for transformation
+- Attack with Sephiroth to draw cards/trigger drain
+- Set up 4+ creatures and a sac outlet
+- Time your sacrifice engine for explosive turns
+
+**Transformation Turn:**
+1. Have 4+ creatures and a sac outlet
+2. Attack with Sephiroth
+3. Sacrifice 4 creatures (triggers command ability 4 times)
+4. Sephiroth transforms, grants permanent emblem
+5. Continue draining with emblem active
+
+### Late Game (Turns 7+)
+**Priority:** Close out the game
+- Emblem + death payoffs means each creature death drains 3-5 life
+- Gray Merchant with high devotion for massive drain
+- Exsanguinate for X=10+ in late game
+- Mass sacrifice with Woe Strider for card draw
+
+## Vulnerabilities & Counters
+
+### Graveyard Hate
+**Problem:** Rest in Peace, Leyline of the Void exile your recursion
+**Solution:** 
+- Bojuka Bog for opponent graveyards
+- Token generators don't rely on graveyard
+- Transform Sephiroth early (emblem is permanent)
+
+### Commander Removal
+**Problem:** Sephiroth getting killed repeatedly
+**Solution:**
+- Swiftfoot Boots, Whispersilk Cloak for hexproof/shroud
+- Commander costs only 3 mana, tax isn't catastrophic
+- Once transformed, emblem persists even if Sephiroth dies
+
+### Board Wipes
+**Problem:** Losing all your creatures
+**Solution:**
+- Low curve means fast recovery
+- Board wipes trigger ALL your death effects simultaneously
+- Recurring creatures come back after wipe
+- If emblem is active, opponent's wipe helps you!
+
+## Combo Highlights
+
+### 4-Death Transformation Combo
+- Board: Sephiroth + 4 creatures + Viscera Seer
+- Attack with Sephiroth, sacrifice 4 creatures
+- 4 death triggers = transform Sephiroth
+- Get permanent drain emblem
+
+### Infinite Sacrifice (Budget)
+- Reassembling Skeleton + Sifter of Skulls + any sac outlet
+- Sacrifice Skeleton, get Eldrazi Scion
+- Sacrifice Scion for mana, pay 1B to return Skeleton
+- Repeat for infinite death triggers
+- Each death drains with Blood Artist effects and emblem
+
+### Gray Merchant Loop
+- Gray Merchant + Victimize + 2 creatures
+- Gary enters, drains opponents
+- Sacrifice Gary + creature to Victimize
+- Return Gary + another creature
+- Gary enters again, drains again
+
+## Budget Breakdown
+
+| Category | Cards | Est. Cost |
+|----------|-------|-----------|
+| Commander | 1 | $21.54 |
+| Lands | 36 | $2.00 |
+| Ramp | 10 | $3.50 |
+| Card Draw | 8 | $1.50 |
+| Death Payoffs | 7 | $4.50 |
+| Sac Outlets | 5 | $1.50 |
+| Recurring | 7 | $2.00 |
+| Token Gens | 5 | $4.00 |
+| Reanimation | 4 | $1.50 |
+| Win Cons | 4 | $1.50 |
+| Removal | 5 | $2.00 |
+| Protection | 4 | $3.00 |
+| Unique/Fun | 4 | $4.00 |
+| **TOTAL** | 100 | **~$52-55** |
+
+## Final Checklist
+
+- [x] Exactly 100 cards
+- [x] All cards mono-black color identity
+- [x] 7 death trigger payoffs
+- [x] 5 free sacrifice outlets
+- [x] 7 recurring creatures
+- [x] 5 token generators
+- [x] 4 reanimation spells
+- [x] 4 explicit win conditions
+- [x] 5 removal spells
+- [x] 4 protection/utility
+- [x] 4 unique/fun cards
+- [x] Budget under $60 target
+
+## Power Level Assessment: 5-6/10
+
+**Strengths:**
+- Consistent engine once set up
+- Multiple redundant pieces
+- Permanent emblem is very powerful
+- Resilient to board wipes
+
+**Weaknesses:**
+- Needs multiple pieces to function
+- Vulnerable to graveyard hate early
+- No instant-win combos (just incremental drain)
+- Commander is expensive ($21), eating budget
+
+**Best Against:** Creature-heavy metas, grindy games
+**Struggles Against:** Fast combo, heavy graveyard hate

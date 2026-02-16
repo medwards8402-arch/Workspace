@@ -1,0 +1,40 @@
+# Sephiroth, Fabled SOLDIER - Sideboard
+# Budget alternatives for testing and meta adjustments (~$3-5 total)
+
+## Alternative Sacrifice Outlets
+- Spawning Pit ($0.20) - Artifact sac outlet, makes tokens
+- Mind Slash ($0.15) - Sac outlet with discard effect
+- Phyrexian Plaguelord ($0.15) - Sac outlet that shrinks creatures
+
+## Alternative Death Payoffs
+- Poison-Tip Archer ($0.15) - Reach + death drain
+- Agent of the Iron Throne ($0.15) - Background with death drain
+- Grim Guardian ($0.10) - Constellation drain (works with Bastion)
+
+## Alternative Recursion
+- Unearth ($0.75) - Cheap reanimation, cycles
+- Ghoulcaller's Chant ($0.10) - Return 2 zombies
+- Tortured Existence ($0.50) - Repeatable swap
+
+## Alternative Token Generators  
+- Ogre Slumlord ($0.35) - Token generator on creature death
+- Ghoulish Procession ($0.15) - Tokens when nontoken creatures die
+- Skeletal Vampire ($0.25) - Token generator + sac outlet
+
+## Meta Adjustments
+- Nihil Spellbomb ($0.20) - Targeted graveyard hate
+- Relic of Progenitus ($0.40) - More graveyard hate
+- Duress ($0.10) - Hand disruption
+- Pharika's Libation ($0.10) - Enchantment removal
+
+## Alternative Win Conditions
+- Vampire Nighthawk ($0.40) - Efficient creature, good devotion
+- Corrupt ($0.15) - Direct drain spell
+- Consume Spirit ($0.10) - X drain spell
+
+## Protection Options
+- Imp's Mischief ($1.50) - Redirect targeting spell
+- Undying Malice ($0.10) - Instant creature protection
+- Supernatural Stamina ($0.10) - Return on death
+
+Total estimated sideboard cost: ~$4.50
